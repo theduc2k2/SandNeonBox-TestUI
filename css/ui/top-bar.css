@@ -1,0 +1,96 @@
+/*
+ * RESPONSIBILITY: Styling for the top resource display (Diamonds, Energy/Lives).
+ * THEME: SANDTRIX (Wood & Sand)
+ */
+
+.top-resource-bar {
+    position: absolute; 
+    top: 0; left: 0; 
+    width: 100%; 
+    height: calc(var(--top-height) + var(--safe-top));
+    padding-top: var(--safe-top);
+    display: flex; 
+    align-items: flex-end;
+    padding-bottom: 15px; 
+    padding-left: 20px; padding-right: 20px;
+    z-index: 50; 
+    pointer-events: none;
+}
+
+.top-resource-bar > * {
+    pointer-events: auto;
+}
+
+/* VIÊN THUỐC HIỂN THỊ TÀI NGUYÊN */
+.res-pill {
+    /* Nền màu kem/trắng ngà thay vì trắng tím */
+    background: linear-gradient(to bottom, #FFFFFF, #F5EDE0);
+    border: 3px solid #FFFFFF;
+    border-radius: 25px;
+    height: 48px;
+    padding: 0 18px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    /* Shadow màu nâu gỗ */
+    box-shadow: 
+        0 4px 0 rgba(139, 115, 85, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Hiệu ứng bóng kính (Giữ nguyên để tạo độ nổi) */
+.res-pill::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    right: 4px;
+    height: 40%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+    border-radius: 20px;
+    pointer-events: none;
+}
+
+/* ICON TRÒN (MÁU/ENERGY) */
+.res-icon-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Giữ màu hồng cho Máu/Tim */
+    background: linear-gradient(135deg, #FF69B4, #FF1493);
+    border: 3px solid #FFFFFF;
+    
+    /* Shadow hồng đậm */
+    box-shadow: 
+        0 3px 0 rgba(255, 20, 147, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+    position: relative;
+}
+
+/* ICON TRÒN (KIM CƯƠNG) */
+.res-icon-circle.diamond {
+    /* Giữ màu xanh cho Kim Cương */
+    background: linear-gradient(135deg, #5DADE2, #3498DB);
+    box-shadow: 
+        0 3px 0 rgba(52, 152, 219, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* SỐ LƯỢNG TÀI NGUYÊN */
+.res-val {
+    font-family: 'Chewy', cursive;
+    font-size: 18px;
+    font-weight: bold;
+    
+    /* Màu tím đậm để tương phản tốt trên nền kem */
+    color: #7B3FF2;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);
+    min-width: 40px;
+    text-align: center;
+}

@@ -1,0 +1,212 @@
+/*
+ * RESPONSIBILITY: Styles for overlays, popups, pause menu, settings, and modal-specific content.
+ * THEME: SANDTRIX (Wood & Sand)
+ */
+
+/* --- BACKGROUND OVERLAY --- */
+.screen-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Nền tối mờ để nổi bật modal gỗ */
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.screen-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.1);
+}
+
+/* --- SETTINGS MENU STYLES --- */
+.settings-content {
+    width: 90%;
+    max-width: 360px;
+    /* Nền trắng ngà (Giấy) */
+    background: #FFFBF0;
+    /* Viền gỗ nâu */
+    border: 5px solid #8B7355;
+    border-radius: 30px;
+    padding: 25px;
+    box-shadow: 
+        0 10px 0 rgba(139, 115, 85, 0.4),
+        0 20px 40px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+.settings-title {
+    font-family: 'Chewy', cursive;
+    font-size: 32px;
+    color: #FF8C42; /* Cam gỗ sáng */
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0 #FFF;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    /* Thêm nền nhẹ cho từng dòng setting */
+    background: rgba(255, 255, 255, 0.6);
+    padding: 10px;
+    border-radius: 15px;
+    border: 2px solid rgba(139, 115, 85, 0.1);
+}
+
+.setting-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #8B7355; /* Chữ nâu */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- PAUSE MENU & GENERAL MODAL --- */
+/* Style bảng gỗ */
+.candy-modal {
+    background: #C4A574; /* Màu gỗ trung bình */
+    border: 6px solid #8B7355; /* Viền gỗ đậm */
+    border-radius: 35px;
+    padding: 25px;
+    width: 85%;
+    max-width: 320px;
+    /* Shadow đậm */
+    box-shadow: 
+        0 10px 0 #5E4B35,
+        0 20px 40px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+/* Hiệu ứng đinh vít ở 4 góc bảng gỗ (Trang trí) */
+.candy-modal::after {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border: 2px dashed rgba(139, 115, 85, 0.3);
+    border-radius: 25px;
+    pointer-events: none;
+}
+
+.candy-modal.small {
+    width: 80%;
+    padding: 15px;
+    background: #FFFBF0; /* Modal nhỏ dùng nền giấy */
+    border-color: #DEB887;
+    box-shadow: 0 8px 0 rgba(139, 115, 85, 0.4), 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    font-family: 'Chewy', cursive;
+    font-size: 38px;
+    color: #FFF;
+    text-shadow: 2px 2px 0 #8B7355;
+    margin-bottom: 20px;
+    transform: rotate(-2deg);
+}
+
+/* Sub-overlay cho Shop Mini */
+.sub-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
+/* --- PAUSE MENU SHOP STYLES --- */
+.pause-shop-section {
+    margin: 15px 0;
+    width: 100%;
+    border-top: 2px dashed rgba(255,255,255,0.3);
+    border-bottom: 2px dashed rgba(255,255,255,0.3);
+    padding: 15px 0;
+    background: rgba(0,0,0,0.05); /* Tối nhẹ khu vực shop */
+    border-radius: 10px;
+}
+
+.pause-shop-title {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 16px;
+    color: #FFF;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.mini-shop-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+.mini-shop-item {
+    background: #FFF; /* Giấy trắng */
+    border: 2px solid #DEB887;
+    border-radius: 15px;
+    padding: 8px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.1s;
+    box-shadow: 0 3px 0 rgba(139, 115, 85, 0.2);
+}
+
+.mini-shop-item:active {
+    transform: scale(0.95);
+    background: #F5EDE0;
+    border-color: #8B7355;
+    box-shadow: none;
+}
+
+.mini-item-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+}
+
+.mini-item-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: #5DADE2; /* Xanh biển */
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+}
+
+.mini-item-name {
+    font-size: 10px;
+    font-weight: 700;
+    color: #8B7355; /* Tên item màu nâu */
+    margin-bottom: 2px;
+    text-transform: uppercase;
+}
+
+/* Animation cho modal xuất hiện */
+@keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

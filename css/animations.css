@@ -1,0 +1,118 @@
+/*
+ * RESPONSIBILITY: Keyframes and specific animated elements (Shakes, Pulses, Floats).
+ * THEME: SANDTRIX (Wood & Sand)
+ * NOTE: Cloud animations removed as they are replaced by Canvas Sand Blocks in layout.
+ */
+
+/* --- UI ENTRANCE ANIMATIONS --- */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* --- LOGO ANIMATION (SANDTRIX STYLE) --- */
+@keyframes floatLogo {
+    0%, 100% {
+        /* Giữ góc nghiêng -3deg đặc trưng */
+        transform: translate(-50%, 0) scale(1.1) rotate(-3deg);
+    }
+    50% {
+        transform: translate(-50%, -10px) scale(1.1) rotate(-3deg);
+    }
+}
+
+/* --- INTERACTIVE ANIMATIONS (Buttons, Chests) --- */
+
+@keyframes pulseBtn {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-5deg);
+    }
+    75% {
+        transform: rotate(5deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* --- GAMEPLAY EFFECTS (Shake, Danger, Score) --- */
+
+@keyframes shakeAnim {
+    10%, 90% {
+        transform: translate3d(-2px, 0, 0);
+    }
+    20%, 80% {
+        transform: translate3d(4px, 0, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(-6px, 0, 0);
+    }
+    40%, 60% {
+        transform: translate3d(6px, 0, 0);
+    }
+}
+
+/* Class kích hoạt rung màn hình khi đặt khối */
+#inner-screen.shake {
+    animation: shakeAnim 0.3s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes pulseDanger {
+    from {
+        opacity: 0.8;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate(-50%, 0) scale(0.8);
+        opacity: 0;
+    }
+    20% {
+        transform: translate(-50%, -40px) scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -100px) scale(1);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,395 @@
+/*
+ * RESPONSIBILITY: All interactive button styles (Play, Buy, Close, Settings, Toggle, etc.).
+ * THEME: SANDTRIX (Wood & Sand)
+ */
+
+/* --- NÚT VUÔNG NHỎ (Settings, Pause, Menu) --- */
+.menu-btn {
+    width: 48px;
+    height: 48px;
+    /* Gradient trắng ngà voi */
+    background: linear-gradient(to bottom, #FFFFFF, #F5F0FF);
+    border: 3px solid #FFFFFF;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    color: #7B3FF2; /* Màu icon tím */
+    transition: transform 0.1s;
+    
+    /* Shadow màu Nâu Gỗ (để tệp với nền) */
+    box-shadow: 
+        0 4px 0 rgba(139, 115, 85, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    right: 4px;
+    height: 40%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+    border-radius: 12px;
+    pointer-events: none;
+}
+
+.menu-btn:active {
+    transform: translateY(3px);
+    /* Khi bấm xuống, bóng giảm đi */
+    box-shadow: 
+        0 1px 0 rgba(139, 115, 85, 0.5),
+        0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Pause Button specific */
+.pause-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+}
+
+/* --- BIG PLAY BUTTON (Main Campaign) --- */
+.btn-play-campaign {
+    width: 200px; /* Rộng hơn chút */
+    height: 70px; /* Cao hơn chút */
+    
+    /* Hình dáng: Chữ nhật bo tròn */
+    border-radius: 20px;
+    
+    /* MÀU GỖ: Gradient từ nâu sáng xuống nâu tối */
+    background: linear-gradient(to bottom, #BC8F5F 0%, #8B5A2B 100%);
+    
+    /* Viền trên sáng, viền dưới tối để tạo khối */
+    border: 3px solid #DCC098;
+    border-bottom-color: #5E3C21;
+    
+    /* Đổ bóng 3D dày (Màu nâu đen) */
+    box-shadow: 
+        0 8px 0 #3E2723, 
+        0 15px 20px rgba(0, 0, 0, 0.4),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3); /* Highlight nhẹ bên trong */
+        
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.1s;
+    
+    /* Animation nhịp đập */
+    animation: pulseBtn 2s ease-in-out infinite;
+}
+
+.btn-play-campaign:active {
+    transform: translateY(6px); /* Dịch xuống giả lập nhấn phím */
+    box-shadow: 
+        0 2px 0 #3E2723, /* Bóng 3D thu nhỏ lại */
+        0 4px 10px rgba(0, 0, 0, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+}
+/* Hiệu ứng bóng kính */
+.btn-play-campaign::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 15px;
+    right: 15px;
+    height: 45%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), transparent);
+    border-radius: 25px;
+    pointer-events: none;
+}
+
+.play-icon-tri {
+    width: 0;
+    height: 0;
+    border-left: 22px solid #FFF8E1;
+    border-top: 14px solid transparent;
+    border-bottom: 14px solid transparent;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5));
+}
+.play-text {
+    font-family: 'Chewy', cursive;
+    font-size: 32px;
+    font-weight: 400;
+    color: #ffdc68; /* Màu kem sáng */
+    text-shadow: 0 2px 0 rgba(62, 39, 35, 0.8);
+    letter-spacing: 2px;
+}
+.btn-play-campaign::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(0,0,0,0.05) 0px,
+        rgba(0,0,0,0.05) 2px,
+        transparent 2px,
+        transparent 8px
+    );
+    border-radius: 16px;
+    pointer-events: none;
+}
+
+/* --- SHOP BUTTONS (BUY) --- */
+.btn-buy {
+    background: linear-gradient(to bottom, #52D681, #2ECC71); /* Xanh lá */
+    border: 3px solid #FFFFFF;
+    color: #FFFFFF;
+    width: 100%;
+    padding: 12px;
+    border-radius: 18px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    
+    /* Shadow xanh đậm */
+    box-shadow: 
+        0 4px 0 #229954,
+        0 8px 15px rgba(0, 0, 0, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+}
+
+.btn-buy:hover {
+    transform: translateY(-2px);
+}
+
+.btn-buy:active {
+    transform: translateY(3px);
+    box-shadow: 
+        0 1px 0 #229954,
+        0 3px 8px rgba(0, 0, 0, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* --- GAME OVER BUTTON --- */
+.go-btn {
+    padding: 18px 50px;
+    background: linear-gradient(to bottom, #5DADE2, #3498DB); /* Xanh biển */
+    color: #FFFFFF;
+    border: 3px solid #FFFFFF;
+    font-family: 'Chewy', cursive;
+    font-weight: 400;
+    border-radius: 25px;
+    font-size: 22px;
+    cursor: pointer;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s;
+    
+    /* Shadow xanh đậm */
+    box-shadow: 
+        0 6px 0 #2874A6,
+        0 12px 25px rgba(0, 0, 0, 0.3),
+        inset 0 3px 0 rgba(255, 255, 255, 0.5);
+}
+
+.go-btn:active {
+    transform: translateY(4px);
+    box-shadow: 
+        0 2px 0 #2874A6,
+        0 6px 15px rgba(0, 0, 0, 0.3),
+        inset 0 3px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* --- EXTRA BUTTONS (Team, Events) --- */
+.btn-find-team {
+    margin-top: 35px;
+    padding: 16px 45px;
+    background: linear-gradient(to bottom, #52D681, #2ECC71);
+    border: 3px solid #FFFFFF;
+    border-radius: 30px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    color: #FFFFFF;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.1s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    box-shadow: 
+        0 6px 0 #229954,
+        0 12px 25px rgba(0,0,0,0.2),
+        inset 0 3px 0 rgba(255, 255, 255, 0.5);
+}
+
+.btn-find-team:active {
+    transform: translateY(4px);
+    box-shadow: 
+        0 2px 0 #229954,
+        0 6px 15px rgba(0,0,0,0.2),
+        inset 0 3px 0 rgba(255, 255, 255, 0.5);
+}
+
+.event-btn {
+    background: linear-gradient(to bottom, #FFD93D, #FFA500); /* Vàng cam */
+    border: 3px solid #FFFFFF;
+    color: #FFFFFF;
+    padding: 10px 25px;
+    border-radius: 18px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.1s;
+    
+    box-shadow: 
+        0 4px 0 rgba(214, 137, 16, 0.6),
+        0 8px 15px rgba(0, 0, 0, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+}
+
+.event-btn:active {
+    transform: translateY(3px);
+    box-shadow: 
+        0 1px 0 rgba(214, 137, 16, 0.6),
+        0 3px 8px rgba(0, 0, 0, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* --- SETTINGS TOGGLE (Style rãnh trượt gỗ) --- */
+.toggle-switch {
+    width: 50px;
+    height: 28px;
+    /* Màu nền xám/nâu nhạt tạo cảm giác rãnh trượt */
+    background: #E5D6C5; 
+    border-radius: 14px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+    /* Inset shadow để tạo độ sâu */
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active {
+    background: #52D681; /* Xanh lá khi bật */
+}
+
+.toggle-knob {
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: 0.3s;
+    /* Shadow cho nút gạt nổi lên */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-switch.active .toggle-knob {
+    left: 25px;
+}
+
+.menu-action-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 20px;
+    border: none;
+    font-family: 'Chewy', cursive;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s;
+}
+
+.menu-action-btn:active {
+    transform: translateY(3px);
+}
+
+/* --- CANDY MODAL BUTTONS (Dùng trong Pause/Settings) --- */
+.candy-btn {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 3px solid #FFFFFF; /* Viền trắng nổi bật trên nền gỗ */
+    border-radius: 20px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFFFFF;
+    cursor: pointer;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s;
+    text-transform: uppercase;
+}
+
+.candy-btn:active {
+    transform: translateY(4px);
+    box-shadow: none !important;
+}
+
+/* MÀU SẮC RIÊNG BIỆT CHO CÁC NÚT MODAL */
+.btn-resume {
+    background: linear-gradient(to bottom, #52D681, #2ECC71);
+    box-shadow: 0 5px 0 #229954, 0 8px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-shop {
+    background: linear-gradient(to bottom, #FFD93D, #FFA500);
+    box-shadow: 0 5px 0 #D68910, 0 8px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-settings {
+    background: linear-gradient(to bottom, #9D5CFF, #8E44AD); /* Tím */
+    box-shadow: 0 5px 0 #71368A, 0 8px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-exit {
+    background: linear-gradient(to bottom, #FF5757, #C0392B);
+    box-shadow: 0 5px 0 #922B21, 0 8px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-back {
+    background: linear-gradient(to bottom, #5DADE2, #3498DB);
+    box-shadow: 0 5px 0 #2874A6;
+}
+
+.btn-back-small {
+    background: #95A5A6;
+    margin-top: 10px;
+    margin-bottom: 0;
+    box-shadow: 0 4px 0 #7F8C8D;
+}
+
+/* Animation cho nút Play */
+@keyframes pulseBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* === Asset-based overrides (use PNG buttons) === */
+.btn-play-campaign {
+    background: url('../../Asset/Button/Play/Play.png') center/contain no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    animation: none;
+}
+.btn-play-campaign > * { display: none; }
+
+.menu-btn {
+    background: url('../../Asset/Button/Settings/Settings.png') center/contain no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.menu-btn svg { display: none; }

@@ -1,0 +1,133 @@
+/* --- LEVEL PROGRESS BAR (GAMEPLAY) --- */
+.level-progress-wrapper {
+    position: absolute;
+    bottom: 125px;
+    /* Sát dưới màn hình, phía trên Dock */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 360px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 45;
+    background: #3E2723;
+    padding: 0 5px;
+    border: 2px solid #8D6E63;
+    border-radius: 6px;
+    pointer-events: none;
+    /* Let clicks pass to dock if overlap, though this is usually background */
+}
+
+.level-progress-track {
+    flex: 1;
+    height: 14px;
+    background: #2D1B15;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #5D4037;
+}
+
+.level-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #FFD54F, #FFB300);
+    /* Gold color like reference */
+    border-radius: 0;
+    transition: width 0.3s ease-out;
+}
+
+/* Striped effect */
+.level-progress-fill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-image: linear-gradient(45deg,
+            rgba(255, 255, 255, 0.4) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.4) 50%,
+            rgba(255, 255, 255, 0.4) 75%,
+            transparent 75%,
+            transparent);
+    background-size: 15px 15px;
+    animation: move-stripes 1s linear infinite;
+    mix-blend-mode: overlay;
+}
+
+.level-gift-box {
+    font-size: 20px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
+    animation: box-wiggle 3s infinite ease-in-out;
+    cursor: auto;
+    /* Just visual */
+    margin-left: 2px;
+}
+
+.level-gift-box.open {
+    animation: box-pop 0.5s ease-out forwards;
+}
+
+.level-start-text,
+.level-end-text {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 12px;
+    color: #FFECB3;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+@keyframes box-wiggle {
+
+    0%,
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    5% {
+        transform: rotate(-5deg) scale(1.1);
+    }
+
+    10% {
+        transform: rotate(5deg) scale(1.1);
+    }
+
+    15% {
+        transform: rotate(-5deg) scale(1.1);
+    }
+
+    20% {
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes box-pop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5) rotate(10deg);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes move-stripes {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 15px 15px;
+    }
+}
