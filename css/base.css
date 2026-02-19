@@ -1,0 +1,152 @@
+﻿/*
+ * RESPONSIBILITY: Global Resets, Fonts, Variables (:root), and Body styling.
+ * THEME: SANDTRIX (Wood & Sand)
+ */
+
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Chewy&display=swap');
+/* Giá»¯ font game logic cÅ© Ä‘á»ƒ khÃ´ng lá»—i hiá»ƒn thá»‹ sá»‘/combo */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Orbitron:wght@700;900&display=swap');
+
+/* --- VARIABLES (:root) --- */
+:root {
+    /* SANDTRIX PALETTE (MÃ u chá»§ Ä‘áº¡o Gá»— & CÃ¡t) */
+    --wood-light: #DEB887;
+    --wood-medium: #C4A574;
+    --wood-dark: #8B7355;
+    --sand-bg-outer: #5e4b35; /* MÃ u ná»n tá»‘i bÃªn ngoÃ i */
+
+    /* LEGACY CANDY COLORS (Giá»¯ láº¡i Ä‘á»ƒ cÃ¡c nÃºt logic cÅ© váº«n cÃ³ mÃ u) */
+    --candy-pink: #FF69B4;
+    --candy-purple: #9D5CFF;
+    --candy-blue: #5DADE2;
+    --candy-green: #52D681;
+    --candy-yellow: #FFD93D;
+    --candy-orange: #FF8C42;
+    --candy-red: #FF5757;
+
+    /* Dimensions */
+    --nav-height: 100px;
+    --top-height: 85px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* --- UTILITY CLASSES --- */
+.hidden {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+/* --- GLOBAL RESETS --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none; /* Cháº·n bÃ´i Ä‘en vÄƒn báº£n */
+    outline: none;
+}
+
+/* --- BODY STYLING --- */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* Ná»n tá»‘i bao quanh (Máº·t bÃ n) */
+    background-color: #2b1f17;
+    background-image: url('../Asset/BackGround/Background.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Fredoka', sans-serif;
+    color: #5A3E7C;
+}
+
+/* --- APP CONTAINER (PHONE FRAME) --- */
+#app-container {
+    position: relative;
+    /* Ná»n gá»— bÃªn trong Ä‘iá»‡n thoáº¡i */
+    background-color: #2b1f17;
+    background-image: url('../Asset/BackGround/Background.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat; 
+    overflow: hidden;
+    
+    /* KÃ­ch thÆ°á»›c máº·c Ä‘á»‹nh cho Mobile */
+    width: 100%;
+    /* DÃ¹ng 100dvh Ä‘á»ƒ fix lá»—i thanh Ä‘á»‹a chá»‰ trÃªn trÃ¬nh duyá»‡t mobile */
+    height: 100dvh; 
+    
+    display: flex;
+    flex-direction: column;
+}
+
+/* GIAO DIá»†N DESKTOP: Giáº£ láº­p khung Ä‘iá»‡n thoáº¡i gá»— */
+@media (min-width: 500px) {
+    #app-container {
+        width: 412px;  /* Chiá»u rá»™ng chuáº©n */
+        height: 915px; /* Chiá»u cao chuáº©n */
+        
+        /* Giá»›i háº¡n chiá»u cao khÃ´ng vÆ°á»£t quÃ¡ mÃ n hÃ¬nh PC */
+        max-height: 95vh;
+        
+        /* Viá»n gá»— Ä‘áº­m */
+        border: 6px solid var(--wood-dark);
+        border-radius: 45px; 
+        
+        /* Äá»• bÃ³ng sÃ¢u táº¡o cáº£m giÃ¡c 3D */
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.6),
+            0 0 0 2px rgba(255, 255, 255, 0.1);
+            
+        /* Äáº£m báº£o cÄƒn giá»¯a container trong mÃ n hÃ¬nh lá»›n */
+        margin: auto;
+    }
+}
+
+/* --- CANVAS & GAME SCREEN FIXES --- */
+/* Äáº£m báº£o canvas game luÃ´n full mÃ n hÃ¬nh trong khung */
+#inner-screen {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#gameCanvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+/* --- BACKDROP CHUNG --- */
+.overlay-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6); /* Ná»n tá»‘i má» */
+    backdrop-filter: blur(2px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.overlay-backdrop.hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}

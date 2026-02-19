@@ -1,0 +1,173 @@
+﻿/*
+ * RESPONSIBILITY: Styling for the bottom taskbar/navigation.
+ * THEME: SANDTRIX (Wood & Sand) - FIX FOR 3 BUTTONS
+ */
+
+/* BOTTOM NAV BAR CONTAINER */
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: calc(120px + var(--safe-bottom));
+    padding-bottom: var(--safe-bottom);
+    
+    /* Ná»n trong suá»‘t hoáº·c gradient tá»‘i nháº¹ á»Ÿ Ä‘Ã¡y */
+    background: linear-gradient(to top, #00ffea 0%, #e78b00 55%, #ff3300 100%);
+    
+    border-top: none;
+    box-shadow: 0 -6px 12px rgba(0,0,0,0.12); 
+    
+    display: grid;
+    /* --- QUAN TRá»ŒNG: CHá»ˆNH Vá»€ 3 Cá»˜T CHO KHá»šP HTML (SHOP - HOME - RANK) --- */
+    grid-template-columns: repeat(3, 1fr); 
+    align-items: end; /* CÄƒn dÆ°á»›i Ä‘Ã¡y */
+    z-index: 100;
+}
+
+/* NAV BUTTON (Tab Item) */
+.nav-btn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    cursor: pointer;
+    
+    /* Táº¡o hÃ¬nh khá»‘i phÃ­m Ä‘Ã n gá»— */
+    background: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(255,255,255,0.3));
+    border-top: 2px solid rgba(255, 255, 255, 0.35);
+    border-right: 1px solid rgba(0,0,0,0.05);
+    border-left: 1px solid rgba(255,255,255,0.15);
+    
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* NAV ICON WRAPPER */
+.nav-icon-3d-wrapper {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,0.25);
+    backdrop-filter: blur(2px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.4), 0 1px 3px rgba(0,0,0,0.06);
+    transition: transform 0.3s;
+}
+.nav-icon-3d-wrapper::before {
+    display: none;
+}
+
+/* --- ACTIVE STATE (KHI ÄÆ¯á»¢C CHá»ŒN) --- */
+.nav-btn.active {
+    /* Giáº£m Ä‘á»™ cao xuá»‘ng 115% Ä‘á»ƒ cÃ¢n Ä‘á»‘i vá»›i chiá»u rá»™ng nÃºt 3 cá»™t */
+    height: 125%;
+    margin-top: -18%;
+    z-index: 101;
+    
+    /* Ná»n sÃ¡ng mÃ u giáº¥y/gá»— nháº¡t */
+    background: linear-gradient(to bottom, #00e1ff 0%, #46e3e9 45%, #e6f3ff 100%);
+    border-top: 5px solid #018f8f; 
+    
+    /* Bo trÃ²n */
+    border-radius: 25px 25px 0 0;
+    
+    /* Äá»• bÃ³ng 3D */
+    box-shadow: 
+        0 -5px 15px rgba(0, 0, 0, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
+        
+    border-right: none;
+    border-left: none;
+    justify-content: flex-start; 
+    padding-top: 15px;
+}
+
+.nav-btn.active .nav-icon-3d-wrapper {
+    transform: scale(1.02);
+}
+
+/* --- ICONS (SVG) --- */
+.nav-btn svg {
+    /* Icon to hÆ¡n má»™t chÃºt vÃ¬ nÃºt rá»™ng hÆ¡n */
+    width: 32px; 
+    height: 32px;
+    fill: #FFFFFF; 
+    opacity: 0.7;
+    transition: all 0.2s;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+.nav-btn.active svg {
+    opacity: 1;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+/* MÃ€U Sáº®C RIÃŠNG CHO Tá»ªNG TAB KHI ACTIVE */
+/* Shop - VÃ ng Cam */
+.nav-btn[data-target="tab-shop"].active svg { fill: #FF8C42; }
+
+/* Home - Xanh Biá»ƒn */
+.nav-btn[data-target="tab-home"].active svg { fill: #5DADE2; }
+
+/* Rank - Há»“ng */
+.nav-btn[data-target="tab-rank"].active svg { fill: #FF69B4; }
+
+
+/* --- LABELS (CHá»® DÆ¯á»šI ICON) --- */
+.nav-label {
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    
+    color: #6c6f73; /* MÃ u kem nháº¡t trÃªn ná»n gá»— tá»‘i */
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+.nav-btn.active .nav-label {
+    color: #2f3a4a; /* MÃ u nÃ¢u Ä‘áº­m trÃªn ná»n sÃ¡ng */
+    font-weight: 900;
+    text-shadow: none;
+}
+
+/* --- NÃšT HOME (Giá»¯a) --- */
+.nav-btn.nav-home .nav-icon-3d-wrapper {
+    width: 84px;
+    height: 84px;
+    margin-top: 0; 
+}
+
+.nav-btn.nav-home svg {
+    width: 40px;
+    height: 40px;
+}
+
+/* === Asset-based icons === */
+.nav-btn svg {
+    display: none;
+}
+
+.nav-icon-3d-wrapper {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.nav-btn[data-target="tab-home"] .nav-icon-3d-wrapper {
+    background-image: url('../../Asset/Button/Home/Home.png');
+}
+
+.nav-btn[data-target="tab-shop"] .nav-icon-3d-wrapper {
+    background-image: url('../../Asset/Button/Shop/Shop.png');
+}
+
+.nav-btn[data-target="tab-rank"] .nav-icon-3d-wrapper {
+    background-image: url('../../Asset/Button/Cup/Troy.png');
+}

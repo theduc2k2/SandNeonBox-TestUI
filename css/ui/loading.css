@@ -1,0 +1,180 @@
+/* Loading Screen Styles */
+#loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Transparent to show Game Background (Wood/Sand) */
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Space between Logo (top/center) and Bar (bottom) */
+    align-items: center;
+    z-index: 10000;
+    pointer-events: none;
+    /* Let clicks pass through if needed, though usually blocking is fine */
+    transition: opacity 0.5s ease-out;
+    padding-bottom: 50px;
+    /* Space from bottom */
+    padding-top: 100px;
+    /* Space from top */
+    box-sizing: border-box;
+}
+
+#loading-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-content {
+    /* Contains Logo */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    /* Take available space */
+}
+
+.bottom-loading-area {
+    /* New container for bottom elements */
+    width: 80%;
+    max-width: 250px;
+    /* Shortened width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- MAIN LOGO (MATCHING HOME) --- */
+.loading-logo-box {
+    text-align: center;
+    margin-bottom: 20px;
+    animation: float-logo 3s ease-in-out infinite;
+}
+
+.loading-logo-title {
+    font-family: 'Luckiest Guy', 'Chewy', cursive;
+    font-size: 56px;
+    line-height: 0.9;
+    color: #FFD93D;
+    text-shadow:
+        4px 4px 0 #8B4500,
+        -2px -2px 0 #FFF,
+        0 0 15px rgba(255, 217, 61, 0.5);
+    margin: 0;
+    transform: rotate(-3deg);
+}
+
+.loading-logo-subtitle {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #AEEA00;
+    margin-top: 5px;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+    transform: rotate(-2deg);
+}
+
+/* --- PROGRESS BAR --- */
+.loading-bar-container {
+    width: 100%;
+    height: 24px;
+    background: #5C4033;
+    border: 3px solid #3E2723;
+    border-radius: 12px;
+    padding: 3px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-bar-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #FF6F00, #FFD93D);
+    border-radius: 8px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
+}
+
+/* Hiệu ứng sọc chạy trên thanh loading */
+.loading-bar-fill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: linear-gradient(45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%,
+            transparent);
+    background-size: 20px 20px;
+    z-index: 1;
+    animation: move-stripes 1s linear infinite;
+    border-radius: 8px;
+}
+
+.loading-text {
+    font-family: 'Fredoka', sans-serif;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 5px;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* --- DREAMFORGE STUDIO --- */
+.dreamforge-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    /* Reduced margin */
+    opacity: 0.9;
+}
+
+.df-icon {
+    font-size: 32px;
+    margin-bottom: 2px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+}
+
+.df-text {
+    font-family: 'Chewy', cursive;
+    font-size: 20px;
+    color: #FFF;
+    text-shadow: 2px 2px 0 #1B5E20;
+    opacity: 0.8;
+}
+
+@keyframes move-stripes {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 20px 20px;
+    }
+}
+
+@keyframes float-logo {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}

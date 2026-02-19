@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Pixel Sandtrix - 3D Sand Block Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Chewy&display=swap');
+
+        :root {
+            /* CANDY COLOR PALETTE */
+            --candy-pink: #FF69B4;
+            --candy-purple: #9D5CFF;
+            --candy-blue: #5DADE2;
+            --candy-green: #52D681;
+            --candy-yellow: #FFD93D;
+            --candy-orange: #FF8C42;
+            --candy-red: #FF5757;
+            
+            /* WOOD COLORS */
+            --wood-light: #DEB887;
+            --wood-medium: #C4A574;
+            --wood-dark: #8B7355;
+            
+            /* Dimensions */
+            --nav-height: 100px; 
+            --top-height: 85px;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-top: env(safe-area-inset-top, 0px);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        html, body {
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background: #5e4b35; /* Màu nền tối hơn để khớp với hiệu ứng 3D */
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif; 
+            color: #5A3E7C;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+        }
+
+        /* --- FRAME --- */
+        #app-container {
+            position: relative; 
+            overflow: hidden;
+            width: 100%; 
+            height: 100%;
+            background: #C4A574;
+        }
+
+        @media (min-width: 500px) {
+            #app-container {
+                width: 412px; 
+                height: 915px; 
+                max-height: 95vh;
+                border: 6px solid #8B7355;
+                border-radius: 45px;
+                box-shadow: 
+                    0 20px 60px rgba(0, 0, 0, 0.6),
+                    0 0 0 2px rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        /* --- WOOD BACKGROUND --- */
+        .app-bg {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        /* Wood texture canvas */
+        #wood-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* SAND BLOCKS Canvas */
+        #sand-blocks-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .hidden { display: none !important; }
+        
+        /* --- MENU LAYOUT --- */
+        #menu-layer {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            z-index: 100; 
+            transition: opacity 0.3s;
+        }
+        #menu-layer.fade-out { opacity: 0; pointer-events: none; }
+
+        /* Top Resource Bar */
+        .top-resource-bar {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: calc(var(--top-height) + var(--safe-top));
+            padding-top: var(--safe-top);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
+            padding-bottom: 15px; 
+            padding-left: 20px; 
+            padding-right: 20px;
+            z-index: 50; 
+            pointer-events: none;
+        }
+        .top-resource-bar > * { pointer-events: auto; }
+
+        .res-pill {
+            background: linear-gradient(to bottom, #FFFFFF, #F5F0FF);
+            border: 3px solid #FFFFFF;
+            border-radius: 25px;
+            height: 48px; 
+            padding: 0 18px 0 8px;
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            box-shadow: 
+                0 4px 0 rgba(139, 115, 85, 0.5),
+                0 8px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .res-pill::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            right: 4px;
+            height: 40%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+            border-radius: 20px;
+            pointer-events: none;
+        }
+        
+        .res-icon-circle {
+            width: 38px; 
+            height: 38px; 
+            border-radius: 50%;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            border: 3px solid #FFFFFF;
+            box-shadow: 
+                0 3px 0 rgba(255, 20, 147, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            position: relative;
+        }
+        
+        .res-icon-circle.diamond {
+            background: linear-gradient(135deg, #5DADE2, #3498DB);
+            box-shadow: 
+                0 3px 0 rgba(52, 152, 219, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        .res-val { 
+            font-family: 'Chewy', cursive; 
+            font-size: 18px; 
+            font-weight: bold; 
+            color: #7B3FF2;
+            text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .menu-btn {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(to bottom, #FFFFFF, #F5F0FF);
+            border: 3px solid #FFFFFF;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 0 rgba(139, 115, 85, 0.5),
+                0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s;
+            position: relative;
+        }
+        
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            right: 4px;
+            height: 40%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+            border-radius: 12px;
+        }
+        
+        .menu-btn:active {
+            transform: translateY(3px);
+            box-shadow: 
+                0 1px 0 rgba(139, 115, 85, 0.5),
+                0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- TAB CONTAINER --- */
+        .tab-content-container {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            padding-top: calc(var(--top-height) + var(--safe-top)); 
+            padding-bottom: calc(var(--nav-height) + var(--safe-bottom)); 
+            overflow: hidden; 
+            z-index: 10;
+        }
+        
+        .tab-pane { 
+            display: none; 
+            width: 100%; 
+            height: 100%; 
+            overflow-y: auto; 
+            flex-direction: column; 
+            align-items: center; 
+            animation: fadeIn 0.3s ease; 
+        }
+        .tab-pane.active { display: flex; }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* --- HOME TAB --- */
+        #tab-home {
+            position: absolute; 
+            inset: 0; 
+            padding: 0 !important; 
+            overflow: hidden;
+        }
+
+        .campaign-map {
+            position: relative; 
+            width: 100%; 
+            height: 100%; 
+            display: block;
+        }
+
+        /* LOGO BOX - OPTIMIZED UI */
+        .logo-box { 
+            position: absolute; 
+            /* Dịch xuống theo yêu cầu */
+            top: 18%; 
+            left: 50%; 
+            /* Scale to hơn (1.25) */
+            transform: translateX(-50%) scale(1.25);
+            margin: 0; 
+            z-index: 5; 
+            text-align: center;
+            animation: floatLogo 3s ease-in-out infinite;
+            /* Tối ưu: Will-change để trình duyệt biết phần này sẽ động */
+            will-change: transform;
+        }
+        
+        .logo-title {
+            font-family: 'Chewy', cursive; 
+            font-size: 52px; 
+            font-weight: 400;
+            color: #FFFFFF;
+            /* Tăng cường hiệu ứng Text Shadow cho nổi bật */
+            text-shadow: 
+                3px 3px 0 #8B7355,
+                6px 6px 0 #6B5344,
+                0 0 20px rgba(255, 255, 255, 0.4), /* Glow nhẹ */
+                9px 9px 15px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px; 
+            line-height: 0.95;
+            transform: rotate(-3deg);
+        }
+        
+        .logo-subtitle { 
+            font-family: 'Fredoka', sans-serif;
+            font-size: 14px; 
+            color: #FFD93D; 
+            font-weight: 700;
+            letter-spacing: 6px; 
+            text-transform: uppercase; 
+            margin-top: 15px;
+            text-shadow: 
+                2px 2px 0 #8B7355,
+                0 0 10px rgba(255, 217, 61, 0.8); /* Glow mạnh hơn */
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            padding: 8px 25px;
+            border-radius: 20px;
+        }
+        
+        @keyframes floatLogo { 
+            0%, 100% { transform: translate(-50%, 0) scale(1.25) rotate(-3deg); } 
+            50% { transform: translate(-50%, -12px) scale(1.25) rotate(-3deg); } 
+        }
+
+        /* PLAY AREA - Lower position, near bottom nav */
+        .play-area-wrapper {
+            position: absolute;
+            left: 50%;
+            /* Tinh chỉnh lại vị trí play để cân với logo to */
+            bottom: calc(var(--nav-height) + var(--safe-bottom) + 80px);
+            transform: translateX(-50%);
+            z-index: 50;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        .btn-play-campaign {
+            width: 180px; 
+            height: 65px; 
+            border-radius: 32px; 
+            background: linear-gradient(to bottom, #9D5CFF, #7B3FF2);
+            box-shadow: 
+                0 7px 0 #5E35B1,
+                0 14px 28px rgba(0, 0, 0, 0.3),
+                inset 0 3px 0 rgba(255, 255, 255, 0.5);
+            border: none; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px;
+            cursor: pointer; 
+            position: relative; 
+            transition: all 0.1s;
+            animation: pulseBtn 2s ease-in-out infinite;
+            will-change: transform; /* Tối ưu Animation */
+        }
+        
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .btn-play-campaign:active { 
+            transform: translateY(5px) scale(1); 
+            box-shadow: 
+                0 2px 0 #5E35B1,
+                0 6px 15px rgba(0, 0, 0, 0.2),
+                inset 0 3px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        .btn-play-campaign::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 15px;
+            right: 15px;
+            height: 45%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+            border-radius: 25px;
+        }
+        
+        .play-icon-tri { 
+            width: 0; 
+            height: 0; 
+            border-left: 22px solid #FFFFFF; 
+            border-top: 14px solid transparent; 
+            border-bottom: 14px solid transparent; 
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            margin-left: 5px;
+        }
+        
+        .play-text { 
+            font-family: 'Chewy', cursive; 
+            font-size: 28px; 
+            font-weight: 400; 
+            color: #FFFFFF; 
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+        }
+
+        /* --- BOTTOM NAV --- */
+        .bottom-nav {
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%;
+            height: calc(var(--nav-height) + var(--safe-bottom));
+            padding-bottom: var(--safe-bottom);
+            background: transparent;
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr);
+            align-items: end;
+            z-index: 100;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-btn { 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            height: 100%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: linear-gradient(to bottom, #A08060, #8B7355);
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(0,0,0,0.1);
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .nav-btn.active {
+            height: 130%;
+            margin-top: -30%;
+            z-index: 101;
+            background: linear-gradient(to bottom, #FFFFFF 0%, #F5EDE0 40%, #E8DCC8 100%);
+            border-top: 4px solid #FFFFFF;
+            border-radius: 25px 25px 0 0;
+            box-shadow: 
+                0 -5px 25px rgba(0, 0, 0, 0.2),
+                0 5px 15px rgba(0, 0, 0, 0.1),
+                inset 0 0 20px rgba(255, 255, 255, 0.8);
+            border-right: none;
+            border-left: none;
+            justify-content: flex-start;
+            padding-top: 25px;
+        }
+
+        .nav-icon-3d-wrapper {
+            width: 50px; 
+            height: 50px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn.active .nav-icon-3d-wrapper {
+            transform: scale(1.15);
+        }
+
+        .nav-btn svg { 
+            width: 40px; 
+            height: 40px; 
+            fill: #FFFFFF; 
+            opacity: 0.8;
+            transition: all 0.2s;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+        }
+        
+        .nav-btn.active svg { 
+            fill: #8B7355; 
+            opacity: 1;
+            filter: drop-shadow(0 2px 4px rgba(139, 115, 85, 0.3));
+        }
+        
+        .nav-label { 
+            margin-top: 4px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            letter-spacing: 0.5px; 
+            text-transform: uppercase; 
+            transition: color 0.2s;
+            color: #E8DCC8;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .nav-btn.active .nav-label { 
+            color: #6B5344;
+            font-weight: 900;
+            text-shadow: none;
+        }
+
+        /* SHOP & OTHER TABS */
+        .shop-header { 
+            font-family: 'Chewy', cursive; 
+            color: #FF8C42; 
+            font-size: 36px; 
+            margin-bottom: 25px; 
+            text-shadow: 
+                3px 3px 0 #FFFFFF,
+                6px 6px 10px rgba(255, 140, 66, 0.3);
+            text-align: center;
+        }
+        
+        .shop-container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 18px; 
+            width: 90%; 
+            padding-bottom: 20px; 
+            margin: 0 auto;
+        }
+        
+        .shop-item { 
+            background: linear-gradient(to bottom, #FFFFFF, #FFF5F8);
+            border: 4px solid #FFFFFF;
+            border-radius: 25px; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center;
+            box-shadow: 
+                0 6px 0 rgba(139, 115, 85, 0.4),
+                0 12px 25px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+        
+        .shop-item::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 8px;
+            right: 8px;
+            height: 30%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent);
+            border-radius: 20px;
+        }
+        
+        .btn-buy { 
+            background: linear-gradient(to bottom, #52D681, #2ECC71);
+            border: 3px solid #FFFFFF;
+            color: #FFFFFF; 
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 18px; 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 14px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-top: 12px; 
+            transition: 0.2s;
+            box-shadow: 
+                0 4px 0 #229954,
+                0 8px 15px rgba(0, 0, 0, 0.15),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-buy:hover { 
+            transform: translateY(-2px);
+        }
+        
+        .btn-buy:active {
+            transform: translateY(3px);
+            box-shadow: 
+                0 1px 0 #229954,
+                0 3px 8px rgba(0, 0, 0, 0.15),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        /* GAME HUD */
+        #game-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 10; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.5s;
+        }
+        
+        #game-layer.active { 
+            opacity: 1; 
+            pointer-events: auto;
+        }
+        
+        canvas { 
+            width: 100%; 
+            height: 100%;
+        }
+
+        .hud-top { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 90px; 
+            padding: 15px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            z-index: 50;
+            pointer-events: none;
+        }
+        
+        .hud-top > * { 
+            pointer-events: auto;
+        }
+        
+        .score-box { 
+            font-family: 'Chewy', cursive; 
+            font-size: 38px; 
+            color: #FFFFFF;
+            text-shadow: 
+                3px 3px 0 #8B7355,
+                6px 6px 0 #6B5344,
+                9px 9px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #inner-screen { 
+            width: 100%; 
+            height: 100%; 
+            position: relative; 
+            overflow: hidden;
+        }
+        
+        #inner-screen.shake { 
+            animation: shakeAnim 0.3s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        @keyframes shakeAnim { 
+            10%, 90% { transform: translate3d(-2px, 0, 0); } 
+            20%, 80% { transform: translate3d(4px, 0, 0); } 
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); } 
+            40%, 60% { transform: translate3d(6px, 0, 0); } 
+        }
+
+        /* GAME OVER OVERLAY */
+        #game-over { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 200; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+        }
+        
+        .go-title { 
+            font-family: 'Chewy', cursive; 
+            font-size: 54px; 
+            color: #FF5757; 
+            margin-bottom: 20px;
+            text-shadow: 
+                4px 4px 0 #FFFFFF,
+                8px 8px 15px rgba(255, 87, 87, 0.5);
+        }
+        
+        .go-score { 
+            font-family: 'Fredoka', sans-serif; 
+            font-size: 26px; 
+            color: #FFD93D; 
+            margin-bottom: 40px;
+            text-shadow: 
+                2px 2px 0 #FF8C42,
+                4px 4px 10px rgba(255, 211, 61, 0.5);
+        }
+        
+        .go-btn { 
+            padding: 18px 50px; 
+            background: linear-gradient(to bottom, #5DADE2, #3498DB);
+            color: #FFFFFF; 
+            border: 3px solid #FFFFFF;
+            font-family: 'Chewy', cursive; 
+            font-weight: 400;
+            border-radius: 25px; 
+            font-size: 22px; 
+            cursor: pointer;
+            box-shadow: 
+                0 6px 0 #2874A6,
+                0 12px 25px rgba(0, 0, 0, 0.3),
+                inset 0 3px 0 rgba(255, 255, 255, 0.5);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s;
+        }
+        
+        .go-btn:active {
+            transform: translateY(4px);
+            box-shadow: 
+                0 2px 0 #2874A6,
+                0 6px 15px rgba(0, 0, 0, 0.3),
+                inset 0 3px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        /* Rank Tab */
+        .rank-header {
+            font-family: 'Chewy', cursive;
+            color: #FF69B4;
+            font-size: 36px;
+            margin-bottom: 25px;
+            text-shadow: 
+                3px 3px 0 #FFFFFF,
+                6px 6px 10px rgba(255, 105, 180, 0.3);
+        }
+        
+        .rank-item {
+            width: 90%;
+            background: linear-gradient(to bottom, #FFFFFF, #FFF0F5);
+            padding: 18px;
+            border-radius: 20px;
+            border: 4px solid #FFFFFF;
+            margin: 0 auto 15px;
+            box-shadow: 
+                0 5px 0 rgba(139, 115, 85, 0.4),
+                0 10px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            color: #7B3FF2;
+            position: relative;
+        }
+        
+        .rank-item::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            right: 6px;
+            height: 40%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent);
+            border-radius: 16px;
+        }
+        
+        .rank-score {
+            color: #5DADE2;
+            font-family: 'Chewy', cursive;
+            font-size: 18px;
+            text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- WOOD BACKGROUND -->
+        <div class="app-bg">
+            <canvas id="wood-canvas"></canvas>
+            <!-- Sand Blocks Canvas -->
+            <canvas id="sand-blocks-canvas"></canvas>
+        </div>
+
+        <!-- GAME LAYER (Hidden by default) -->
+        <div id="game-layer">
+            <div id="inner-screen">
+                <canvas id="gameCanvas"></canvas>
+                <div class="hud-top">
+                    <div class="score-box" id="game-score">0</div>
+                    <div class="menu-btn" onclick="quitGame()">
+                        <svg style="width:26px; height:26px; fill:#7B3FF2" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </div>
+                </div>
+                <div id="game-over" class="hidden">
+                    <div class="go-title">GAME OVER</div>
+                    <div class="go-score">SCORE: <span id="final-score">0</span></div>
+                    <button class="go-btn" onclick="quitGame()">CONTINUE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MENU LAYER -->
+        <div id="menu-layer">
+            <!-- Top Bar -->
+            <div class="top-resource-bar">
+                <div class="res-pill">
+                    <div class="res-icon-circle">
+                        <svg style="width:20px; height:20px; fill:#FFFFFF" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </div>
+                    <span class="res-val">FULL</span>
+                </div>
+                <div class="res-pill" style="margin-left:auto; margin-right:10px;">
+                    <div class="res-icon-circle diamond">
+                         <svg style="width:20px; height:20px; fill:#FFFFFF" viewBox="0 0 24 24"><path d="M12,2L2,12l10,10l10-10L12,2z M12,18l-6-6l6-6l6,6L12,18z"/></svg>
+                    </div>
+                    <span class="res-val" id="menu-diamond-display">2,450</span>
+                </div>
+                <div class="menu-btn">
+                     <svg style="width:26px; height:26px; fill:#7B3FF2;" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content-container">
+                <!-- SHOP TAB -->
+                <div id="tab-shop" class="tab-pane">
+                    <div style="height:20px;"></div>
+                    <div class="shop-header">CỬA HÀNG</div>
+                    <div class="shop-container">
+                        <div class="shop-item">
+                            <div style="font-size:13px; color:#9D5CFF; font-weight:bold; margin-bottom:8px;">BOMB PACK</div>
+                            <div style="font-size:70px;">💣</div>
+                            <button class="btn-buy" onclick="buyItem('bomb')">100 💎</button>
+                        </div>
+                        <div class="shop-item">
+                            <div style="font-size:13px; color:#9D5CFF; font-weight:bold; margin-bottom:8px;">WIPE PACK</div>
+                            <div style="font-size:70px;">💧</div>
+                            <button class="btn-buy" onclick="buyItem('eraser')">300 💎</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HOME TAB -->
+                <div id="tab-home" class="tab-pane active">
+                    <div class="campaign-map">
+                        <!-- LOGO -->
+                        <div class="logo-box">
+                            <div class="logo-title">PIXEL<br>SANDTRIX</div>
+                            <div class="logo-subtitle">Sand Block Edition</div>
+                        </div>
+
+                        <!-- PLAY AREA - Lower, near bottom nav -->
+                        <div class="play-area-wrapper">
+                            <div class="btn-play-campaign" onclick="enterGame()">
+                                <div class="play-icon-tri"></div>
+                                <div class="play-text">PLAY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RANK TAB -->
+                <div id="tab-rank" class="tab-pane">
+                    <div style="height:20px;"></div>
+                    <div class="rank-header">BẢNG XẾP HẠNG</div>
+                    <div class="rank-item"><span>🥇 Player_One</span><span class="rank-score">125,000</span></div>
+                    <div class="rank-item"><span>🥈 SandMaster</span><span class="rank-score">98,500</span></div>
+                    <div class="rank-item"><span>🥉 PixelKing</span><span class="rank-score">87,200</span></div>
+                    <div class="rank-item"><span>4. BlockPro</span><span class="rank-score">65,800</span></div>
+                    <div class="rank-item"><span>5. You</span><span class="rank-score">42,100</span></div>
+                </div>
+            </div>
+
+            <!-- Bottom Nav -->
+            <div class="bottom-nav">
+                <div class="nav-btn" onclick="switchTab('tab-shop', this)">
+                    <div class="nav-icon-3d-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    </div>
+                    <span class="nav-label">Shop</span>
+                </div>
+                <div class="nav-btn active" onclick="switchTab('tab-home', this)">
+                    <div class="nav-icon-3d-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                    </div>
+                    <span class="nav-label">Home</span>
+                </div>
+                <div class="nav-btn" onclick="switchTab('tab-rank', this)">
+                    <div class="nav-icon-3d-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
+                    </div>
+                    <span class="nav-label">Rank</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    /* ================================================
+       DEEP OPTIMIZATION: UTILS & CONSTANTS
+       ================================================ */
+    const PI = Math.PI;
+    const PI2 = PI * 2;
+    const sin = Math.sin;
+    const cos = Math.cos;
+    const rand = Math.random;
+    
+    // Tối ưu: Debounce resize event
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    function createOffscreenCanvas(w, h) {
+        const c = document.createElement('canvas');
+        c.width = w;
+        c.height = h;
+        return c;
+    }
+
+    /* ================================================
+       WOOD BACKGROUND (Static - Cached)
+       ================================================ */
+    const woodCanvas = document.getElementById('wood-canvas');
+    const woodCtx = woodCanvas.getContext('2d', { alpha: false });
+    
+    function initWoodCanvas() {
+        resizeWoodCanvas();
+        window.addEventListener('resize', debounce(resizeWoodCanvas, 300));
+    }
+    
+    function resizeWoodCanvas() {
+        if (!woodCanvas.parentElement) return;
+        woodCanvas.width = woodCanvas.parentElement.offsetWidth;
+        woodCanvas.height = woodCanvas.parentElement.offsetHeight;
+        drawWoodTexture();
+    }
+    
+    function drawWoodTexture() {
+        const w = woodCanvas.width;
+        const h = woodCanvas.height;
+        woodCtx.fillStyle = '#D4A574';
+        woodCtx.fillRect(0, 0, w, h);
+        woodCtx.strokeStyle = 'rgba(139, 90, 43, 0.3)';
+        woodCtx.lineWidth = 2;
+        woodCtx.beginPath(); 
+        for (let y = 0; y < h; y += 8 + rand() * 12) {
+            woodCtx.moveTo(0, y);
+            let x = 0;
+            while (x < w) {
+                woodCtx.quadraticCurveTo(x + 20 + rand() * 40, y + (rand() - 0.5) * 6, x + 40 + rand() * 60, y + (rand() - 0.5) * 4);
+                x += 60;
+            }
+        }
+        woodCtx.stroke();
+        
+        // Vignette (Cached Gradient)
+        const vignette = woodCtx.createLinearGradient(0, 0, w, 0);
+        vignette.addColorStop(0, 'rgba(60, 40, 20, 0.5)');
+        vignette.addColorStop(0.15, 'rgba(60, 40, 20, 0.2)');
+        vignette.addColorStop(0.4, 'rgba(255, 255, 255, 0.1)');
+        vignette.addColorStop(0.6, 'rgba(255, 255, 255, 0.1)');
+        vignette.addColorStop(0.85, 'rgba(60, 40, 20, 0.2)');
+        vignette.addColorStop(1, 'rgba(60, 40, 20, 0.5)');
+        woodCtx.fillStyle = vignette;
+        woodCtx.fillRect(0, 0, w, h);
+    }
+    
+    initWoodCanvas();
+
+    /* ================================================
+       SPRITE SYSTEM & MENU
+       ================================================ */
+    const sandCanvas = document.getElementById('sand-blocks-canvas');
+    const sandCtx = sandCanvas.getContext('2d');
+    let sandWidth, sandHeight;
+    
+    const PIXEL_SIZE = 3;    
+    const GRID_SIZE = 8;     
+    const BLOCK_FULL_SIZE = 24; // PIXEL_SIZE * GRID_SIZE
+
+    const BLOCK_COLORS = [
+        { main: '#4CAF50', light: '#81C784', dark: '#2E7D32' },
+        { main: '#FF69B4', light: '#FFB6C1', dark: '#C2185B' },
+        { main: '#9D5CFF', light: '#D1C4E9', dark: '#6A1B9A' },
+        { main: '#5DADE2', light: '#AED6F1', dark: '#1565C0' },
+        { main: '#FFD93D', light: '#FFF59D', dark: '#FF8F00' },
+        { main: '#FF8C42', light: '#FFCCBC', dark: '#D84315' },
+    ];
+    
+    const BLOCK_SHAPES = {
+        I: [[0,0], [1,0], [2,0], [3,0]], O: [[0,0], [1,0], [0,1], [1,1]],
+        T: [[0,0], [1,0], [2,0], [1,1]], S: [[1,0], [2,0], [0,1], [1,1]],
+        Z: [[0,0], [1,0], [1,1], [2,1]], L: [[0,0], [0,1], [0,2], [1,2]],
+        J: [[1,0], [1,1], [1,2], [0,2]]
+    };
+    
+    const blockSprites = {};
+    const shadowSprites = {};
+    const shapeKeys = Object.keys(BLOCK_SHAPES);
+
+    function preRenderSprites() {
+        shapeKeys.forEach(key => {
+            const shape = BLOCK_SHAPES[key];
+            let maxX = 0, maxY = 0;
+            shape.forEach(([x, y]) => { if(x>maxX) maxX=x; if(y>maxY) maxY=y; });
+            const w = (maxX+1)*BLOCK_FULL_SIZE, h = (maxY+1)*BLOCK_FULL_SIZE;
+            
+            // Shadow
+            const sC = createOffscreenCanvas(w, h);
+            const sCx = sC.getContext('2d');
+            sCx.fillStyle = '#3E2723';
+            shape.forEach(([cx,cy]) => sCx.fillRect(cx*BLOCK_FULL_SIZE+6, cy*BLOCK_FULL_SIZE+6, BLOCK_FULL_SIZE, BLOCK_FULL_SIZE));
+            shadowSprites[key] = sC;
+            
+            // Blocks
+            blockSprites[key] = [];
+            BLOCK_COLORS.forEach(c => {
+                const bC = createOffscreenCanvas(w, h);
+                const bCx = bC.getContext('2d');
+                shape.forEach(([cx,cy]) => {
+                    const x = cx*BLOCK_FULL_SIZE, y = cy*BLOCK_FULL_SIZE;
+                    for(let i=0; i<GRID_SIZE; i++) for(let j=0; j<GRID_SIZE; j++) {
+                        const px = x+i*3, py = y+j*3;
+                        bCx.fillStyle = c.main; bCx.fillRect(px,py,3,3);
+                        bCx.fillStyle = c.light; bCx.fillRect(px,py,3,1); bCx.fillRect(px,py,1,3);
+                        bCx.fillStyle = c.dark; bCx.fillRect(px,py+2.1,3,1); bCx.fillRect(px+2.1,py,1,3);
+                    }
+                });
+                blockSprites[key].push(bC);
+            });
+        });
+    }
+
+    let fixedBlocks = [];
+    let menuRAF;
+    let isMenuVisible = true;
+    let lastMenuTime = 0;
+    const MENU_FPS_INTERVAL = 1000 / 30; // Limit Menu to 30 FPS
+
+    function initMenu() {
+        preRenderSprites();
+        resizeMenu();
+        window.addEventListener('resize', () => { resizeMenu(); createBlocks(); });
+        createBlocks();
+        loopMenu(0);
+    }
+    
+    function resizeMenu() {
+        if (!sandCanvas.parentElement) return;
+        sandWidth = sandCanvas.parentElement.offsetWidth;
+        sandHeight = sandCanvas.parentElement.offsetHeight;
+        sandCanvas.width = sandWidth;
+        sandCanvas.height = sandHeight;
+    }
+    
+    function createBlocks() {
+        fixedBlocks = [];
+        const cX = sandWidth/2, cY = sandHeight - 240; // Approx Play Btn Pos
+        const rows = 8, startY = 85, endY = sandHeight - 140, step = (endY-startY)/rows;
+
+        for (let i = 0; i <= rows; i++) {
+            const y = startY + i * step;
+            addMenuBlock((rand()*0.2 + 0.02)*sandWidth, y + (rand()-0.5)*40, i, cX, cY);
+            addMenuBlock((rand()*0.2 + 0.78)*sandWidth, y + (rand()-0.5)*40, i+100, cX, cY);
+        }
+    }
+
+    function addMenuBlock(x, y, i, tx, ty) {
+         if(x<-30 || x>sandWidth+30 || y<-30 || y>sandHeight+30) return;
+         const key = shapeKeys[i % shapeKeys.length];
+         fixedBlocks.push({
+            x: x, y: y,
+            rot: Math.atan2(ty - y, tx - x),
+            sc: 0.7 + rand() * 0.4,
+            off: rand() * PI2,
+            spd: 0.2 + rand() * 0.4,
+            spr: blockSprites[key][i % BLOCK_COLORS.length],
+            shd: shadowSprites[key]
+         });
+    }
+    
+    function loopMenu(time) {
+        if (!isMenuVisible) {
+            menuRAF = requestAnimationFrame(loopMenu);
+            return;
+        }
+
+        // Tối ưu: Throttling Menu Animation (30 FPS)
+        if (time - lastMenuTime < MENU_FPS_INTERVAL) {
+            menuRAF = requestAnimationFrame(loopMenu);
+            return;
+        }
+        lastMenuTime = time;
+
+        sandCtx.clearRect(0, 0, sandWidth, sandHeight);
+        const t = time * 0.001;
+        
+        let b, fy, fx, fr;
+        for (let i = 0; i < fixedBlocks.length; i++) {
+            b = fixedBlocks[i];
+            fy = sin(t * b.spd + b.off) * 5;
+            fx = cos(t * b.spd * 0.7 + b.off) * 3;
+            fr = sin(t * b.spd * 0.5 + b.off) * 0.05;
+            
+            sandCtx.setTransform(b.sc, 0, 0, b.sc, b.x + fx, b.y + fy);
+            sandCtx.rotate(b.rot + fr);
+            
+            sandCtx.globalAlpha = 0.3;
+            sandCtx.drawImage(b.shd, 0, 0);
+            sandCtx.globalAlpha = 1.0;
+            sandCtx.drawImage(b.spr, 0, 0);
+        }
+        sandCtx.setTransform(1,0,0,1,0,0); // Reset Global Transform
+        
+        menuRAF = requestAnimationFrame(loopMenu);
+    }
+    
+    initMenu();
+
+    /* --- UI LOGIC --- */
+    function switchTab(tabId, navEl) {
+        const targetTab = document.getElementById(tabId);
+        if (!targetTab) return;
+        document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+        targetTab.classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+        if(navEl) navEl.classList.add('active');
+    }
+
+    function enterGame() {
+        document.getElementById('menu-layer').classList.add('fade-out');
+        document.getElementById('game-layer').classList.add('active');
+        isMenuVisible = false;
+        startGame();
+    }
+
+    function quitGame() {
+        document.getElementById('menu-layer').classList.remove('fade-out');
+        document.getElementById('game-layer').classList.remove('active');
+        document.getElementById('game-over').classList.add('hidden');
+        stopGame();
+        isMenuVisible = true;
+    }
+
+    let diamonds = 2450;
+    function buyItem(type) {
+        let cost = type === 'eraser' ? 300 : 100;
+        if(diamonds >= cost) {
+            diamonds -= cost;
+            document.getElementById('menu-diamond-display').innerText = diamonds.toLocaleString();
+            alert("Đã mua thành công!");
+        } else {
+            alert("Không đủ kim cương!");
+        }
+    }
+
+    /* ================================================
+       GAME ENGINE (DEEP OPTIMIZATION)
+       ================================================ */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d', { alpha: false }); // Fast canvas
+    
+    const G_COLORS = ['#FF69B4', '#9D5CFF', '#5DADE2', '#52D681', '#FFD93D', '#FF8C42'];
+    const CONFIG = { w: 300, h: 500, pSize: 10, half: 5 };
+    
+    // TỐI ƯU 1: APPEND-ONLY ARRAY
+    // Vì game này hạt chỉ rơi xuống và nằm im (hoặc biến mất khi game over),
+    // ta không cần check `active` boolean. Ta dùng pointer `activeCount`.
+    const MAX_P = 3100;
+    let particlePool = new Float32Array(MAX_P * 3); // x, y, rotation
+    let particleMeta = new Uint8Array(MAX_P);       // colorIndex
+    let activeCount = 0;
+    
+    // Cache Assets
+    let gameBgCanvas;
+    let pSprites = []; // Array of Canvases
+
+    let gameRAF;
+    let spawner;
+    let score = 0;
+    let canvasRect = { left: 0, top: 0 };
+
+    function initGameAssets() {
+        // Init Particle Sprites
+        G_COLORS.forEach(color => {
+            const pC = createOffscreenCanvas(CONFIG.pSize, CONFIG.pSize);
+            const pCtx = pC.getContext('2d');
+            const s = CONFIG.pSize;
+            pCtx.fillStyle = 'rgba(0,0,0,0.15)'; pCtx.fillRect(2, 2, s, s);
+            pCtx.fillStyle = color; pCtx.fillRect(0, 0, s, s);
+            pCtx.fillStyle = 'rgba(255,255,255,0.3)'; pCtx.fillRect(0, 0, s, s*0.3);
+            pSprites.push(pC);
+        });
+    }
+    
+    function updateBg() {
+        gameBgCanvas = createOffscreenCanvas(CONFIG.w, CONFIG.h);
+        const bCx = gameBgCanvas.getContext('2d');
+        const g = bCx.createLinearGradient(0, 0, CONFIG.w, 0);
+        g.addColorStop(0, '#BCAAA4'); g.addColorStop(0.2, '#E8DCC8');
+        g.addColorStop(0.8, '#E8DCC8'); g.addColorStop(1, '#BCAAA4');
+        bCx.fillStyle = g; bCx.fillRect(0, 0, CONFIG.w, CONFIG.h);
+    }
+
+    function resizeGame() {
+        const navH = document.querySelector('.bottom-nav')?.offsetHeight || 0;
+        if (canvas.parentElement) {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight - navH;
+            CONFIG.w = canvas.width; 
+            CONFIG.h = canvas.height;
+            updateBg();
+            // Tối ưu: Cache Rect khi resize để không gọi getBoundingClientRect khi touch
+            const r = canvas.getBoundingClientRect();
+            canvasRect.left = r.left;
+            canvasRect.top = r.top;
+        }
+    }
+    
+    initGameAssets();
+    window.addEventListener('resize', debounce(resizeGame, 200)); 
+    resizeGame();
+
+    function startGame() {
+        activeCount = 0; // Reset pointer
+        score = 0;
+        document.getElementById('game-score').innerText = 0;
+        
+        if(gameRAF) cancelAnimationFrame(gameRAF);
+        loopGame();
+        
+        if(spawner) clearInterval(spawner);
+        spawner = setInterval(() => {
+            if(isMenuVisible || document.hidden) return;
+            spawnSand(rand() * CONFIG.w, 0, (rand() * 6) | 0);
+        }, 70);
+    }
+    
+    function stopGame() {
+        if(gameRAF) cancelAnimationFrame(gameRAF);
+        if(spawner) clearInterval(spawner);
+    }
+
+    // TỐI ƯU 2: Fast Spawn (O(1))
+    function spawnSand(x, y, cIdx) {
+        if (activeCount >= MAX_P) return;
+        const i = activeCount;
+        particlePool[i*3] = x;
+        particlePool[i*3+1] = y;
+        particlePool[i*3+2] = rand() * PI2;
+        particleMeta[i] = cIdx;
+        activeCount++;
+    }
+
+    function loopGame() {
+        gameRAF = requestAnimationFrame(loopGame);
+        
+        if(document.hidden) return; // Tối ưu: Pause khi ẩn tab
+
+        // 1. Draw BG (Fastest way)
+        if(gameBgCanvas) ctx.drawImage(gameBgCanvas, 0, 0);
+        else ctx.clearRect(0,0,CONFIG.w,CONFIG.h);
+        
+        const limitY = CONFIG.h - CONFIG.pSize;
+        const half = CONFIG.half;
+        
+        // 2. Linear Loop (O(N) -> N = active particles only)
+        // Không check điều kiện if(!active), chạy thẳng một mạch
+        for(let i = 0; i < activeCount; i++) {
+            const idx = i*3;
+            let x = particlePool[idx];
+            let y = particlePool[idx+1];
+            let r = particlePool[idx+2];
+            
+            // Logic Update
+            if(y < limitY) {
+                y += 10; // pSize
+                if(rand() < 0.1) x += (rand() - 0.5) * 5; 
+                r += 0.05;
+                
+                // Write back
+                particlePool[idx] = x;
+                particlePool[idx+1] = y;
+                particlePool[idx+2] = r;
+            }
+            
+            // Logic Render (Use SetTransform instead of Save/Restore for speed)
+            const sprite = pSprites[particleMeta[i]];
+            // Tối ưu: Dịch chuyển hệ toạ độ
+            ctx.setTransform(1, 0, 0, 1, x + half, y + half);
+            ctx.rotate(r);
+            ctx.drawImage(sprite, -half-2, -half-2);
+        }
+        
+        ctx.setTransform(1,0,0,1,0,0); // Reset transform once per frame
+
+        if(activeCount >= 3000) {
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('game-over').classList.remove('hidden');
+            stopGame();
+        } else {
+            score++;
+            if(score % 10 === 0) document.getElementById('game-score').innerText = score;
+        }
+    }
+    
+    // Tối ưu: Dùng passive listener và cached rect
+    const touchOpts = {passive: false};
+    
+    canvas.addEventListener('touchmove', (e) => {
+        if(isMenuVisible) return;
+        e.preventDefault();
+        // Dùng cached rect thay vì tính lại layout
+        spawnSand(
+            e.touches[0].clientX - canvasRect.left, 
+            e.touches[0].clientY - canvasRect.top, 
+            (rand() * 6) | 0
+        );
+    }, touchOpts);
+
+    canvas.addEventListener('mousemove', (e) => {
+        if(isMenuVisible) return;
+        if(e.buttons === 1) {
+            spawnSand(
+                e.clientX - canvasRect.left, 
+                e.clientY - canvasRect.top, 
+                (rand() * 6) | 0
+            );
+        }
+    });
+    
+    // Tối ưu: Handle visibility
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+            // Browser tự throttle RAF, nhưng ta stop hẳn logic spawn
+            if(spawner) clearInterval(spawner);
+        } else {
+            if(!isMenuVisible && !document.getElementById('game-over').classList.contains('hidden')) {
+                 // Game Over state, do nothing
+            } else if (!isMenuVisible) {
+                 // Resume spawning if in game
+                 if(spawner) clearInterval(spawner);
+                 spawner = setInterval(() => {
+                    spawnSand(rand() * CONFIG.w, 0, (rand() * 6) | 0);
+                }, 70);
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
