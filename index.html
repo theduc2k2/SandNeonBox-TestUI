@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Pixel Sandtrix - Sand Block Edition</title>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Chewy&display=swap">
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/game-ui.css">
+    <link rel="stylesheet" href="css/ui/top-bar.css">
+    <link rel="stylesheet" href="css/ui/tabs.css">
+    <link rel="stylesheet" href="css/ui/buttons.css">
+    <link rel="stylesheet" href="css/ui/bottom-nav.css">
+    <link rel="stylesheet" href="css/ui/modals.css">
+    <link rel="stylesheet" href="css/ui/spin-wheel.css">
+
+
+    <style>
+        :root {
+            --wood-light: #DEB887;
+            --wood-medium: #C4A574;
+            --wood-dark: #8B7355;
+            --sand-bg-outer: #5e4b35;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--sand-bg-outer);
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #app-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            background: var(--wood-medium);
+        }
+
+        @media (min-width: 500px) {
+            #app-container {
+                width: 412px;
+                height: 915px;
+                max-height: 95vh;
+                border: 6px solid var(--wood-dark);
+                border-radius: 45px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .overlay-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+    </style>
+    <script src="https://connect.facebook.net/en_US/fbinstant.6.3.js"></script>
+</head>
+
+<body>
+
+    <div id="app-container">
+        <div class="app-bg">
+            <canvas id="wood-canvas"></canvas>
+            <canvas id="sand-blocks-canvas"></canvas>
+        </div>
+
+        <div id="game-layer" class="hidden">
+            <div id="inner-screen">
+
+                <div class="hud-top">
+                    <div class="hud-diamond-pill">
+                        <svg class="diamond-icon" viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="#5DADE2" stroke="#FFFFFF" stroke-width="1.5" d="M12 2L2 9l10 13 10-13-10-7z" />
+                        </svg>
+                        <span id="game-diamond-display">0</span>
+                    </div>
+
+                    <div class="score-box" id="game-score">0</div>
+
+                    <div class="menu-btn" onclick="togglePause()">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="#FFD93D"
+                                d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- THANH QUÀ TẶNG (GIFT PROGRESS) -->
+                <div id="gift-progress-container">
+                    <div class="gift-bar-bg">
+                        <div class="gift-bar-fill" id="gift-fill" style="width: 0%;"></div>
+                        <div class="gift-bar-glare"></div>
+                        <div class="gift-text" id="gift-text">0 / 1000</div>
+                    </div>
+                    <div class="gift-icon-box" id="gift-icon">
+                        <div class="gift-emoji">🎁</div>
+                    </div>
+                </div>
+
+                <canvas id="gameCanvas"></canvas>
+
+                <div id="danger-line"></div>
+
+                <div id="combo-display">COMBO!</div>
+
+            </div>
+        </div>
+        <div id="loading game" class="loading-game">
+            <div class="loading">
+
+            </div>
+        </div>
+
+        <div id="game-over" class="menu-overlay hidden">
+            <div class="panel">
+                <h2 class="panel-title">GAME OVER</h2>
+                <div class="score-result">
+                    <p>FINAL SCORE</p>
+                    <h1 id="final-score">0</h1>
+                </div>
+                <div class="panel-buttons">
+                    <button class="btn-primary" onclick="window.enterGame()">🔄 PLAY AGAIN</button>
+                    <button class="btn-secondary" onclick="window.quitGame()">🏠 MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu-layer">
+
+            <div class="top-resource-bar">
+                <div class="res-pill">
+                    <div class="res-icon-circle">
+                        <svg style="width:20px; height:20px; fill:#FFFFFF" viewBox="0 0 24 24">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </div>
+                    <span class="res-val">FULL</span>
+                </div>
+
+                <div class="res-pill" style="margin-left:auto; margin-right:10px;">
+                    <div class="res-icon-circle diamond">
+                        <svg style="width:20px; height:20px; fill:#FFFFFF" viewBox="0 0 24 24">
+                            <path d="M12,2L2,12l10,10l10-10L12,2z M12,18l-6-6l6-6l6,6L12,18z" />
+                        </svg>
+                    </div>
+                    <span class="res-val" id="menu-diamond-display">2,450</span>
+                </div>
+
+                <div class="menu-btn" onclick="openSettings('menu')">
+                    <svg style="width:26px; height:26px; fill:#7B3FF2;" viewBox="0 0 24 24">
+                        <path
+                            d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L5.24 5.33c-.11.2-.06.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.03-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="tab-content-container">
+                <div id="tab-shop" class="tab-pane">
+                    <div style="height:20px;"></div>
+                    <div class="shop-header">CỬA HÀNG</div>
+                    <div class="shop-container">
+                        <div class="shop-item">
+                            <div style="font-size:13px; color:#9D5CFF; font-weight:bold; margin-bottom:8px;">BOMB PACK
+                            </div>
+                            <div style="font-size:70px;">💣</div>
+                            <button class="btn-buy" onclick="buyItem('bomb')">100 💎</button>
+                        </div>
+                        <div class="shop-item">
+                            <div style="font-size:13px; color:#9D5CFF; font-weight:bold; margin-bottom:8px;">WIPE PACK
+                            </div>
+                            <div style="font-size:70px;">💧</div>
+                            <button class="btn-buy" onclick="buyItem('eraser')">300 💎</button>
+                        </div>
+                        <div class="shop-item">
+                            <div style="font-size:13px; color:#9D5CFF; font-weight:bold; margin-bottom:8px;">VORTEX PACK
+                            </div>
+                            <div style="font-size:70px;">🌀</div>
+                            <button class="btn-buy" onclick="buyItem('vortex')">500 💎</button>
+                        </div>
+                        <div class="shop-item">
+                            <div style="font-size:13px; color:#FF5757; font-weight:bold; margin-bottom:8px;">NO ADS
+                            </div>
+                            <div style="font-size:60px;">🚫</div>
+                            <button class="btn-buy"
+                                style="background: linear-gradient(to bottom, #FFD93D, #FFC107); border-color:#FFF; color:#8B4500;"
+                                onclick="buyRealMoneyItem('no_ads')">$2.99</button>
+                        </div>
+                        <div class="shop-item">
+                            <div style="font-size:13px; color:#FF8C42; font-weight:bold; margin-bottom:8px;">GEM PACK
+                            </div>
+                            <div style="font-size:60px;">💎</div>
+                            <button class="btn-buy" style="background: linear-gradient(to bottom, #5DADE2, #3498DB);"
+                                onclick="buyRealMoneyItem('gems_1000')">$0.99</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-home" class="tab-pane active">
+                    <div class="campaign-map">
+                        <div class="logo-box">
+                            <div class="logo-title">PIXEL<br>SANDTRIX</div>
+                            <div class="logo-subtitle">Sand Block Edition</div>
+                        </div>
+
+                        <div class="play-area-wrapper">
+                            <div class="btn-play-campaign" onclick="enterGame()">
+                                <div class="play-icon-tri"></div>
+                                <div class="play-text">PLAY</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-rank" class="tab-pane">
+                    <div style="height:20px;"></div>
+                    <div class="rank-header">BẢNG XẾP HẠNG</div>
+
+                    <div id="rank-list-container" style="overflow-y: auto; max-height: 75%; padding: 0 10px;">
+                        <!-- Điểm số tự động cập nhật ở đây -->
+                        <div style="text-align:center; color:#FFF; margin-top:20px;">Đang tải...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-btn" data-target="tab-shop" onclick="switchTab('tab-shop', this)">
+                    <div class="nav-icon-3d-wrapper">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                        </svg>
+                    </div>
+                    <span class="nav-label">Shop</span>
+                </div>
+                <div class="nav-btn active" data-target="tab-home" onclick="switchTab('tab-home', this)">
+                    <div class="nav-icon-3d-wrapper nav-home">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                        </svg>
+                    </div>
+                    <span class="nav-label">Home</span>
+                </div>
+                <div class="nav-btn" data-target="tab-rank" onclick="switchTab('tab-rank', this)">
+                    <div class="nav-icon-3d-wrapper">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z" />
+                        </svg>
+                    </div>
+                    <span class="nav-label">Rank</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="settings-menu" class="overlay-backdrop hidden">
+            <div class="settings-box"
+                style="width: 300px; background: linear-gradient(to bottom, #FFFFFF, #FFF5F8); border: 4px solid #FFFFFF; border-radius: 25px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                <h2
+                    style="font-family: 'Chewy', cursive; color: #FF8C42; font-size: 36px; margin-bottom: 25px; text-shadow: 2px 2px 0 #FFF, 4px 4px 0 rgba(0,0,0,0.1);">
+                    CÀI ĐẶT</h2>
+                <div class="setting-row" onclick="toggleSetting('sound')"
+                    style="display: flex; justify-content: space-between; align-items: center; background: #FFF; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 0 #E0E0E0; cursor: pointer;">
+                    <div style="font-weight: 700; color: #9D5CFF;">🔊 ÂM THANH</div>
+                    <div id="btn-sound" class="toggle-switch active" style="font-weight:bold; color:#52D681;">ON</div>
+                </div>
+                <div class="setting-row" onclick="toggleSetting('vfx')"
+                    style="display: flex; justify-content: space-between; align-items: center; background: #FFF; padding: 10px 15px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 0 #E0E0E0; cursor: pointer;">
+                    <div style="font-weight: 700; color: #9D5CFF;">✨ HIỆU ỨNG</div>
+                    <div id="btn-vfx" class="toggle-switch active" style="font-weight:bold; color:#52D681;">ON</div>
+                </div>
+                <button class="btn-buy" onclick="closeSettings()"
+                    style="background: linear-gradient(to bottom, #FF5757, #E74C3C); width: 100%;">ĐÓNG</button>
+            </div>
+        </div>
+
+        <div id="pause-menu" class="hidden overlay-backdrop">
+            <div class="pause-box"
+                style="width: 280px; background: #C4A574; border: 6px solid #8B7355; border-radius: 30px; padding: 25px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);">
+                <div
+                    style="text-align:center; font-family:'Chewy'; font-size:40px; color:#FFF; text-shadow: 2px 2px 0 #8B7355; margin-bottom:10px;">
+                    TẠM DỪNG</div>
+                <button class="go-btn" onclick="togglePause()">TIẾP TỤC</button>
+                <button class="go-btn" onclick="shopgame()"
+                    style="background: linear-gradient(to bottom, #FFD93D, #FFC107); box-shadow: 0 6px 0 #E59866;">CỬA
+                    HÀNG</button>
+                <button class="go-btn" onclick="openSettings('pause')"
+                    style="background: linear-gradient(to bottom, #9D5CFF, #8E44AD); box-shadow: 0 6px 0 #71368A;">CÀI
+                    ĐẶT</button>
+                <button class="go-btn" onclick="quitGame()"
+                    style="background: linear-gradient(to bottom, #FF5757, #C0392B); box-shadow: 0 6px 0 #922B21;">THOÁT</button>
+            </div>
+        </div>
+
+
+        <div id="lucky-wheel-overlay" class="overlay-backdrop hidden">
+            <div class="wheel-main">
+                <h2
+                    style="font-family:'Chewy'; color:#FFD93D; font-size:40px; margin-bottom:20px; text-shadow:2px 2px 0 #000; text-align:center;">
+                    LUCKY SPIN!</h2>
+
+                <div class="wheel-container">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel" id="wheel-rosette">
+                        <div class="wheel-canvas"></div>
+                        <!-- Icons will be injected by JS -->
+                        <div id="wheel-items-container"></div>
+                    </div>
+                    <div class="wheel-btn-spin" onclick="window.spinWheel()">SPIN</div>
+                </div>
+
+                <div style="text-align:center; color:#FFF; margin-top:20px; font-weight:bold;">
+                    Quay để nhận quà khủng!
+                </div>
+            </div>
+
+            <!-- Result Popup (Nested) -->
+            <div id="wheel-result" class="hidden"
+                style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:260px; background:#FFF; border-radius:20px; padding:20px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.5);">
+                <div style="font-size:18px; color:#5D4037; font-weight:bold; margin-bottom:10px;">BẠN NHẬN ĐƯỢC</div>
+                <div id="wheel-prize-icon" style="font-size:60px; margin-bottom:10px;">💎</div>
+                <div id="wheel-prize-text"
+                    style="font-size:24px; color:#E74C3C; font-weight:bold; font-family:'Chewy'; margin-bottom:15px;">
+                    100 GEMS</div>
+                <button class="btn-buy" onclick="window.claimPrize()" style="background:#4CAF50; width:100%;">NHẬN
+                    QUÀ</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./js/main.js"></script>
+
+</body>
+
+</html>
