@@ -1,0 +1,144 @@
+/*
+ * RESPONSIBILITY: Global Resets, Fonts, Variables (:root), and Body styling.
+ * THEME: SANDTRIX (Wood & Sand)
+ */
+
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Chewy&display=swap');
+/* Giữ font game logic cũ để không lỗi hiển thị số/combo */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Orbitron:wght@700;900&display=swap');
+
+/* --- VARIABLES (:root) --- */
+:root {
+    /* SANDTRIX PALETTE (Màu chủ đạo Gỗ & Cát) */
+    --wood-light: #DEB887;
+    --wood-medium: #C4A574;
+    --wood-dark: #8B7355;
+    --sand-bg-outer: #5e4b35; /* Màu nền tối bên ngoài */
+
+    /* LEGACY CANDY COLORS (Giữ lại để các nút logic cũ vẫn có màu) */
+    --candy-pink: #FF69B4;
+    --candy-purple: #9D5CFF;
+    --candy-blue: #5DADE2;
+    --candy-green: #52D681;
+    --candy-yellow: #FFD93D;
+    --candy-orange: #FF8C42;
+    --candy-red: #FF5757;
+
+    /* Dimensions */
+    --nav-height: 100px;
+    --top-height: 85px;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* --- UTILITY CLASSES --- */
+.hidden {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+/* --- GLOBAL RESETS --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none; /* Chặn bôi đen văn bản */
+    outline: none;
+}
+
+/* --- BODY STYLING --- */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* Nền tối bao quanh (Mặt bàn) */
+    background: var(--sand-bg-outer); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Fredoka', sans-serif;
+    color: #5A3E7C;
+}
+
+/* --- APP CONTAINER (PHONE FRAME) --- */
+#app-container {
+    position: relative;
+    /* Nền gỗ bên trong điện thoại */
+    background: var(--wood-medium); 
+    overflow: hidden;
+    
+    /* Kích thước mặc định cho Mobile */
+    width: 100%;
+    /* Dùng 100dvh để fix lỗi thanh địa chỉ trên trình duyệt mobile */
+    height: 100dvh; 
+    
+    display: flex;
+    flex-direction: column;
+}
+
+/* GIAO DIỆN DESKTOP: Giả lập khung điện thoại gỗ */
+@media (min-width: 500px) {
+    #app-container {
+        width: 412px;  /* Chiều rộng chuẩn */
+        height: 915px; /* Chiều cao chuẩn */
+        
+        /* Giới hạn chiều cao không vượt quá màn hình PC */
+        max-height: 95vh;
+        
+        /* Viền gỗ đậm */
+        border: 6px solid var(--wood-dark);
+        border-radius: 45px; 
+        
+        /* Đổ bóng sâu tạo cảm giác 3D */
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.6),
+            0 0 0 2px rgba(255, 255, 255, 0.1);
+            
+        /* Đảm bảo căn giữa container trong màn hình lớn */
+        margin: auto;
+    }
+}
+
+/* --- CANVAS & GAME SCREEN FIXES --- */
+/* Đảm bảo canvas game luôn full màn hình trong khung */
+#inner-screen {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#gameCanvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+/* --- BACKDROP CHUNG --- */
+.overlay-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6); /* Nền tối mờ */
+    backdrop-filter: blur(2px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.overlay-backdrop.hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}

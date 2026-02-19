@@ -1,0 +1,154 @@
+/*
+ * RESPONSIBILITY: Main App Container, Background layers, and generic Layout utilities.
+ * THEME: SANDTRIX (Wood & Sand)
+ * FIX: Added correct Game Over layout logic.
+ */
+
+/* --- FRAME (KHUNG ỨNG DỤNG) --- */
+#app-container {
+    position: relative; /* Làm mốc tọa độ cho các lớp absolute bên trong */
+    overflow: hidden;   /* [QUAN TRỌNG] Cắt mọi thứ tràn ra ngoài (bo góc chuẩn) */
+    
+    background: var(--wood-medium); 
+    
+    /* Mặc định cho mobile: Full màn hình */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Giao diện PC: Khung gỗ 3D */
+@media (min-width: 500px) {
+    #app-container {
+        width: 412px;
+        height: 915px; /* Chiều cao chuẩn UI Sand */
+        max-height: 95vh;
+        
+        border: 6px solid var(--wood-dark);
+        border-radius: 45px;
+        
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.6),
+            0 0 0 2px rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* --- BACKGROUND LAYERS --- */
+.app-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#wood-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#sand-blocks-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; 
+    pointer-events: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- MENU LAYOUT --- */
+#menu-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    transition: opacity 0.3s;
+}
+
+#menu-layer.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* --- TAB CONTAINER --- */
+.tab-content-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: calc(var(--top-height) + var(--safe-top));
+    padding-bottom: calc(var(--nav-height) + var(--safe-bottom));
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* =========================
+   OVERLAYS (PAUSE & GAME OVER)
+   ========================= */
+
+/* Lớp phủ chung cho Pause & Game Over */
+.overlay-backdrop {
+    position: absolute; /* Bám theo #app-container */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 200; 
+}
+
+/* Riêng cho Game Over - Phải cao nhất */
+#game-over {
+    position: absolute; /* [FIX] Tuyệt đối không dùng fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5000; /* Cao nhất để đè lên Game Layer */
+    
+    /* Mặc định ẩn, CSS animation sẽ xử lý việc hiện */
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    
+    background: rgba(0, 0, 0, 0.85);
+}
+
+/* Khi kích hoạt */
+#game-over.active {
+    display: flex;
+}
+
+/* =========================
+   SETTINGS MENU CONTAINER
+   ========================= */
+#settings-menu {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5001; /* Cao hơn cả Game Over nếu cần chỉnh setting lúc thua */
+}

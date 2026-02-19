@@ -1,0 +1,151 @@
+/*
+ * RESPONSIBILITY: Styling for the bottom taskbar/navigation.
+ * THEME: SANDTRIX (Wood & Sand) - FIX FOR 3 BUTTONS
+ */
+
+/* BOTTOM NAV BAR CONTAINER */
+.bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: calc(var(--nav-height) + var(--safe-bottom));
+    padding-bottom: var(--safe-bottom);
+    
+    /* Nền trong suốt hoặc gradient tối nhẹ ở đáy */
+    background: linear-gradient(to top, rgba(0,0,0,0.15), transparent);
+    
+    border-top: none;
+    box-shadow: none; 
+    
+    display: grid;
+    /* --- QUAN TRỌNG: CHỈNH VỀ 3 CỘT CHO KHỚP HTML (SHOP - HOME - RANK) --- */
+    grid-template-columns: repeat(3, 1fr); 
+    align-items: end; /* Căn dưới đáy */
+    z-index: 100;
+}
+
+/* NAV BUTTON (Tab Item) */
+.nav-btn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    cursor: pointer;
+    
+    /* Tạo hình khối phím đàn gỗ */
+    background: linear-gradient(to bottom, #A08060, #8B7355);
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    border-left: 1px solid rgba(255,255,255,0.1);
+    
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* NAV ICON WRAPPER */
+.nav-icon-3d-wrapper {
+    width: 50px; 
+    height: 50px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    transition: transform 0.3s;
+}
+
+.nav-icon-3d-wrapper::before {
+    display: none;
+}
+
+/* --- ACTIVE STATE (KHI ĐƯỢC CHỌN) --- */
+.nav-btn.active {
+    /* Giảm độ cao xuống 115% để cân đối với chiều rộng nút 3 cột */
+    height: 115%; 
+    margin-top: -15%;
+    z-index: 101;
+    
+    /* Nền sáng màu giấy/gỗ nhạt */
+    background: linear-gradient(to bottom, #FFFFFF 0%, #F5EDE0 40%, #E8DCC8 100%);
+    border-top: 4px solid #FFFFFF; 
+    
+    /* Bo tròn */
+    border-radius: 25px 25px 0 0;
+    
+    /* Đổ bóng 3D */
+    box-shadow: 
+        0 -5px 15px rgba(0, 0, 0, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.5);
+        
+    border-right: none;
+    border-left: none;
+    justify-content: flex-start; 
+    padding-top: 15px;
+}
+
+.nav-btn.active .nav-icon-3d-wrapper {
+    transform: scale(1.1);
+}
+
+/* --- ICONS (SVG) --- */
+.nav-btn svg {
+    /* Icon to hơn một chút vì nút rộng hơn */
+    width: 32px; 
+    height: 32px;
+    fill: #FFFFFF; 
+    opacity: 0.7;
+    transition: all 0.2s;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+.nav-btn.active svg {
+    opacity: 1;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+/* MÀU SẮC RIÊNG CHO TỪNG TAB KHI ACTIVE */
+/* Shop - Vàng Cam */
+.nav-btn[data-target="tab-shop"].active svg { fill: #FF8C42; }
+
+/* Home - Xanh Biển */
+.nav-btn[data-target="tab-home"].active svg { fill: #5DADE2; }
+
+/* Rank - Hồng */
+.nav-btn[data-target="tab-rank"].active svg { fill: #FF69B4; }
+
+
+/* --- LABELS (CHỮ DƯỚI ICON) --- */
+.nav-label {
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    
+    color: #E8DCC8; /* Màu kem nhạt trên nền gỗ tối */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.nav-btn.active .nav-label {
+    color: #6B5344; /* Màu nâu đậm trên nền sáng */
+    font-weight: 900;
+    text-shadow: none;
+}
+
+/* --- NÚT HOME (Giữa) --- */
+.nav-btn.nav-home .nav-icon-3d-wrapper {
+    width: 55px;
+    height: 55px;
+    margin-top: 0; 
+}
+
+.nav-btn.nav-home svg {
+    width: 36px;
+    height: 36px;
+}

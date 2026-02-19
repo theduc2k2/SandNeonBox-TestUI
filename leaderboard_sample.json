@@ -1,0 +1,30 @@
+{
+    "version": "1.0",
+    "lastUpdated": "2026-01-19T15:59:00.000Z",
+    "entries": [
+        {
+            "id": "player_1737307140000_abc123",
+            "name": "You",
+            "photo": "",
+            "score": 125000,
+            "timestamp": 1737307140000,
+            "date": "2026-01-19T15:59:00.000Z"
+        },
+        {
+            "id": "player_1737220740000_def456",
+            "name": "ProGamer2024",
+            "photo": "",
+            "score": 98500,
+            "timestamp": 1737220740000,
+            "date": "2026-01-18T15:59:00.000Z"
+        },
+        {
+            "id": "player_1737134340000_ghi789",
+            "name": "TetrisMaster",
+            "photo": "",
+            "score": 87200,
+            "timestamp": 1737134340000,
+            "date": "2026-01-17T15:59:00.000Z"
+        }
+    ]
+}

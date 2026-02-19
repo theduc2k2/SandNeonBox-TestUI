@@ -1,0 +1,198 @@
+/*
+ * RESPONSIBILITY: Layout and styling for specific Tabs (Home, Shop, Team, Rank, Events).
+ * THEME: SANDTRIX (Wood & Sand) - FIX LOGO & PLAY POSITION
+ */
+
+.tab-pane {
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+    display: flex;
+}
+
+/* --- HOME TAB --- */
+#tab-home {
+    position: absolute;
+    inset: 0;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.campaign-map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* --- LOGO BOX (ĐÃ CHỈNH SỬA CHO GIỐNG UISAND) --- */
+.logo-box {
+    position: absolute;
+    /* Dịch xuống một chút để cân đối (18%) */
+    top: 18%; 
+    left: 50%;
+    /* Phóng to logo lên 1.25 lần */
+    transform: translateX(-50%) scale(1.25);
+    margin: 0;
+    z-index: 5;
+    text-align: center;
+    animation: floatLogo 3s ease-in-out infinite;
+}
+
+.logo-title {
+    font-family: 'Chewy', cursive;
+    font-size: 52px;
+    font-weight: 400;
+    color: #f5ee88;
+    
+    /* --- HIỆU ỨNG CHỮ SANDTRIX CHUẨN --- */
+    text-shadow: 
+        3px 3px 0 #8B7355, /* Bóng gỗ đậm */
+        6px 6px 0 #6B5344, /* Bóng 3D sâu */
+        0 0 20px rgba(255, 255, 255, 0.4), /* Glow nhẹ */
+        9px 9px 15px rgba(0, 0, 0, 0.5);   /* Bóng đen mờ nền */
+        
+    letter-spacing: 2px;
+    line-height: 0.95;
+    transform: rotate(-3deg);
+}
+
+.logo-subtitle {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 14px;
+    color: #FFD93D; /* Vàng sáng */
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-top: 15px;
+    
+    /* Shadow nổi bật */
+    text-shadow: 
+        2px 2px 0 #8B7355,
+        0 0 10px rgba(255, 217, 61, 0.8);
+        
+    background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.2), 
+            transparent);
+    padding: 8px 25px;
+    border-radius: 20px;
+}
+
+/* --- PLAY BUTTON AREA (ĐÃ DỊCH LÊN CAO) --- */
+.play-area-wrapper {
+    position: absolute;
+    left: 50%;
+    
+    /* DỊCH LÊN: nav-height + safe-bottom + 80px (Cao hơn mức cũ nhiều) */
+    bottom: calc(var(--nav-height) + var(--safe-bottom) + 70px);
+    
+    transform: translateX(-50%);
+    width: 100%;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- CHESTS (SHOP TAB/ITEMS) --- */
+/* (Giữ nguyên phần này từ code cũ để không bị mất style Shop/Rank) */
+
+.shop-header {
+    font-family: 'Chewy', cursive;
+    color: #FF8C42; 
+    font-size: 36px;
+    margin-bottom: 25px;
+    text-shadow: 
+        3px 3px 0 #FFFFFF,
+        6px 6px 10px rgba(139, 115, 85, 0.3);
+    text-align: center;
+}
+
+.shop-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    width: 90%;
+    padding-bottom: 20px;
+    margin: 0 auto;
+}
+
+.shop-item {
+    background: linear-gradient(to bottom, #ffffff, #d89c5c);
+    border: 4px solid #c79943;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 
+        0 6px 0 rgba(139, 115, 85, 0.4),
+        0 12px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.shop-item::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 8px;
+    right: 8px;
+    height: 30%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent);
+    border-radius: 20px;
+}
+
+/* --- RANK TAB --- */
+.rank-header {
+    font-family: 'Chewy', cursive;
+    color: #FF69B4;
+    font-size: 36px;
+    margin-bottom: 25px;
+    text-shadow: 
+        3px 3px 0 #FFFFFF,
+        6px 6px 10px rgba(139, 115, 85, 0.3);
+}
+
+.rank-item {
+    width: 90%;
+    background: linear-gradient(to bottom, #FFFFFF, #FFF0F5);
+    padding: 18px;
+    border-radius: 20px;
+    border: 4px solid #FFFFFF;
+    margin: 0 auto 15px;
+    box-shadow: 
+        0 5px 0 rgba(139, 115, 85, 0.4),
+        0 10px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    color: #7B3FF2;
+    position: relative;
+}
+
+.rank-item::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    right: 6px;
+    height: 40%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent);
+    border-radius: 16px;
+}
+
+.rank-score {
+    color: #5DADE2;
+    font-family: 'Chewy', cursive;
+    font-size: 18px;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);
+}

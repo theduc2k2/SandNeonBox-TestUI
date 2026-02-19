@@ -1,0 +1,262 @@
+/* =========================================
+   LUCKY WHEEL OVERLAY
+   ========================================= */
+#lucky-wheel-overlay {
+    z-index: 6000;
+    /* Cao hơn cả Game Over */
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.wheel-container {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#lucky-wheel-overlay.active .wheel-container {
+    transform: scale(1);
+}
+
+/* --- THE WHEEL --- */
+.wheel {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 8px solid #FFD93D;
+    box-shadow:
+        0 0 0 4px #8D6E63,
+        0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+    transition: transform 4s cubic-bezier(0.25, 1, 0.5, 1);
+    /* Easing cho quay */
+    background: #FFF;
+}
+
+/* Các múi (Sectors) - Vẽ bằng Conic Gradient cho nhẹ */
+.wheel-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* Mặc định 8 múi: 360 / 8 = 45deg */
+    background: conic-gradient(#FF5733 0deg 45deg,
+            #FFC300 45deg 90deg,
+            #DAF7A6 90deg 135deg,
+            #33FF57 135deg 180deg,
+            #33FFF5 180deg 225deg,
+            #3380FF 225deg 270deg,
+            #8333FF 270deg 315deg,
+            #FF33A8 315deg 360deg);
+}
+
+/* --- ITEM ICONS TRÊN BÁNHXE --- */
+/* Note: Để đơn giản, ta sẽ dùng JS để đặt các icon vào vị trí absolute xoay theo góc */
+.wheel-item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    /* Dùng transform để đẩy icon ra mép */
+}
+
+.wheel-icon-content {
+    position: absolute;
+    left: -20px;
+    top: -130px;
+    /* Đẩy ra xa tâm */
+    width: 40px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFF;
+    text-shadow: 1px 1px 0 #000;
+    transform-origin: center 130px;
+    /* Xoay quanh tâm */
+}
+
+/* --- KIM CHỈ (POINTER) --- */
+.wheel-pointer {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 50px;
+    z-index: 10;
+    filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.3));
+}
+
+.wheel-pointer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    background: #E74C3C;
+    border-radius: 50%;
+    border: 2px solid #FFF;
+}
+
+.wheel-pointer::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 35px solid #E74C3C;
+}
+
+/* --- NÚT SPIN --- */
+.wheel-btn-spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(to bottom, #FFD93D, #FFA000);
+    border: 4px solid #FFF;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Chewy', cursive;
+    font-size: 20px;
+    color: #5D4037;
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.1s;
+}
+
+.wheel-btn-spin:active {
+    transform: translate(-50%, -50%) scale(0.9);
+}
+
+.wheel-btn-spin.disabled {
+    filter: grayscale(1);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* --- GIFT FOCUS BACKDROP --- */
+.gift-focus-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 9990;
+    /* Behind flying gift (9999) but above game */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.gift-focus-backdrop.active {
+    opacity: 1;
+}
+
+/* --- GIFT FLYING & EXPLOSION --- */
+.flying-gift {
+    position: fixed;
+    z-index: 9999;
+    font-size: 50px;
+    /* Bigger start */
+    pointer-events: none;
+    transition: all 0.8s cubic-bezier(0.5, 0, 0.5, 1);
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+}
+
+/* Anticipation Phase: Pulse & Shake */
+.flying-gift.anticipate {
+    animation: gift-shake-pulse 2s ease-in-out infinite;
+}
+
+@keyframes gift-shake-pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(2) rotate(0deg);
+        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+    }
+
+    10% {
+        transform: translate(-50%, -50%) scale(2.1) rotate(-5deg);
+    }
+
+    20% {
+        transform: translate(-50%, -50%) scale(1.9) rotate(5deg);
+    }
+
+    30% {
+        transform: translate(-50%, -50%) scale(2.2) rotate(-5deg);
+        filter: drop-shadow(0 0 40px rgba(255, 50, 50, 0.8));
+    }
+
+    40% {
+        transform: translate(-50%, -50%) scale(1.8) rotate(5deg);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(2.3) rotate(-10deg);
+        filter: drop-shadow(0 0 60px rgba(255, 0, 0, 1));
+    }
+
+    60% {
+        transform: translate(-50%, -50%) scale(1.9) rotate(10deg);
+    }
+
+    70% {
+        transform: translate(-50%, -50%) scale(2.4) rotate(-10deg);
+    }
+
+    80% {
+        transform: translate(-50%, -50%) scale(1.8) rotate(10deg);
+    }
+
+    90% {
+        transform: translate(-50%, -50%) scale(2.5) rotate(0deg);
+        filter: drop-shadow(0 0 80px rgba(255, 255, 255, 1));
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(2.6) rotate(0deg);
+    }
+}
+
+.flying-gift.boom {
+    transform: translate(-50%, -50%) scale(4);
+    /* HUGE BOOM */
+    opacity: 0;
+    transition: opacity 0.1s, transform 0.1s;
+}
+
+.gift-particle {
+    position: fixed;
+    border-radius: 50%;
+    z-index: 9998;
+    pointer-events: none;
+    /* SLOWER animation: 3 seconds */
+    transition: transform 3s cubic-bezier(0.1, 0.5, 0.2, 1), opacity 3.5s ease-out;
+    /* NEON GLOW: Extra strong multi-layered shadow */
+    box-shadow:
+        0 0 8px currentColor,
+        0 0 20px currentColor,
+        0 0 40px currentColor,
+        0 0 60px currentColor,
+        0 0 80px currentColor;
+    filter: brightness(2) saturate(1.5);
+}
