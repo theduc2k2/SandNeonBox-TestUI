@@ -1,0 +1,27 @@
+.promo-badges {
+    position: absolute;
+    top: 260px;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.promo-badge-col {
+    position: absolute;
+}
+
+.promo-badge-col.left {
+    left: -12px; /* hơi lệch ra ngoài khung */
+}
+
+.promo-badge-col.right {
+    right: -12px; /* hơi lệch ra ngoài khung */
+}
+
+.promo-badge-col canvas {
+    display: block;
+    width: 120px;
+    height: 200px;
+    pointer-events: auto; /* vẫn bấm được nếu cần sau này */
+}

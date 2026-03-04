@@ -17,6 +17,7 @@ export const CONFIG = {
     GRAVITY: 0.25,
     FRICTION: 0.99,
     MAX_VELOCITY: 8.0,
+    SAND_UPDATES_PER_FRAME: 2, // Number of sand simulation passes each frame (speed up fall)
     
     // --- GAMEPLAY MECHANICS ---
     DANGER_Y: 100,

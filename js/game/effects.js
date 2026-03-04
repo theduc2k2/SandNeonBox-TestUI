@@ -7,6 +7,7 @@
 
 import { STATE } from '../core/state.js';
 import { CONFIG } from '../core/config.js';
+import { sandPool, effectPool } from './pools.js';
 
 export const Effects = {
     bgCanvas: null,
@@ -53,7 +54,9 @@ export const Effects = {
     },
 
     addEffect(effectData) {
-        STATE.activeEffects.push(effectData);
+        const e = effectPool.get();
+        Object.assign(e, effectData);
+        STATE.activeEffects.push(e);
     },
 
     addFlyingParticle(particleData) {
@@ -82,7 +85,11 @@ export const Effects = {
                 }
             }
             if (e.life <= 0 || e.y > CONFIG.BOARD_HEIGHT + CONFIG.DOCK_HEIGHT + 50) {
-                STATE.activeEffects.splice(i, 1);
+                effectPool.release(e);
+                const last = STATE.activeEffects.length - 1;
+                STATE.activeEffects[i] = STATE.activeEffects[last];
+                STATE.activeEffects.pop();
+                continue;
             }
         }
 
@@ -135,13 +142,13 @@ export const Effects = {
     },
 
     reintegrateParticle(p) {
-        STATE.particles.push({ 
-            x: p.x, 
-            y: p.y, 
-            color: p.color, 
-            baseColor: p.baseColor || p.color, 
-            dead: false 
-        });
+        const particle = sandPool.get();
+        particle.x = p.x;
+        particle.y = p.y;
+        particle.color = p.color;
+        particle.baseColor = p.baseColor || p.color;
+        particle.dead = false;
+        STATE.particles.push(particle);
         // Reset stability để physics chạy lại
         STATE.isStable = false;
         STATE.stabilityCounter = 0;

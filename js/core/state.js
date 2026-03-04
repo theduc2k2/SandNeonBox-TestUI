@@ -7,6 +7,7 @@
  */
 
 import { EventBus } from './eventBus.js';
+import { sandPool, effectPool } from '../game/pools.js';
 
 export const STATE = {
     // --- GAME STATUS ---
@@ -128,9 +129,16 @@ export function resetGameplayState() {
     STATE.currentCombo = 0;
     STATE.runDiamonds = 0;
     
-    STATE.particles = [];
+    // Release pooled objects before clearing arrays to keep pools warm
+    for (let i = STATE.particles.length - 1; i >= 0; i--) {
+        sandPool.release(STATE.particles[i]);
+    }
+    STATE.particles.length = 0;
     STATE.flyingParticles = [];
-    STATE.activeEffects = [];
+    for (let i = STATE.activeEffects.length - 1; i >= 0; i--) {
+        effectPool.release(STATE.activeEffects[i]);
+    }
+    STATE.activeEffects.length = 0;
     STATE.activeVortexes = [];
     STATE.clearingSequences = [];
     

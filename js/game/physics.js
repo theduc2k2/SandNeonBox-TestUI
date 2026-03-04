@@ -8,6 +8,7 @@ import { STATE } from '../core/state.js';
 import { CONFIG } from '../core/config.js';
 import { SoundManager } from '../audio/soundManager.js';
 import { EventBus, EVENTS } from '../core/eventBus.js';
+import { sandPool, effectPool } from './pools.js';
 
 // [OPTIMIZATION] Random Lookup Table (Tránh gọi Math.random quá nhiều)
 const RANDOM_LUT = new Float32Array(4096);
@@ -38,7 +39,10 @@ export const Physics = {
         }
 
         // 3. Logic Cát Rơi (Chỉ chạy khi không bị đóng băng)
-        this.updateSandParticles();
+        const iterations = CONFIG.SAND_UPDATES_PER_FRAME || 1;
+        for (let i = 0; i < iterations; i++) {
+            this.updateSandParticles();
+        }
     },
 
     updateSandParticles() {
@@ -59,7 +63,10 @@ export const Physics = {
         let activeCount = 0;
         for (let i = 0; i < STATE.particles.length; i++) {
             let p = STATE.particles[i];
-            if (p.dead) continue;
+            if (p.dead) {
+                sandPool.release(p);
+                continue;
+            }
 
             let c = Math.floor(p.x / pSize);
             let r = Math.floor(p.y / pSize);
@@ -206,13 +213,13 @@ export const Physics = {
     },
 
     reintegrateParticle(p) {
-        STATE.particles.push({
-            x: p.x,
-            y: p.y,
-            color: p.color,
-            baseColor: p.baseColor || p.color,
-            dead: false
-        });
+        const particle = sandPool.get();
+        particle.x = p.x;
+        particle.y = p.y;
+        particle.color = p.color;
+        particle.baseColor = p.baseColor || p.color;
+        particle.dead = false;
+        STATE.particles.push(particle);
         STATE.isStable = false;
         STATE.stabilityCounter = 0;
     },
@@ -230,15 +237,16 @@ export const Physics = {
             if (group) {
                 for (let p of group) {
                     p.dead = true;
-                    STATE.activeEffects.push({
-                        x: p.x, y: p.y,
-                        vx: (fastRand() - 0.5) * 2,
-                        vy: -(fastRand() * 2 + 1),
-                        color: p.color,
-                        life: 1.0,
-                        friction: 0.96,
-                        gravity: 0.05
-                    });
+                    const fx = effectPool.get();
+                    fx.x = p.x; fx.y = p.y;
+                    fx.vx = (fastRand() - 0.5) * 2;
+                    fx.vy = -(fastRand() * 2 + 1);
+                    fx.color = p.color;
+                    fx.life = 1.0;
+                    fx.friction = 0.96;
+                    fx.gravity = 0.05;
+                    fx.type = '';
+                    STATE.activeEffects.push(fx);
                 }
                 seq.groupIndex++;
             } else {

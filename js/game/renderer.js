@@ -14,7 +14,6 @@ export const Renderer = {
     width: 0,
     height: 0,
     dpr: 1,
-
     // [OPTIMIZATION] Offscreen Canvas & Pixel Data
     offscreenCanvas: null,
     offscreenCtx: null,

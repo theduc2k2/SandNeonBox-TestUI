@@ -11,6 +11,7 @@ import { SoundManager } from '../audio/soundManager.js';
 import { Dock } from './dock.js';
 import { Items } from './items.js';
 import { Renderer } from './renderer.js'; // [MỚI] Cần import để lấy thông số Scale/Offset
+import { sandPool } from './pools.js';
 
 export const InputHandler = {
     canvas: null,
@@ -205,13 +206,13 @@ export const InputHandler = {
                 
                 // Biến gạch thành cát (Push vào mảng particles)
                 for (let p of piece.parts) {
-                    STATE.particles.push({
-                        x: snapX + p.dx,
-                        y: snapY + p.dy,
-                        color: p.color,
-                        baseColor: p.baseColor,
-                        dead: false
-                    });
+                    const particle = sandPool.get();
+                    particle.x = snapX + p.dx;
+                    particle.y = snapY + p.dy;
+                    particle.color = p.color;
+                    particle.baseColor = p.baseColor;
+                    particle.dead = false;
+                    STATE.particles.push(particle);
                 }
 
                 // Reset bộ đếm ổn định để kích hoạt check match
