@@ -61,17 +61,17 @@
     border-radius: 20px;
     
     /* MÀU GỖ: Gradient từ nâu sáng xuống nâu tối */
-    background: linear-gradient(to bottom, #BC8F5F 0%, #8B5A2B 100%);
+    /* background: linear-gradient(to bottom, #BC8F5F 0%, #8B5A2B 100%); */
     
     /* Viền trên sáng, viền dưới tối để tạo khối */
-    border: 3px solid #DCC098;
-    border-bottom-color: #5E3C21;
+    /* border: 3px solid #DCC098;
+    border-bottom-color: #5E3C21; */
     
     /* Đổ bóng 3D dày (Màu nâu đen) */
-    box-shadow: 
+    /* box-shadow: 
         0 8px 0 #3E2723, 
         0 15px 20px rgba(0, 0, 0, 0.4),
-        inset 0 2px 0 rgba(255, 255, 255, 0.3); /* Highlight nhẹ bên trong */
+        inset 0 2px 0 rgba(255, 255, 255, 0.3); Highlight nhẹ bên trong */
         
     display: flex;
     justify-content: center;
@@ -93,7 +93,7 @@
         inset 0 2px 0 rgba(255, 255, 255, 0.3);
 }
 /* Hiệu ứng bóng kính */
-.btn-play-campaign::before {
+/* .btn-play-campaign::before {
     content: '';
     position: absolute;
     top: 3px;
@@ -103,7 +103,7 @@
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), transparent);
     border-radius: 25px;
     pointer-events: none;
-}
+} */
 
 .play-icon-tri {
     width: 0;
@@ -121,7 +121,7 @@
     text-shadow: 0 2px 0 rgba(62, 39, 35, 0.8);
     letter-spacing: 2px;
 }
-.btn-play-campaign::before {
+/* .btn-play-campaign::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -134,7 +134,7 @@
     );
     border-radius: 16px;
     pointer-events: none;
-}
+} */
 
 /* --- SHOP BUTTONS (BUY) --- */
 .btn-buy {

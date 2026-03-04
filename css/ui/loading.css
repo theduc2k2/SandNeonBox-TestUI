@@ -1,19 +1,19 @@
 /* Loading Screen Styles */
 #loading-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     /* Transparent to show Game Background (Wood/Sand) */
-    background: transparent;
+    background: rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     /* Space between Logo (top/center) and Bar (bottom) */
     align-items: center;
     z-index: 10000;
-    pointer-events: none;
+    pointer-events: auto;
     /* Let clicks pass through if needed, though usually blocking is fine */
     transition: opacity 0.5s ease-out;
     padding-bottom: 50px;

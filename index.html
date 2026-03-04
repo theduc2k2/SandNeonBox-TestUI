@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="css/ui/modals.css">
     <link rel="stylesheet" href="css/ui/spin-wheel.css">
     <link rel="stylesheet" href="css/ui/promo-badges.css">
+    <link rel="stylesheet" href="css/ui/loading.css">
+    <link rel="stylesheet" href="css/ui/shop.css">
 
 
     <style>
@@ -132,9 +134,18 @@
 
             </div>
         </div>
-        <div id="loading game" class="loading-game">
-            <div class="loading">
-
+        <div id="loading-overlay">
+            <div class="loading-content">
+                <div class="loading-logo-box">
+                    <div class="loading-logo-title">PIXEL<br>SANDTRIX</div>
+                    <div class="loading-logo-subtitle">Sand Block Edition</div>
+                </div>
+            </div>
+            <div class="bottom-loading-area">
+                <div class="loading-bar-container">
+                    <div class="loading-bar-fill" id="loading-bar-fill"></div>
+                </div>
+                <div class="loading-text" id="loading-percent">0%</div>
             </div>
         </div>
 
@@ -153,6 +164,16 @@
         </div>
 
         <div id="menu-layer">
+            <div id="promo-overlay" class="promo-overlay hidden">
+                <div class="promo-panel">
+                    <button class="promo-close" aria-label="Close" onclick="window.closePromoOverlay()">×</button>
+                    <div class="promo-content">
+                        <h3 id="promo-title">Bundle</h3>
+                        <p id="promo-subtitle">Purchase this pack?</p>
+                        <button class="promo-buy-btn" onclick="window.buyPromoBundle()">MUA NGAY</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="top-resource-bar">
                 <div class="res-pill">
@@ -176,51 +197,84 @@
             </div>
 
             <div class="promo-badges">
-                <div class="promo-badge-col left">
-                    <canvas id="promo-badges-left"></canvas>
-                </div>
-                <div class="promo-badge-col right">
-                    <canvas id="promo-badges-right"></canvas>
-                </div>
+                <div class="promo-badge-col left" id="promo-left"></div>
+                <div class="promo-badge-col right" id="promo-right"></div>
             </div>
 
             <div class="tab-content-container">
                 <div id="tab-shop" class="tab-pane">
-                    <div style="height:20px;"></div>
-                    <div class="shop-header">Cá»¬A HÃ€NG</div>
-                    <div class="shop-container">
-                        <div class="shop-item">
-                            <div style="font-size:13px; color:#9D5CFF; font-weight:bold; margin-bottom:8px;">BOMB PACK
-                            </div>
-                            <div style="font-size:70px;">ðŸ’£</div>
-                            <button class="btn-buy" onclick="buyItem('bomb')">100 ðŸ’Ž</button>
+                    <div class="shop-screen">
+                        <div class="shop-banner">
+                            <span class="shop-title">Shop</span>
                         </div>
-                        <div class="shop-item">
-                            <div style="font-size:13px; color:#9D5CFF; font-weight:bold; margin-bottom:8px;">WIPE PACK
+
+                        <div class="shop-list">
+                            <div class="shop-card shop-card--ad">
+                                <div class="card-left">
+                                    <div class="card-icon card-icon--ad">AD</div>
+                                    <div class="card-text">
+                                        <div class="card-title">Remove Ads</div>
+                                        <div class="card-sub">Không banner, chơi mượt</div>
+                                    </div>
+                                </div>
+                                <button class="card-btn card-btn--ghost" onclick="buyRealMoneyItem('no_ads')">Get</button>
                             </div>
-                            <div style="font-size:70px;">ðŸ’§</div>
-                            <button class="btn-buy" onclick="buyItem('eraser')">300 ðŸ’Ž</button>
-                        </div>
-                        <div class="shop-item">
-                            <div style="font-size:13px; color:#9D5CFF; font-weight:bold; margin-bottom:8px;">VORTEX PACK
+
+                            <div class="shop-card">
+                                <div class="card-left">
+                                    <div class="card-icon card-icon--gold">💰</div>
+                                    <div class="card-text">
+                                        <div class="card-title">Small Pack</div>
+                                        <div class="card-perks">
+                                            <span>+100 vàng</span>
+                                            <span>+1 bomb</span>
+                                            <span>+1 tẩy</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="card-btn" onclick="buyItem('bomb')">100 💎</button>
                             </div>
-                            <div style="font-size:70px;">ðŸŒ€</div>
-                            <button class="btn-buy" onclick="buyItem('vortex')">500 ðŸ’Ž</button>
-                        </div>
-                        <div class="shop-item">
-                            <div style="font-size:13px; color:#FF5757; font-weight:bold; margin-bottom:8px;">NO ADS
+
+                            <div class="shop-card shop-card--mid">
+                                <div class="card-left">
+                                    <div class="card-icon card-icon--gold">💰</div>
+                                    <div class="card-text">
+                                        <div class="card-title">Medium Pack</div>
+                                        <div class="card-perks">
+                                            <span>+300 vàng</span>
+                                            <span>+2 bomb</span>
+                                            <span>+2 tẩy</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="card-btn card-btn--green" onclick="buyItem('eraser')">300 💎</button>
                             </div>
-                            <div style="font-size:60px;">ðŸš«</div>
-                            <button class="btn-buy"
-                                style="background: linear-gradient(to bottom, #FFD93D, #FFC107); border-color:#FFF; color:#8B4500;"
-                                onclick="buyRealMoneyItem('no_ads')">$2.99</button>
-                        </div>
-                        <div class="shop-item">
-                            <div style="font-size:13px; color:#FF8C42; font-weight:bold; margin-bottom:8px;">GEM PACK
+
+                            <div class="shop-card shop-card--large">
+                                <div class="card-left">
+                                    <div class="card-icon card-icon--gold">💰</div>
+                                    <div class="card-text">
+                                        <div class="card-title">Large Pack</div>
+                                        <div class="card-perks">
+                                            <span>+500 vàng</span>
+                                            <span>+3 bomb</span>
+                                            <span>+3 tẩy</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="card-btn card-btn--red" onclick="buyItem('vortex')">500 💎</button>
                             </div>
-                            <div style="font-size:60px;">ðŸ’Ž</div>
-                            <button class="btn-buy" style="background: linear-gradient(to bottom, #5DADE2, #3498DB);"
-                                onclick="buyRealMoneyItem('gems_1000')">$0.99</button>
+
+                            <div class="shop-card shop-card--gem">
+                                <div class="card-left">
+                                    <div class="card-icon card-icon--gem">💎</div>
+                                    <div class="card-text">
+                                        <div class="card-title">Gói Kim Cương</div>
+                                        <div class="card-sub">+1000 💎 nạp nhanh</div>
+                                    </div>
+                                </div>
+                                <button class="card-btn card-btn--blue" onclick="buyRealMoneyItem('gems_1000')">$0.99</button>
+                            </div>
                         </div>
                     </div>
                 </div>

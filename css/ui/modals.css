@@ -20,13 +20,17 @@
     align-items: center;
     z-index: 100;
     opacity: 1;
-    transition: opacity 0.3s, transform 0.3s;
+    transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .screen-overlay.hidden {
     opacity: 0;
     pointer-events: none;
-    transform: scale(1.1);
+    transform: scale(0.94);
+}
+
+.pop-in {
+    animation: popInModal 0.45s cubic-bezier(0.2, 1.15, 0.32, 1) both;
 }
 
 /* --- SETTINGS MENU STYLES --- */
@@ -43,6 +47,7 @@
         0 10px 0 rgba(139, 115, 85, 0.4),
         0 20px 40px rgba(0, 0, 0, 0.4);
     text-align: center;
+    animation: popInModal 0.45s cubic-bezier(0.2, 1.15, 0.32, 1) both;
 }
 
 .settings-title {
@@ -88,7 +93,7 @@
         0 10px 0 #5E4B35,
         0 20px 40px rgba(0, 0, 0, 0.5);
     text-align: center;
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: popInModal 0.45s cubic-bezier(0.2, 1.15, 0.32, 1) both;
     position: relative;
 }
 
@@ -178,6 +183,24 @@
     background: #F5EDE0;
     border-color: #8B7355;
     box-shadow: none;
+}
+
+@keyframes popInModal {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+        filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+    }
+    55% {
+        transform: scale(1.05);
+        opacity: 1;
+        filter: drop-shadow(0 12px 24px rgba(0,0,0,0.35));
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    }
 }
 
 .mini-item-icon {
