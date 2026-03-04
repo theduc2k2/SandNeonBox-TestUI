@@ -39,6 +39,7 @@ export const Tabs = {
             
             // Optional: Play sound via EventBus
             EventBus.emit(EVENTS.PLAY_SFX, 'click');
+            EventBus.emit('ui:tabChanged', { tabId });
         } else {
             console.warn(`Tab ID not found: ${tabId}`);
         }

@@ -1,90 +1,89 @@
+import { EventBus } from '../core/eventBus.js';
+
 const BG_IMAGE_SRC = 'Asset/Shop/Background-Bundle/Background_Bundle.png';
+const PILL_IMAGE_SRC = 'Asset/Shop/Button-Bundle/Button-Bundle.png';
+
 const promoBadgeData = {
     left: [
-        { title: 'Daily', subtitle: 'Bonus', colors: ['#f9d65c', '#f2a93f'] },
-        { title: 'Daily', subtitle: 'Quest', colors: ['#ffb86c', '#ff8a5c'] }
+        { title: 'Daily', subtitle: 'Bonus' },
+        { title: 'Daily', subtitle: 'Quest' }
     ],
     right: [
-        { title: 'No', subtitle: 'Ads', colors: ['#6fd4ff', '#3498db'] },
-        { title: 'Starter', subtitle: 'Pack', colors: ['#d49bff', '#9b59b6'] }
+        { title: 'No', subtitle: 'Ads' },
+        { title: 'Starter', subtitle: 'Pack' }
     ]
 };
 
-function drawPromoColumn(canvas, items, bgImg) {
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const dpr = Math.max(window.devicePixelRatio || 1, 1);
-    const cssW = 120;
-    const btnSize = 75;
-    const gap = 18;
-    const cssH = items.length * (btnSize + gap) + 10;
+function createBadge(item, side, idx) {
+    const badge = document.createElement('button');
+    badge.className = 'promo-badge';
+    badge.type = 'button';
+    badge.dataset.side = side;
+    badge.dataset.index = idx;
 
-    canvas.width = cssW * dpr;
-    canvas.height = cssH * dpr;
-    canvas.style.width = `${cssW}px`;
-    canvas.style.height = `${cssH}px`;
+    const circle = document.createElement('div');
+    circle.className = 'badge-circle';
+    badge.appendChild(circle);
 
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(dpr, dpr);
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
+    const pill = document.createElement('div');
+    pill.className = 'badge-pill';
+    pill.textContent = `${item.title} ${item.subtitle}`;
+    badge.appendChild(pill);
 
-    const startY = 10;
-    const startX = (cssW - btnSize) / 2;
-
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    items.forEach((item, idx) => {
-        const y = startY + idx * (btnSize + gap);
-        ctx.save();
-        ctx.shadowColor = 'rgba(0,0,0,0.2)';
-        ctx.shadowBlur = 8;
-        drawCircle(ctx, startX + btnSize / 2, y + btnSize / 2, btnSize / 2);
-        
-        if (bgImg && bgImg.complete && bgImg.naturalWidth > 0) {
-            ctx.save();
-            ctx.clip();
-            ctx.drawImage(bgImg, startX, y, btnSize, btnSize);
-            ctx.restore();
-        } else {
-            const grad = ctx.createLinearGradient(0, y, 0, y + btnSize);
-            grad.addColorStop(0, item.colors[0]);
-            grad.addColorStop(1, item.colors[1]);
-            ctx.fillStyle = grad;
-            ctx.fill();
-        }
-        ctx.lineWidth = 2.2;
-        ctx.strokeStyle = 'rgba(255,255,255,0.7)';
-        ctx.stroke();
-
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 13px Fredoka, sans-serif';
-        ctx.fillText(item.title, startX + btnSize / 2, y + btnSize / 2 - 8);
-        ctx.font = 'bold 12px Fredoka, sans-serif';
-        ctx.fillText(item.subtitle, startX + btnSize / 2, y + btnSize / 2 + 10);
-        ctx.restore();
+    badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        EventBus.emit('ui:promoBadgeClick', { side, index: idx, title: item.title, subtitle: item.subtitle });
     });
+
+    return badge;
 }
 
-function drawCircle(ctx, cx, cy, r) {
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.closePath();
+function renderColumn(container, items, side) {
+    if (!container) return;
+    container.innerHTML = '';
+    items.forEach((item, idx) => container.appendChild(createBadge(item, side, idx)));
+}
+
+function setVisible(visible) {
+    const wrapper = document.querySelector('.promo-badges');
+    if (!wrapper) return;
+    wrapper.classList.toggle('hidden', !visible);
 }
 
 export function initPromoBadges() {
-    const leftCanvas = document.getElementById('promo-badges-left');
-    const rightCanvas = document.getElementById('promo-badges-right');
-    const img = new Image();
-    img.onload = () => {
-        drawPromoColumn(leftCanvas, promoBadgeData.left, img);
-        drawPromoColumn(rightCanvas, promoBadgeData.right, img);
-    };
-    img.onerror = () => {
-        drawPromoColumn(leftCanvas, promoBadgeData.left, null);
-        drawPromoColumn(rightCanvas, promoBadgeData.right, null);
-    };
-    img.src = BG_IMAGE_SRC;
+    const leftCol = document.getElementById('promo-left');
+    const rightCol = document.getElementById('promo-right');
+    renderColumn(leftCol, promoBadgeData.left, 'left');
+    renderColumn(rightCol, promoBadgeData.right, 'right');
+
+    EventBus.on('ui:tabChanged', ({ tabId }) => setVisible(tabId === 'tab-home'));
+    const activePane = document.querySelector('.tab-pane.active');
+    setVisible((activePane ? activePane.id : 'tab-home') === 'tab-home');
+
+    EventBus.on('ui:promoBadgeClick', ({ title, subtitle }) => openPromoOverlay(`${title} ${subtitle}`));
 }
+
+function openPromoOverlay(labelText) {
+    const overlay = document.getElementById('promo-overlay');
+    const titleEl = document.getElementById('promo-title');
+    const subEl = document.getElementById('promo-subtitle');
+    if (!overlay) return;
+    if (titleEl) titleEl.textContent = labelText || 'Bundle';
+    if (subEl) subEl.textContent = 'Nhấn Mua để nhận gói ưu đãi này';
+    overlay.classList.remove('hidden');
+    overlay.style.display = 'flex';
+}
+
+// Expose global handlers for buttons
+window.closePromoOverlay = function() {
+    const overlay = document.getElementById('promo-overlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+        overlay.style.display = 'none';
+    }
+};
+
+window.buyPromoBundle = function() {
+    EventBus.emit('ui:promoBuyClicked', {});
+    window.closePromoOverlay();
+};

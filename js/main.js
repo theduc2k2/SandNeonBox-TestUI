@@ -19,6 +19,7 @@ import { ScoreSystem } from './game/scoreSystem.js';
 import { Effects } from './game/effects.js';
 
 import { Leaderboard } from './core/leaderboard.js'; // [NEW]
+import { Preloader } from './core/preloader.js';
 
 import { Tabs } from './ui/tabs.js';
 import { BottomNav } from './ui/bottomNav.js';
@@ -36,6 +37,16 @@ const SHOP_PRICES = {
     'vortex': 500
 };
 
+const ASSETS_TO_PRELOAD = [
+    ...Preloader.DEFAULT_ASSETS,
+    'Asset/BackGround/Background.png',
+    'Asset/BackGround/Background2.png',
+    'Asset/Shop/Button-Bundle/Button-Bundle.png',
+    'Asset/Shop/Background-Bundle/Background_Bundle.png',
+    'Asset/Shop/Button-Bundle/Button-Bundle@2x.png',
+    'Asset/Shop/Background-Bundle/Background_Bundle@2x.png'
+];
+
 // Helper: Cập nhật hiển thị số kim cương trên UI (Menu + Game)
 function updateCurrencyUI() {
     // [FIX] Lấy trực tiếp từ STATE.diamonds
@@ -50,7 +61,129 @@ function updateCurrencyUI() {
     if (gameGemEl) gameGemEl.innerText = gems.toLocaleString();
 }
 
-function setGameObjectActive(elementId, isActive) {
+// --- UI LEADERBOARD HELPER (top-level, dùng cho switchTab và init) ---
+async function updateLeaderboardUI() {
+    const container = document.getElementById('rank-list-container');
+    if (!container) return;
+
+    container.innerHTML = '<div style="text-align:center; color:#FFF; margin-top:20px; font-size:16px;">⏳ Đang tải...</div>';
+
+    let topScores = [];
+    let personalStats = {};
+    try {
+        topScores = await Leaderboard.getTopScores(10);
+        personalStats = await Leaderboard.getPersonalStats();
+    } catch (err) {
+        console.warn('Leaderboard fetch failed, using fallback data', err);
+        topScores = [];
+        personalStats = {};
+    }
+
+    container.innerHTML = ''; // Clear loading
+
+    const fallbackScores = [
+        { rank: 1, name: 'Enol', score: 123601, level: 123, userId: 'A1' },
+        { rank: 2, name: 'User9749544', score: 100003, level: 102, userId: 'A2' },
+        { rank: 3, name: 'User1573441', score: 67503, level: 88, userId: 'A3' },
+        { rank: 4, name: 'User6626293', score: 57997, level: 80, userId: 'A4' },
+        { rank: 5, name: 'User8025129', score: 53984, level: 77, userId: 'A5' },
+        { rank: 6, name: 'Daisy04', score: 48784, level: 73, userId: 'A6' },
+        { rank: 7, name: 'User7101622', score: 47380, level: 72, userId: 'A7' },
+        { rank: 8, name: 'User6623795', score: 47246, level: 71, userId: 'A8' },
+        { rank: 9, name: 'User9186615', score: 45132, level: 69, userId: 'A9' },
+        { rank: 10, name: 'Bạn', score: 1735824, level: 14, userId: 'ME', isUser: true }
+    ];
+
+    if (!Array.isArray(topScores) || topScores.length === 0) {
+        topScores = fallbackScores;
+    }
+
+    const listWrap = document.createElement('div');
+    listWrap.className = 'rank-list';
+    container.appendChild(listWrap);
+
+    topScores.forEach(player => {
+        const isMe = player.isUser;
+        const card = document.createElement('div');
+        let classes = 'rank-card';
+        if (player.rank === 1) classes += ' top1';
+        else if (player.rank === 2) classes += ' top2';
+        else if (player.rank === 3) classes += ' top3';
+        if (isMe) classes += ' me';
+        card.className = classes;
+
+        const pos = document.createElement('div');
+        pos.className = 'rank-pos';
+        pos.textContent = player.rank;
+        card.appendChild(pos);
+
+        const avatar = document.createElement('div');
+        avatar.className = 'rank-avatar';
+        avatar.textContent = '😺';
+        card.appendChild(avatar);
+
+        const main = document.createElement('div');
+        main.className = 'rank-main';
+        const nameEl = document.createElement('div');
+        nameEl.className = 'rank-name';
+        nameEl.textContent = player.name;
+        const subEl = document.createElement('div');
+        subEl.className = 'rank-sub';
+        subEl.textContent = `ID: ${player.userId || '—'}`;
+        main.appendChild(nameEl);
+        main.appendChild(subEl);
+        card.appendChild(main);
+
+        const right = document.createElement('div');
+        right.className = 'rank-right';
+        const scoreChip = document.createElement('div');
+        scoreChip.className = 'rank-score-chip';
+        scoreChip.textContent = player.score.toLocaleString();
+        const levelChip = document.createElement('div');
+        levelChip.className = 'rank-level-chip';
+        levelChip.textContent = `Level ${player.level || Math.max(1, Math.floor(player.score / 5000))}`;
+        right.appendChild(scoreChip);
+        right.appendChild(levelChip);
+        card.appendChild(right);
+
+        listWrap.appendChild(card);
+    });
+
+    const myHighScore = personalStats.highScore || 0;
+    const totalGames = personalStats.totalGames || 0;
+
+    const personalHTML = `
+        <div style="
+            margin-top:20px; 
+            padding:15px; 
+            background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            border-radius:12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        ">
+            <div style="text-align:center; font-size:14px; color:#FFF; margin-bottom:8px; opacity:0.9;">
+                📊 THÀNH TÍCH CỦA BẠN
+            </div>
+            <div style="display:flex; justify-content:space-around; align-items:center;">
+                <div style="text-align:center;">
+                    <div style="font-size:12px; color:#E0E0E0;">Điểm cao nhất</div>
+                    <div style="font-size:28px; color:#FFD93D; font-weight:bold; margin-top:5px;">
+                        ${myHighScore.toLocaleString()}
+                    </div>
+                </div>
+                <div style="width:2px; height:50px; background:rgba(255,255,255,0.3);"></div>
+                <div style="text-align:center;">
+                    <div style="font-size:12px; color:#E0E0E0;">Số ván chơi</div>
+                    <div style="font-size:28px; color:#52D681; font-weight:bold; margin-top:5px;">
+                        ${totalGames}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', personalHTML);
+}
+
+function setGameObjectActive(elementId, isActive, animate = false) {
     const el = document.getElementById(elementId);
     if (!el) return;
     if (isActive) {
@@ -61,13 +194,52 @@ function setGameObjectActive(elementId, isActive) {
         } else {
             el.style.display = 'block';
         }
-        el.classList.remove('hidden');
-        el.classList.add('active');
+        if (animate) {
+            el.classList.remove('hidden');
+            // force reflow to restart animation
+            void el.offsetWidth;
+            el.classList.add('pop-in');
+            el.classList.add('active');
+            setTimeout(() => el.classList.remove('pop-in'), 320);
+        } else {
+            el.classList.remove('hidden');
+            el.classList.add('active');
+        }
     } else {
         el.style.display = 'none';
         el.classList.add('hidden');
         el.classList.remove('active');
     }
+}
+
+function switchTab(tabId, navEl) {
+    SoundManager.playClick();
+    document.querySelectorAll('.tab-pane').forEach(el => {
+        el.classList.remove('active');
+    });
+    const target = document.getElementById(tabId);
+    if (target) {
+        target.classList.add('active');
+
+        // [NEW] Nếu mở tab Rank thì load dữ liệu
+        if (tabId === 'tab-rank') {
+            updateLeaderboardUI();
+        }
+        EventBus.emit('ui:tabChanged', { tabId });
+    }
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+    if (navEl) navEl.classList.add('active');
+}
+
+window.switchTab = switchTab;
+
+async function bootGame() {
+    try {
+        await Preloader.run(ASSETS_TO_PRELOAD);
+    } catch (err) {
+        console.warn('Preload error, tiếp tục khởi động game', err);
+    }
+    startGame();
 }
 
 // Hàm khởi động game (Gom toàn bộ code init cũ vào đây)
@@ -91,6 +263,10 @@ async function startGame() {
     BottomNav.init();
     TopBar.init();
     UIAnimations.init();
+
+    // Đặt tab mặc định là Home để tất cả UI (promo badges) hiển thị
+    const homeBtn = document.querySelector('.nav-btn[data-target="tab-home"]');
+    window.switchTab('tab-home', homeBtn);
 
     updateShopUI();
     updateCurrencyUI();
@@ -152,64 +328,87 @@ async function startGame() {
 
         container.innerHTML = '<div style="text-align:center; color:#FFF; margin-top:20px; font-size:16px;">⏳ Đang tải...</div>';
 
-        const topScores = await Leaderboard.getTopScores(10);
-        const personalStats = await Leaderboard.getPersonalStats();
+        let topScores = [];
+        let personalStats = {};
+        try {
+            topScores = await Leaderboard.getTopScores(10);
+            personalStats = await Leaderboard.getPersonalStats();
+        } catch (err) {
+            console.warn('Leaderboard fetch failed, using fallback data', err);
+            topScores = [];
+            personalStats = {};
+        }
 
         container.innerHTML = ''; // Clear loading
 
-        if (topScores.length === 0) {
-            container.innerHTML = '<div style="text-align:center; color:#EEE; font-size:16px;">Chưa có dữ liệu.</div>';
-            return;
+        const fallbackScores = [
+            { rank: 1, name: 'Enol', score: 123601, level: 123, userId: 'A1' },
+            { rank: 2, name: 'User9749544', score: 100003, level: 102, userId: 'A2' },
+            { rank: 3, name: 'User1573441', score: 67503, level: 88, userId: 'A3' },
+            { rank: 4, name: 'User6626293', score: 57997, level: 80, userId: 'A4' },
+            { rank: 5, name: 'User8025129', score: 53984, level: 77, userId: 'A5' },
+            { rank: 6, name: 'Daisy04', score: 48784, level: 73, userId: 'A6' },
+            { rank: 7, name: 'User7101622', score: 47380, level: 72, userId: 'A7' },
+            { rank: 8, name: 'User6623795', score: 47246, level: 71, userId: 'A8' },
+            { rank: 9, name: 'User9186615', score: 45132, level: 69, userId: 'A9' },
+            { rank: 10, name: 'Bạn', score: 1735824, level: 14, userId: 'ME', isUser: true }
+        ];
+
+        if (!Array.isArray(topScores) || topScores.length === 0) {
+            topScores = fallbackScores;
         }
 
         // --- HEADER ---
-        const headerHTML = `
-            <div style="display:flex; justify-content:space-between; padding:8px 15px; margin-bottom:10px; color:#FFD93D; font-weight:bold; font-size:14px; border-bottom:2px solid #FFD93D;">
-                <div style="width:50px;">STT</div>
-                <div style="flex:1;">TÊN</div>
-                <div style="width:100px; text-align:right;">ĐIỂM</div>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', headerHTML);
+        const listWrap = document.createElement('div');
+        listWrap.className = 'rank-list';
+        container.appendChild(listWrap);
 
         // --- DANH SÁCH TOP 10 ---
         topScores.forEach(player => {
             const isMe = player.isUser;
-            const bgColor = isMe ? 'rgba(255, 217, 61, 0.15)' : 'transparent';
-            const textColor = isMe ? '#FFD93D' : '#FFF';
-            const fontWeight = isMe ? 'bold' : 'normal';
+            const card = document.createElement('div');
+            let classes = 'rank-card';
+            if (player.rank === 1) classes += ' top1';
+            else if (player.rank === 2) classes += ' top2';
+            else if (player.rank === 3) classes += ' top3';
+            if (isMe) classes += ' me';
+            card.className = classes;
 
-            // Medal cho top 3
-            let medal = '';
-            if (player.rank === 1) medal = '🥇';
-            else if (player.rank === 2) medal = '🥈';
-            else if (player.rank === 3) medal = '🥉';
+            const pos = document.createElement('div');
+            pos.className = 'rank-pos';
+            pos.textContent = player.rank === 1 ? '1' : player.rank === 2 ? '2' : player.rank === 3 ? '3' : player.rank;
+            card.appendChild(pos);
 
-            const rankDisplay = medal || `${player.rank}.`;
+            const avatar = document.createElement('div');
+            avatar.className = 'rank-avatar';
+            avatar.textContent = '😺';
+            card.appendChild(avatar);
 
-            const playerHTML = `
-                <div style="
-                    display:flex; 
-                    justify-content:space-between; 
-                    align-items:center;
-                    padding:12px 15px; 
-                    margin-bottom:5px;
-                    background:${bgColor};
-                    border-left: ${isMe ? '4px solid #FFD93D' : '4px solid transparent'};
-                    transition: background 0.2s;
-                ">
-                    <div style="width:50px; font-size:24px; color:${textColor}; font-weight:${fontWeight};">
-                        ${rankDisplay}
-                    </div>
-                    <div style="flex:1; font-size:18px; color:${textColor}; font-weight:${fontWeight};">
-                        ${player.name}
-                    </div>
-                    <div style="width:100px; text-align:right; font-size:20px; color:#52D681; font-weight:bold;">
-                        ${player.score.toLocaleString()}
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', playerHTML);
+            const main = document.createElement('div');
+            main.className = 'rank-main';
+            const nameEl = document.createElement('div');
+            nameEl.className = 'rank-name';
+            nameEl.textContent = player.name;
+            const subEl = document.createElement('div');
+            subEl.className = 'rank-sub';
+            subEl.textContent = `ID: ${player.userId || '—'}`;
+            main.appendChild(nameEl);
+            main.appendChild(subEl);
+            card.appendChild(main);
+
+            const right = document.createElement('div');
+            right.className = 'rank-right';
+            const scoreChip = document.createElement('div');
+            scoreChip.className = 'rank-score-chip';
+            scoreChip.textContent = player.score.toLocaleString();
+            const levelChip = document.createElement('div');
+            levelChip.className = 'rank-level-chip';
+            levelChip.textContent = `Level ${player.level || Math.max(1, Math.floor(player.score / 5000))}`;
+            right.appendChild(scoreChip);
+            right.appendChild(levelChip);
+            card.appendChild(right);
+
+            listWrap.appendChild(card);
         });
 
         // --- PHẦN ĐIỂM CÁ NHÂN (LUÔN Ở DƯỚI) ---
@@ -247,31 +446,11 @@ async function startGame() {
         container.insertAdjacentHTML('beforeend', personalHTML);
     }
 
-    window.switchTab = (tabId, navEl) => {
-        SoundManager.playClick();
-        document.querySelectorAll('.tab-pane').forEach(el => {
-            el.classList.remove('active');
-            el.style.display = 'none';
-        });
-        const target = document.getElementById(tabId);
-        if (target) {
-            target.classList.add('active');
-            target.style.display = 'flex';
-
-            // [NEW] Nếu mở tab Rank thì load dữ liệu
-            if (tabId === 'tab-rank') {
-                updateLeaderboardUI();
-            }
-        }
-        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-        if (navEl) navEl.classList.add('active');
-    };
-
     window.togglePause = () => {
         SoundManager.playClick();
         if (!STATE.isPaused) {
             GameLoop.pause();
-            setGameObjectActive('pause-menu', true);
+            setGameObjectActive('pause-menu', true, true);
             setGameObjectActive('settings-menu', false);
             setGameObjectActive('pause-overlay', true);
         } else {
@@ -286,7 +465,7 @@ async function startGame() {
         SoundManager.playClick();
         if (source === 'pause' && !STATE.isPaused) return;
         if (source === 'pause') setGameObjectActive('pause-menu', false);
-        setGameObjectActive('settings-menu', true);
+        setGameObjectActive('settings-menu', true, true);
         updateToggleUI('btn-sound', STATE.settings.sound);
         updateToggleUI('btn-vfx', STATE.settings.vfx);
     };
@@ -622,7 +801,7 @@ window.onload = function () {
 
     if (isLocal) {
         console.log("Đang chạy trên Localhost - Bỏ qua Facebook SDK");
-        startGame(); // Chạy game luôn!
+        bootGame(); // Chạy game sau khi preload
     } else {
         console.log("Đang chạy trên Facebook - Đợi SDK");
         // Nếu không phải localhost thì chạy quy trình của Facebook
@@ -630,13 +809,13 @@ window.onload = function () {
             .then(function () {
                 FBInstant.setLoadingProgress(100);
                 FBInstant.startGameAsync().then(function () {
-                    startGame(); // Chạy game sau khi FB đã sẵn sàng
+                    bootGame(); // Chạy game sau khi FB đã sẵn sàng + preload
                 });
             })
             .catch(function (err) {
                 console.error("Lỗi SDK:", err);
                 // Phòng hờ lỗi SDK thì vẫn cố gắng chạy game
-                startGame();
+                bootGame();
             });
     }
 };
