@@ -41,13 +41,27 @@
 }
 
 .badge-circle {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    margin-bottom: -15px;
+    margin-bottom: -25px;
     position: relative;
     overflow: hidden;
     isolation: isolate; /* allow pseudo layers to stack independently */
+    z-index: 1; /* circle layer */
+}
+
+.badge-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 70px;
+    height: 70px;
+    transform: translate(-50%, -60%);
+    object-fit: contain;
+    z-index: 2;
+    opacity: 1;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
 }
 
 .badge-circle::before {
@@ -68,9 +82,35 @@
     z-index: 0; /* sit beneath bundle background */
 }
 
+.badge-circle--calendar::before {
+    opacity: 0.9;
+}
+
+.badge-circle--calendar::after {
+    background: rgba(0, 97, 161, 0.06);
+}
+
+.badge-circle--calendar .badge-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.badge-circle--calendar {
+    overflow: visible; /* allow larger calendar icon */
+}
+
+.badge-circle--daily-quest .badge-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.badge-circle--daily-quest {
+    overflow: visible;
+}
+
 .badge-pill {
     position: relative;
-    z-index: 502;
+    z-index: 5; /* top layer over circle/icon */
     display: inline-flex;
     align-items: center;
     justify-content: center;

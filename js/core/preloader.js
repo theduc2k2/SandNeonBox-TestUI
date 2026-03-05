@@ -4,7 +4,6 @@ const DEFAULT_ASSETS = [
     'Asset/BackGround/Background.png',
     'Asset/Shop/Background-Bundle/Background_Bundle.png',
     'Asset/Shop/Button-Bundle/Button-Bundle.png',
-    'Asset/Shop/Background-Bundle/Button-Bundle.png', // fallback naming just in case
     'Asset/icons/icon-64.png'
 ];
 
@@ -12,9 +11,38 @@ function wait(ms) {
     return new Promise(res => setTimeout(res, ms));
 }
 
+let displayPercent = 0;
+let targetPercent = 0;
+let progressTimer = null;
+
 function updateProgress(percent) {
     const bar = document.getElementById('loading-bar-fill');
     const text = document.getElementById('loading-percent');
+    targetPercent = Math.max(targetPercent, percent);
+
+    const step = () => {
+        if (displayPercent >= targetPercent) {
+            clearInterval(progressTimer);
+            progressTimer = null;
+            return;
+        }
+        displayPercent = Math.min(displayPercent + 5, targetPercent);
+        if (bar) bar.style.width = `${displayPercent}%`;
+        if (text) text.textContent = `${displayPercent}%`;
+    };
+
+    if (!progressTimer) {
+        progressTimer = setInterval(step, 90); // slow the visual fill
+    }
+    // also update immediately for the first frame
+    step();
+}
+
+function forceProgress(percent) {
+    const bar = document.getElementById('loading-bar-fill');
+    const text = document.getElementById('loading-percent');
+    displayPercent = percent;
+    targetPercent = percent;
     if (bar) bar.style.width = `${percent}%`;
     if (text) text.textContent = `${percent}%`;
 }
@@ -61,6 +89,8 @@ function showOverlay() {
     updateProgress(0);
 }
 
+const MIN_LOAD_DURATION_MS = 3800; // target 3.8s visible loading
+
 export const Preloader = {
     DEFAULT_ASSETS,
     preloadAssets,
@@ -68,8 +98,18 @@ export const Preloader = {
     showOverlay,
     hideOverlay,
     async run(assets = DEFAULT_ASSETS) {
+        document.body.classList.add('loading-active');
         showOverlay();
+        const start = performance.now();
         await preloadAssets(assets, updateProgress);
+        const elapsed = performance.now() - start;
+        const remain = Math.max(0, MIN_LOAD_DURATION_MS - elapsed);
+        if (remain > 0) {
+            await wait(remain);
+        }
+        // ensure bar reaches 100 visually
+        forceProgress(100);
         await hideOverlay();
+        document.body.classList.remove('loading-active');
     }
 };
