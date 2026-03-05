@@ -23,6 +23,30 @@ function createBadge(item, side, idx) {
 
     const circle = document.createElement('div');
     circle.className = 'badge-circle';
+
+    // Icon cho Daily Bonus / Daily Quest
+    const label = `${item.title} ${item.subtitle}`.trim().toLowerCase();
+    let iconSrc = null;
+    let iconAlt = '';
+
+    if (label === 'daily bonus') {
+        circle.classList.add('badge-circle--calendar');
+        iconSrc = 'Asset/Shop/Calendar/Calendar.png';
+        iconAlt = 'Daily Bonus';
+    } else if (label === 'daily quest') {
+        circle.classList.add('badge-circle--daily-quest');
+        iconSrc = 'Asset/Shop/Daily-Quest/Daily-Quest.png';
+        iconAlt = 'Daily Quest';
+    }
+
+    if (iconSrc) {
+        const icon = document.createElement('img');
+        icon.className = 'badge-icon';
+        icon.src = iconSrc;
+        icon.alt = iconAlt;
+        circle.appendChild(icon);
+    }
+
     badge.appendChild(circle);
 
     const pill = document.createElement('div');
@@ -60,7 +84,14 @@ export function initPromoBadges() {
     const activePane = document.querySelector('.tab-pane.active');
     setVisible((activePane ? activePane.id : 'tab-home') === 'tab-home');
 
-    EventBus.on('ui:promoBadgeClick', ({ title, subtitle }) => openPromoOverlay(`${title} ${subtitle}`));
+    EventBus.on('ui:promoBadgeClick', ({ title, subtitle }) => {
+        const label = `${title} ${subtitle}`.trim();
+        if (label.toLowerCase() === 'daily bonus') {
+            openDailyBonusOverlay();
+            return;
+        }
+        openPromoOverlay(label);
+    });
 }
 
 function openPromoOverlay(labelText) {
@@ -72,6 +103,19 @@ function openPromoOverlay(labelText) {
     if (subEl) subEl.textContent = 'Nhấn Mua để nhận gói ưu đãi này';
     overlay.classList.remove('hidden');
     overlay.style.display = 'flex';
+}
+
+function openDailyBonusOverlay() {
+    const dailyOverlay = document.getElementById('daily-bonus-overlay');
+    if (dailyOverlay) {
+        dailyOverlay.classList.remove('hidden');
+        dailyOverlay.style.display = 'flex';
+    }
+    const promoOverlay = document.getElementById('promo-overlay');
+    if (promoOverlay) {
+        promoOverlay.classList.add('hidden');
+        promoOverlay.style.display = 'none';
+    }
 }
 
 // Expose global handlers for buttons

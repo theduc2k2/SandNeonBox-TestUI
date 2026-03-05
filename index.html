@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="css/ui/buttons.css">
     <link rel="stylesheet" href="css/ui/bottom-nav.css">
     <link rel="stylesheet" href="css/ui/modals.css">
+    <link rel="stylesheet" href="css/ui/daily-bonus.css">
+    <link rel="stylesheet" href="css/ui/settings.css">
+    <link rel="stylesheet" href="css/ui/pause.css">
     <link rel="stylesheet" href="css/ui/spin-wheel.css">
     <link rel="stylesheet" href="css/ui/promo-badges.css">
     <link rel="stylesheet" href="css/ui/loading.css">
@@ -89,11 +92,60 @@
 
 <body>
 
-    <div id="app-container">
-        <div class="app-bg">
-            <canvas id="wood-canvas"></canvas>
-            <canvas id="sand-blocks-canvas"></canvas>
-        </div>
+        <div id="app-container">
+            <div class="app-bg">
+                <canvas id="wood-canvas"></canvas>
+                <canvas id="sand-blocks-canvas"></canvas>
+            </div>
+
+            <!-- DAILY BONUS MODAL -->
+            <div id="daily-bonus-overlay" class="overlay-backdrop hidden">
+                <div class="daily-bonus-modal">
+                    <button class="daily-close" aria-label="Close" onclick="document.getElementById('daily-bonus-overlay').classList.add('hidden')">×</button>
+                    <div class="daily-title">Daily Reward</div>
+                    <div class="daily-grid">
+                        <div class="daily-card daily-card--today">
+                            <div class="daily-icon"><img src="Asset/IconGame/Votex/Votex.png" alt="Vortex"></div>
+                            <div class="daily-ribbon">x1</div>
+                            <div class="daily-day">Day 1</div>
+                        </div>
+                        <div class="daily-card daily-card--gold daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Gold/Gold.png" alt="Gold"></div>
+                            <div class="daily-ribbon">500</div>
+                            <div class="daily-day">Day 2</div>
+                        </div>
+                        <div class="daily-card daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Eraser/Eraser.png" alt="Eraser"></div>
+                            <div class="daily-ribbon">x1</div>
+                            <div class="daily-day">Day 3</div>
+                        </div>
+                        <div class="daily-card daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Gold/Gold.png" alt="Gold"></div>
+                            <div class="daily-ribbon">200</div>
+                            <div class="daily-day">Day 4</div>
+                        </div>
+                        <div class="daily-card daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Heart/Heart.png" alt="Heart"></div>
+                            <div class="daily-ribbon">30m</div>
+                            <div class="daily-day">Day 5</div>
+                        </div>
+                        <div class="daily-card daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Bom/Bomp.png" alt="Bomb"></div>
+                            <div class="daily-ribbon">x1</div>
+                            <div class="daily-day">Day 6</div>
+                        </div>
+                        <div class="daily-card daily-card--grand daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Gold/Gold.png" alt="Gold"></div>
+                            <div class="daily-ribbon">1000</div>
+                            <div class="daily-extra"><img src="Asset/IconGame/Votex/Votex.png" alt="Vortex"><span>x1</span></div>
+                            <div class="daily-extra"><img src="Asset/IconGame/Bom/Bomp.png" alt="Bomb"><span>x1</span></div>
+                            <div class="daily-day grand-day">Day 7</div>
+                        </div>
+                    </div>
+                    <div class="daily-footer">Tap to claim</div>
+                    <button class="daily-cta" onclick="document.getElementById('daily-bonus-overlay').classList.add('hidden')">Claim</button>
+                </div>
+            </div>
 
         <div id="game-layer" class="hidden">
             <div id="inner-screen">
@@ -208,72 +260,128 @@
                             <span class="shop-title">Shop</span>
                         </div>
 
-                        <div class="shop-list">
-                            <div class="shop-card shop-card--ad">
-                                <div class="card-left">
-                                    <div class="card-icon card-icon--ad">AD</div>
-                                    <div class="card-text">
-                                        <div class="card-title">Remove Ads</div>
-                                        <div class="card-sub">Không banner, chơi mượt</div>
+                        <div class="shop-list shop-list--packs">
+                            <div class="shop-pack shop-pack--small">
+                                <div class="pack-top">
+                                    <div class="pack-coin">
+                                        <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                        <span>100</span>
+                                    </div>
+                                    <div class="pack-items">
+                                        <div class="pack-item"><img src="Asset/IconGame/Bom/Bomp.png" alt="bomb"><span>x10</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Eraser/Eraser.png" alt="eraser"><span>x10</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Votex/Votex.png" alt="vortex"><span>x10</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Heart/Heart.png" alt="heart"><span>20m</span></div>
                                     </div>
                                 </div>
-                                <button class="card-btn card-btn--ghost" onclick="buyRealMoneyItem('no_ads')">Get</button>
+                                <div class="pack-bottom">
+                                    <div class="pack-name">Small Pack</div>
+                                    <button class="pack-price" onclick="buyRealMoneyItem('pack_small')">100.000</button>
+                                </div>
                             </div>
 
-                            <div class="shop-card">
-                                <div class="card-left">
-                                    <div class="card-icon card-icon--gold">💰</div>
-                                    <div class="card-text">
-                                        <div class="card-title">Small Pack</div>
-                                        <div class="card-perks">
-                                            <span>+100 vàng</span>
-                                            <span>+1 bomb</span>
-                                            <span>+1 tẩy</span>
+                            <div class="shop-pack shop-pack--medium">
+                                <div class="pack-top">
+                                    <div class="pack-coin">
+                                        <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                        <span>350</span>
+                                    </div>
+                                    <div class="pack-items">
+                                        <div class="pack-item"><img src="Asset/IconGame/Bom/Bomp.png" alt="bomb"><span>x20</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Eraser/Eraser.png" alt="eraser"><span>x20</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Votex/Votex.png" alt="vortex"><span>x15</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Heart/Heart.png" alt="heart"><span>45m</span></div>
+                                    </div>
+                                </div>
+                                <div class="pack-bottom">
+                                    <div class="pack-name">Medium Pack</div>
+                                    <button class="pack-price pack-price--green" onclick="buyRealMoneyItem('pack_medium')">250.000</button>
+                                </div>
+                            </div>
+
+                            <div class="shop-pack shop-pack--large">
+                                <div class="pack-top">
+                                    <div class="pack-coin">
+                                        <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                        <span>800</span>
+                                    </div>
+                                    <div class="pack-items">
+                                        <div class="pack-item"><img src="Asset/IconGame/Bom/Bomp.png" alt="bomb"><span>x40</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Eraser/Eraser.png" alt="eraser"><span>x40</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Votex/Votex.png" alt="vortex"><span>x30</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Heart/Heart.png" alt="heart"><span>90m</span></div>
+                                    </div>
+                                </div>
+                                <div class="pack-bottom">
+                                    <div class="pack-name">Mega Pack</div>
+                                    <button class="pack-price pack-price--blue" onclick="buyRealMoneyItem('pack_large')">490.000</button>
+                                </div>
+                            </div>
+
+                            <!-- No Ads Bundle row -->
+                            <div class="shop-pack shop-pack--banner">
+                                <div class="bundle-top">
+                                    <div class="pack-coin">
+                                        <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                        <span>2000</span>
+                                    </div>
+                                    <div class="bundle-items">
+                                        <div class="bundle-item">
+                                            <img src="Asset/IconGame/Bom/Bomp.png" alt="bomb">
+                                            <span>x10</span>
+                                        </div>
+                                        <div class="bundle-item">
+                                            <img src="Asset/IconGame/Eraser/Eraser.png" alt="eraser">
+                                            <span>x10</span>
+                                        </div>
+                                        <div class="bundle-item">
+                                            <img src="Asset/IconGame/Votex/Votex.png" alt="vortex">
+                                            <span>x10</span>
+                                        </div>
+                                        <div class="bundle-item">
+                                            <img src="Asset/IconGame/Heart/Heart.png" alt="heart">
+                                            <span>NO ADS</span>
                                         </div>
                                     </div>
                                 </div>
-                                <button class="card-btn" onclick="buyItem('bomb')">100 💎</button>
+                                <div class="bundle-bottom">
+                                    <div class="bundle-label">NO ADS BUNDLES</div>
+                                    <button class="bundle-price" onclick="buyRealMoneyItem('bundle_noads')">100.000</button>
+                                </div>
                             </div>
 
-                            <div class="shop-card shop-card--mid">
-                                <div class="card-left">
-                                    <div class="card-icon card-icon--gold">💰</div>
-                                    <div class="card-text">
-                                        <div class="card-title">Medium Pack</div>
-                                        <div class="card-perks">
-                                            <span>+300 vàng</span>
-                                            <span>+2 bomb</span>
-                                            <span>+2 tẩy</span>
-                                        </div>
-                                    </div>
+                            <!-- Gold grid below -->
+                            <div class="gold-grid">
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_1000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">1000</div>
+                                    <button class="gold-price">100.000</button>
                                 </div>
-                                <button class="card-btn card-btn--green" onclick="buyItem('eraser')">300 💎</button>
-                            </div>
-
-                            <div class="shop-card shop-card--large">
-                                <div class="card-left">
-                                    <div class="card-icon card-icon--gold">💰</div>
-                                    <div class="card-text">
-                                        <div class="card-title">Large Pack</div>
-                                        <div class="card-perks">
-                                            <span>+500 vàng</span>
-                                            <span>+3 bomb</span>
-                                            <span>+3 tẩy</span>
-                                        </div>
-                                    </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_5000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">5000</div>
+                                    <button class="gold-price">100.000</button>
                                 </div>
-                                <button class="card-btn card-btn--red" onclick="buyItem('vortex')">500 💎</button>
-                            </div>
-
-                            <div class="shop-card shop-card--gem">
-                                <div class="card-left">
-                                    <div class="card-icon card-icon--gem">💎</div>
-                                    <div class="card-text">
-                                        <div class="card-title">Gói Kim Cương</div>
-                                        <div class="card-sub">+1000 💎 nạp nhanh</div>
-                                    </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_10000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">10000</div>
+                                    <button class="gold-price">100.000</button>
                                 </div>
-                                <button class="card-btn card-btn--blue" onclick="buyRealMoneyItem('gems_1000')">$0.99</button>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_25000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">25000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_50000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">50000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_100000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">100000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -338,41 +446,96 @@
 
 
         <div id="settings-menu" class="overlay-backdrop hidden">
-            <div class="settings-box"
-                style="width: 300px; background: linear-gradient(to bottom, #FFFFFF, #FFF5F8); border: 4px solid #FFFFFF; border-radius: 25px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                <h2
-                    style="font-family: 'Chewy', cursive; color: #FF8C42; font-size: 36px; margin-bottom: 25px; text-shadow: 2px 2px 0 #FFF, 4px 4px 0 rgba(0,0,0,0.1);">
-                    Cài Đặt</h2>
-                <div class="setting-row" onclick="toggleSetting('sound')"
-                    style="display: flex; justify-content: space-between; align-items: center; background: #FFF; padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 0 #E0E0E0; cursor: pointer;">
-                    <div style="font-weight: 700; color: #9D5CFF;">Âm Thanh</div>
-                    <div id="btn-sound" class="toggle-switch active" style="font-weight:bold; color:#52D681;">ON</div>
+            <div class="settings-panel">
+                <div class="settings-title">SETTINGS</div>
+
+                <div class="settings-row" onclick="toggleSetting('sound')">
+                    <div class="settings-label">
+                        <span class="settings-icon sound"></span>
+                        <span>SOUND</span>
+                    </div>
+                    <div id="btn-sound" class="settings-toggle active">
+                        <span class="toggle-text">ON</span>
+                    </div>
                 </div>
-                <div class="setting-row" onclick="toggleSetting('vfx')"
-                    style="display: flex; justify-content: space-between; align-items: center; background: #FFF; padding: 10px 15px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 0 #E0E0E0; cursor: pointer;">
-                    <div style="font-weight: 700; color: #9D5CFF;">Hiệu ứng</div>
-                    <div id="btn-vfx" class="toggle-switch active" style="font-weight:bold; color:#52D681;">ON</div>
+
+                <div class="settings-row">
+                    <div class="settings-label">
+                        <span class="settings-icon music"></span>
+                        <span>MUSIC</span>
+                    </div>
+                    <div class="settings-toggle active">
+                        <span class="toggle-text">ON</span>
+                    </div>
                 </div>
-                <button class="btn-buy" onclick="closeSettings()"
-                    style="background: linear-gradient(to bottom, #FF5757, #E74C3C); width: 100%;">Đóng</button>
+
+                <div class="settings-row" onclick="toggleSetting('vfx')">
+                    <div class="settings-label">
+                        <span class="settings-icon vib"></span>
+                        <span>VIBRATION</span>
+                    </div>
+                    <div class="settings-toggle active">
+                        <span class="toggle-text">ON</span>
+                    </div>
+                </div>
+
+                <div class="settings-row language">
+                    <button class="lang-arrow">◀</button>
+                    <div class="lang-display">English</div>
+                    <button class="lang-arrow">▶</button>
+                </div>
+
+                <button class="settings-btn green">Restore Purchase</button>
+                <button class="settings-btn blue">Terms & Privacy</button>
+                <button class="settings-btn close" onclick="closeSettings()">Close</button>
             </div>
         </div>
 
         <div id="pause-menu" class="hidden overlay-backdrop">
-            <div class="pause-box"
-                style="width: 280px; background: #C4A574; border: 6px solid #8B7355; border-radius: 30px; padding: 25px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);">
-                <div
-                    style="text-align:center; font-family:'Chewy'; font-size:40px; color:#FFF; text-shadow: 2px 2px 0 #8B7355; margin-bottom:10px;">
-                    Táº M Dá»ªNG</div>
-                <button class="go-btn" onclick="togglePause()">TIáº¾P Tá»¤C</button>
-                <button class="go-btn" onclick="shopgame()"
-                    style="background: linear-gradient(to bottom, #FFD93D, #FFC107); box-shadow: 0 6px 0 #E59866;">Cá»¬A
-                    HÃ€NG</button>
-                <button class="go-btn" onclick="openSettings('pause')"
-                    style="background: linear-gradient(to bottom, #9D5CFF, #8E44AD); box-shadow: 0 6px 0 #71368A;">CÃ€I
-                    Äáº¶T</button>
-                <button class="go-btn" onclick="quitGame()"
-                    style="background: linear-gradient(to bottom, #FF5757, #C0392B); box-shadow: 0 6px 0 #922B21;">THOÃT</button>
+            <div class="game-settings-panel">
+                <div class="game-settings-head">
+                    <div class="game-settings-title">PAUSE</div>
+                    <button class="game-settings-close" aria-label="Close" onclick="togglePause()">×</button>
+                </div>
+
+                <div class="game-settings-icons">
+                    <button id="game-btn-sound" class="game-icon-btn active" onclick="toggleSetting('sound')" aria-label="Sound">
+                        <span class="icon-sound"></span>
+                    </button>
+                    <button id="game-btn-music" class="game-icon-btn active" aria-label="Music">
+                        <span class="icon-music"></span>
+                    </button>
+                    <button id="game-btn-vfx" class="game-icon-btn active" onclick="toggleSetting('vfx')" aria-label="Vibration">
+                        <span class="icon-vib"></span>
+                    </button>
+                </div>
+
+                <div class="game-settings-language">
+                    <button class="lang-arrow">◀</button>
+                    <div class="lang-display">English</div>
+                    <button class="lang-arrow">▶</button>
+                </div>
+
+                <button class="game-settings-pill green">Restore Purchase</button>
+                <button class="game-settings-pill blue">Terms & Privacy</button>
+                <button class="game-settings-pill red" onclick="quitGame()">
+                    Quit <span class="badge-heart">-1</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quit Confirmation -->
+        <div id="quit-confirm" class="overlay-backdrop hidden">
+            <div class="quit-card">
+                <div class="quit-head">
+                    <div class="quit-title">ARE YOU SURE?</div>
+                    <button class="quit-close" aria-label="Close" onclick="cancelQuit()">×</button>
+                </div>
+                <div class="quit-body">
+                    <img src="Asset/IconGame/Heart/Heart.png" alt="Lose 1 life" class="quit-heart">
+                    <div class="quit-sub">You will LOSE 1 life!</div>
+                </div>
+                <button class="quit-cta" onclick="confirmQuit()">Go Home</button>
             </div>
         </div>
 
