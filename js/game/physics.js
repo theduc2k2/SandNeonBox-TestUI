@@ -110,17 +110,17 @@ export const Physics = {
 
                     if (leftEmpty && rightEmpty) {
                         // Cả 2 bên đều trống: Random 50/50
-                        if (Math.random() < 0.5) {
+                        if (fastRand() < 0.5) {
                             this.moveParticleInGrid(p, c, r, c - 1, r + 1);
                         } else {
                             this.moveParticleInGrid(p, c, r, c + 1, r + 1);
                         }
                         anyMoved = true;
-                    } else if (leftEmpty && Math.random() < 0.9) { 
+                    } else if (leftEmpty && fastRand() < 0.9) { 
                         // Chỉ bên trái trống + 90% cơ hội trượt (tạo độ ma sát)
                         this.moveParticleInGrid(p, c, r, c - 1, r + 1);
                         anyMoved = true;
-                    } else if (rightEmpty && Math.random() < 0.9) {
+                    } else if (rightEmpty && fastRand() < 0.9) {
                         // Chỉ bên phải trống + 90% cơ hội trượt
                         this.moveParticleInGrid(p, c, r, c + 1, r + 1);
                         anyMoved = true;
