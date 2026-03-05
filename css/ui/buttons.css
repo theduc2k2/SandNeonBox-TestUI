@@ -5,11 +5,19 @@
 
 /* --- NÚT VUÔNG NHỎ (Settings, Pause, Menu) --- */
 .menu-btn {
+<<<<<<< HEAD
     width: 48px;
     height: 48px;
     /* Gradient trắng ngà voi */
     background: linear-gradient(to bottom, #FFFFFF, #F5F0FF);
     border: 3px solid #FFFFFF;
+=======
+    width: 35px;
+    height: 35px;
+    /* Gradient trắng ngà voi */
+    background: linear-gradient(to bottom, #ffffff, #f5f0ff);
+    border: 3px solid #ffffff;
+>>>>>>> Test
     border-radius: 16px;
     display: flex;
     justify-content: center;
@@ -32,7 +40,11 @@
     left: 4px;
     right: 4px;
     height: 40%;
+<<<<<<< HEAD
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+=======
+    /* background: linear-gradient(to bottom, rgba(255, 255, 255, 0), transparent); */
+>>>>>>> Test
     border-radius: 12px;
     pointer-events: none;
 }
@@ -61,6 +73,7 @@
     border-radius: 20px;
     
     /* MÀU GỖ: Gradient từ nâu sáng xuống nâu tối */
+<<<<<<< HEAD
     background: linear-gradient(to bottom, #BC8F5F 0%, #8B5A2B 100%);
     
     /* Viền trên sáng, viền dưới tối để tạo khối */
@@ -72,6 +85,19 @@
         0 8px 0 #3E2723, 
         0 15px 20px rgba(0, 0, 0, 0.4),
         inset 0 2px 0 rgba(255, 255, 255, 0.3); /* Highlight nhẹ bên trong */
+=======
+    /* background: linear-gradient(to bottom, #BC8F5F 0%, #8B5A2B 100%); */
+    
+    /* Viền trên sáng, viền dưới tối để tạo khối */
+    /* border: 3px solid #DCC098;
+    border-bottom-color: #5E3C21; */
+    
+    /* Đổ bóng 3D dày (Màu nâu đen) */
+    /* box-shadow: 
+        0 8px 0 #3E2723, 
+        0 15px 20px rgba(0, 0, 0, 0.4),
+        inset 0 2px 0 rgba(255, 255, 255, 0.3); Highlight nhẹ bên trong */
+>>>>>>> Test
         
     display: flex;
     justify-content: center;
@@ -93,7 +119,11 @@
         inset 0 2px 0 rgba(255, 255, 255, 0.3);
 }
 /* Hiệu ứng bóng kính */
+<<<<<<< HEAD
 .btn-play-campaign::before {
+=======
+/* .btn-play-campaign::before {
+>>>>>>> Test
     content: '';
     position: absolute;
     top: 3px;
@@ -103,7 +133,11 @@
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), transparent);
     border-radius: 25px;
     pointer-events: none;
+<<<<<<< HEAD
 }
+=======
+} */
+>>>>>>> Test
 
 .play-icon-tri {
     width: 0;
@@ -121,7 +155,11 @@
     text-shadow: 0 2px 0 rgba(62, 39, 35, 0.8);
     letter-spacing: 2px;
 }
+<<<<<<< HEAD
 .btn-play-campaign::before {
+=======
+/* .btn-play-campaign::before {
+>>>>>>> Test
     content: '';
     position: absolute;
     inset: 0;
@@ -134,7 +172,11 @@
     );
     border-radius: 16px;
     pointer-events: none;
+<<<<<<< HEAD
 }
+=======
+} */
+>>>>>>> Test
 
 /* --- SHOP BUTTONS (BUY) --- */
 .btn-buy {
@@ -374,4 +416,26 @@
 @keyframes pulseBtn {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.05); }
+<<<<<<< HEAD
 }
+=======
+}
+
+/* === Asset-based overrides (use PNG buttons) === */
+.btn-play-campaign {
+    background: url('../../Asset/Button/Play/Play.png') center/contain no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    animation: none;
+}
+.btn-play-campaign > * { display: none; }
+
+.menu-btn {
+    background: url('../../Asset/Button/Settings/Settings.png') center/contain no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.menu-btn svg { display: none; }
+>>>>>>> Test

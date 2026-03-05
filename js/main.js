@@ -19,6 +19,10 @@ import { ScoreSystem } from './game/scoreSystem.js';
 import { Effects } from './game/effects.js';
 
 import { Leaderboard } from './core/leaderboard.js'; // [NEW]
+<<<<<<< HEAD
+=======
+import { Preloader } from './core/preloader.js';
+>>>>>>> Test
 
 import { Tabs } from './ui/tabs.js';
 import { BottomNav } from './ui/bottomNav.js';
@@ -36,6 +40,21 @@ const SHOP_PRICES = {
     'vortex': 500
 };
 
+<<<<<<< HEAD
+=======
+const ASSETS_TO_PRELOAD = [
+    ...Preloader.DEFAULT_ASSETS,
+    'Asset/BackGround/Background.png',
+    'Asset/BackGround/Background2.png',
+    'Asset/Shop/Button-Bundle/Button-Bundle.png',
+    'Asset/Shop/Background-Bundle/Background_Bundle.png',
+    'Asset/Shop/Button-Bundle/Button-Bundle@2x.png',
+    'Asset/Shop/Background-Bundle/Background_Bundle@2x.png',
+    'Asset/Shop/Calendar/Calendar.png',
+    'Asset/Shop/Daily-Quest/Daily-Quest.png'
+];
+
+>>>>>>> Test
 // Helper: Cập nhật hiển thị số kim cương trên UI (Menu + Game)
 function updateCurrencyUI() {
     // [FIX] Lấy trực tiếp từ STATE.diamonds
@@ -50,9 +69,141 @@ function updateCurrencyUI() {
     if (gameGemEl) gameGemEl.innerText = gems.toLocaleString();
 }
 
+<<<<<<< HEAD
 function setGameObjectActive(elementId, isActive) {
     const el = document.getElementById(elementId);
     if (!el) return;
+=======
+// --- UI LEADERBOARD HELPER (top-level, dùng cho switchTab và init) ---
+async function updateLeaderboardUI() {
+    const container = document.getElementById('rank-list-container');
+    if (!container) return;
+
+    container.innerHTML = '<div style="text-align:center; color:#FFF; margin-top:20px; font-size:16px;">⏳ Đang tải...</div>';
+
+    let topScores = [];
+    let personalStats = {};
+    try {
+        topScores = await Leaderboard.getTopScores(10);
+        personalStats = await Leaderboard.getPersonalStats();
+    } catch (err) {
+        console.warn('Leaderboard fetch failed, using fallback data', err);
+        topScores = [];
+        personalStats = {};
+    }
+
+    container.innerHTML = ''; // Clear loading
+
+    const fallbackScores = [
+        { rank: 1, name: 'Enol', score: 123601, level: 123, userId: 'A1' },
+        { rank: 2, name: 'User9749544', score: 100003, level: 102, userId: 'A2' },
+        { rank: 3, name: 'User1573441', score: 67503, level: 88, userId: 'A3' },
+        { rank: 4, name: 'User6626293', score: 57997, level: 80, userId: 'A4' },
+        { rank: 5, name: 'User8025129', score: 53984, level: 77, userId: 'A5' },
+        { rank: 6, name: 'Daisy04', score: 48784, level: 73, userId: 'A6' },
+        { rank: 7, name: 'User7101622', score: 47380, level: 72, userId: 'A7' },
+        { rank: 8, name: 'User6623795', score: 47246, level: 71, userId: 'A8' },
+        { rank: 9, name: 'User9186615', score: 45132, level: 69, userId: 'A9' },
+        { rank: 10, name: 'Bạn', score: 1735824, level: 14, userId: 'ME', isUser: true }
+    ];
+
+    if (!Array.isArray(topScores) || topScores.length === 0) {
+        topScores = fallbackScores;
+    }
+
+    const listWrap = document.createElement('div');
+    listWrap.className = 'rank-list';
+    container.appendChild(listWrap);
+
+    topScores.forEach(player => {
+        const isMe = player.isUser;
+        const card = document.createElement('div');
+        let classes = 'rank-card';
+        if (player.rank === 1) classes += ' top1';
+        else if (player.rank === 2) classes += ' top2';
+        else if (player.rank === 3) classes += ' top3';
+        if (isMe) classes += ' me';
+        card.className = classes;
+
+        const pos = document.createElement('div');
+        pos.className = 'rank-pos';
+        pos.textContent = player.rank;
+        card.appendChild(pos);
+
+        const avatar = document.createElement('div');
+        avatar.className = 'rank-avatar';
+        avatar.textContent = '😺';
+        card.appendChild(avatar);
+
+        const main = document.createElement('div');
+        main.className = 'rank-main';
+        const nameEl = document.createElement('div');
+        nameEl.className = 'rank-name';
+        nameEl.textContent = player.name;
+        const subEl = document.createElement('div');
+        subEl.className = 'rank-sub';
+        subEl.textContent = `ID: ${player.userId || '—'}`;
+        main.appendChild(nameEl);
+        main.appendChild(subEl);
+        card.appendChild(main);
+
+        const right = document.createElement('div');
+        right.className = 'rank-right';
+        const scoreChip = document.createElement('div');
+        scoreChip.className = 'rank-score-chip';
+        scoreChip.textContent = player.score.toLocaleString();
+        const levelChip = document.createElement('div');
+        levelChip.className = 'rank-level-chip';
+        levelChip.textContent = `Level ${player.level || Math.max(1, Math.floor(player.score / 5000))}`;
+        right.appendChild(scoreChip);
+        right.appendChild(levelChip);
+        card.appendChild(right);
+
+        listWrap.appendChild(card);
+    });
+
+    const myHighScore = personalStats.highScore || 0;
+    const totalGames = personalStats.totalGames || 0;
+
+    const personalHTML = `
+        <div style="
+            margin-top:20px; 
+            padding:15px; 
+            background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            border-radius:12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        ">
+            <div style="text-align:center; font-size:14px; color:#FFF; margin-bottom:8px; opacity:0.9;">
+                📊 THÀNH TÍCH CỦA BẠN
+            </div>
+            <div style="display:flex; justify-content:space-around; align-items:center;">
+                <div style="text-align:center;">
+                    <div style="font-size:12px; color:#E0E0E0;">Điểm cao nhất</div>
+                    <div style="font-size:28px; color:#FFD93D; font-weight:bold; margin-top:5px;">
+                        ${myHighScore.toLocaleString()}
+                    </div>
+                </div>
+                <div style="width:2px; height:50px; background:rgba(255,255,255,0.3);"></div>
+                <div style="text-align:center;">
+                    <div style="font-size:12px; color:#E0E0E0;">Số ván chơi</div>
+                    <div style="font-size:28px; color:#52D681; font-weight:bold; margin-top:5px;">
+                        ${totalGames}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', personalHTML);
+}
+
+function setGameObjectActive(elementId, isActive, animate = false) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const isOverlay = el.classList.contains('overlay-backdrop');
+    const panel = el.querySelector('.settings-panel, .game-settings-panel, .quit-card, .candy-modal');
+    const panelAnim = !!panel;
+    const shouldAnimate = animate || panelAnim || el.classList.contains('candy-modal') || el.classList.contains('game-settings-panel') || el.classList.contains('settings-panel') || el.classList.contains('quit-card');
+>>>>>>> Test
     if (isActive) {
         // [FIXED] Thêm điều kiện kiểm tra 'game-over' để dùng flexbox căn giữa
         if (elementId.includes('menu') || elementId.includes('overlay') || elementId.includes('tab') || elementId === 'game-over') {
@@ -63,6 +214,7 @@ function setGameObjectActive(elementId, isActive) {
         }
         el.classList.remove('hidden');
         el.classList.add('active');
+<<<<<<< HEAD
     } else {
         el.style.display = 'none';
         el.classList.add('hidden');
@@ -70,6 +222,98 @@ function setGameObjectActive(elementId, isActive) {
     }
 }
 
+=======
+
+        if (shouldAnimate && panel) {
+            void panel.offsetWidth; // restart animation
+            panel.classList.remove('pop-out');
+            panel.classList.add('pop-in');
+            setTimeout(() => panel.classList.remove('pop-in'), 360);
+        } else if (shouldAnimate && !isOverlay) {
+            void el.offsetWidth;
+            el.classList.remove('pop-out');
+            el.classList.add('pop-in');
+            setTimeout(() => el.classList.remove('pop-in'), 360);
+        }
+    } else {
+        const hideOverlay = () => {
+            el.classList.add('hidden');
+            el.classList.remove('active');
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 320);
+        };
+
+        if (shouldAnimate && panel && !isOverlay) {
+            panel.classList.remove('pop-in');
+            panel.classList.add('pop-out');
+            el.classList.remove('hidden'); // keep visible for anim
+            el.classList.remove('active');
+            setTimeout(() => {
+                panel.classList.remove('pop-out');
+                el.style.display = 'none';
+                el.classList.add('hidden');
+            }, 520);
+        } else if (shouldAnimate && panel && isOverlay) {
+            // animate panel only, overlay fades via CSS
+            panel.classList.remove('pop-in');
+            panel.classList.add('pop-out');
+            el.classList.add('hidden'); // fade backdrop
+            el.classList.remove('active');
+            setTimeout(() => {
+                panel.classList.remove('pop-out');
+                el.style.display = 'none';
+            }, 520);
+        } else if (shouldAnimate && !panel && !isOverlay) {
+            el.classList.remove('pop-in');
+            el.classList.add('pop-out');
+            setTimeout(() => {
+                el.classList.remove('pop-out');
+                el.style.display = 'none';
+                el.classList.add('hidden');
+            }, 520);
+        } else {
+            if (isOverlay) hideOverlay();
+            else {
+                el.style.display = 'none';
+                el.classList.add('hidden');
+                el.classList.remove('active');
+            }
+        }
+    }
+}
+
+function switchTab(tabId, navEl) {
+    SoundManager.playClick();
+    document.querySelectorAll('.tab-pane').forEach(el => {
+        el.classList.remove('active');
+    });
+    const target = document.getElementById(tabId);
+    if (target) {
+        target.classList.add('active');
+
+        // [NEW] Nếu mở tab Rank thì load dữ liệu
+        if (tabId === 'tab-rank') {
+            updateLeaderboardUI();
+        }
+        EventBus.emit('ui:tabChanged', { tabId });
+    }
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+    if (navEl) navEl.classList.add('active');
+}
+
+window.switchTab = switchTab;
+
+async function bootGame() {
+    try {
+        await Preloader.run(ASSETS_TO_PRELOAD);
+    } catch (err) {
+        console.warn('Preload error, tiếp tục khởi động game', err);
+    }
+    startGame();
+}
+
+>>>>>>> Test
 // Hàm khởi động game (Gom toàn bộ code init cũ vào đây)
 async function startGame() {
     const canvas = document.getElementById('gameCanvas');
@@ -92,6 +336,13 @@ async function startGame() {
     TopBar.init();
     UIAnimations.init();
 
+<<<<<<< HEAD
+=======
+    // Đặt tab mặc định là Home để tất cả UI (promo badges) hiển thị
+    const homeBtn = document.querySelector('.nav-btn[data-target="tab-home"]');
+    window.switchTab('tab-home', homeBtn);
+
+>>>>>>> Test
     updateShopUI();
     updateCurrencyUI();
 
@@ -145,6 +396,7 @@ async function startGame() {
         GameLoop.start();
     };
 
+<<<<<<< HEAD
     // --- UI LEADERBOARD HELPER ---
     async function updateLeaderboardUI() {
         const container = document.getElementById('rank-list-container');
@@ -267,10 +519,13 @@ async function startGame() {
         if (navEl) navEl.classList.add('active');
     };
 
+=======
+>>>>>>> Test
     window.togglePause = () => {
         SoundManager.playClick();
         if (!STATE.isPaused) {
             GameLoop.pause();
+<<<<<<< HEAD
             setGameObjectActive('pause-menu', true);
             setGameObjectActive('settings-menu', false);
             setGameObjectActive('pause-overlay', true);
@@ -278,24 +533,53 @@ async function startGame() {
             setGameObjectActive('pause-menu', false);
             setGameObjectActive('settings-menu', false);
             setGameObjectActive('pause-overlay', false);
+=======
+            setGameObjectActive('pause-menu', true, true);
+            setGameObjectActive('settings-menu', false);
+            setGameObjectActive('pause-overlay', true);
+
+            // Sync toggle states in pause panel
+            updateToggleUI('game-btn-sound', STATE.settings.sound);
+            updateToggleUI('game-btn-vfx', STATE.settings.vfx);
+        } else {
+            setGameObjectActive('pause-menu', false, true);
+            setGameObjectActive('settings-menu', false, true);
+            setGameObjectActive('pause-overlay', false, true);
+>>>>>>> Test
             GameLoop.resume();
         }
     };
 
     window.openSettings = (source) => {
         SoundManager.playClick();
+<<<<<<< HEAD
         if (source === 'pause' && !STATE.isPaused) return;
         if (source === 'pause') setGameObjectActive('pause-menu', false);
         setGameObjectActive('settings-menu', true);
+=======
+        if (source === 'pause') {
+            // No separate settings panel for pause; keep current pause UI
+            return;
+        }
+        setGameObjectActive('settings-menu', true, true);
+>>>>>>> Test
         updateToggleUI('btn-sound', STATE.settings.sound);
         updateToggleUI('btn-vfx', STATE.settings.vfx);
     };
 
+<<<<<<< HEAD
     window.closeSettings = () => {
         SoundManager.playClick();
         setGameObjectActive('settings-menu', false);
         if (!document.getElementById('game-layer').classList.contains('hidden') && STATE.isPaused) {
             setGameObjectActive('pause-menu', true);
+=======
+    window.closeSettings = (source) => {
+        SoundManager.playClick();
+        setGameObjectActive('settings-menu', false, true);
+        if (!document.getElementById('game-layer').classList.contains('hidden') && STATE.isPaused) {
+            setGameObjectActive('pause-menu', true, true);
+>>>>>>> Test
         }
     };
 
@@ -308,6 +592,11 @@ async function startGame() {
             STATE.settings.vfx = !STATE.settings.vfx;
             updateToggleUI('btn-vfx', STATE.settings.vfx);
         }
+<<<<<<< HEAD
+=======
+        // Persist user preference immediately
+        STATE.save();
+>>>>>>> Test
     };
 
     // --- LOGIC MUA HÀNG (ĐÃ FIX) ---
@@ -350,8 +639,12 @@ async function startGame() {
         if (shopBtn) switchTab('tab-shop', shopBtn);
     };
 
+<<<<<<< HEAD
     window.quitGame = () => {
         SoundManager.playClick();
+=======
+    const performQuitToHome = () => {
+>>>>>>> Test
         GameLoop.stop();
         hideAllMenus();
         setGameObjectActive('game-layer', false);
@@ -362,6 +655,31 @@ async function startGame() {
         HUD.init();
     };
 
+<<<<<<< HEAD
+=======
+    window.quitGame = () => {
+        SoundManager.playClick();
+        // Show confirmation overlay instead of exiting immediately
+        setGameObjectActive('quit-confirm', true, true);
+        setGameObjectActive('pause-overlay', true);
+    };
+
+    window.cancelQuit = () => {
+        SoundManager.playClick();
+        setGameObjectActive('quit-confirm', false, true);
+        // Keep pause overlay if paused
+        if (STATE.isPaused) setGameObjectActive('pause-overlay', true);
+    };
+
+    window.confirmQuit = () => {
+        SoundManager.playClick();
+        setGameObjectActive('quit-confirm', false, true);
+        setGameObjectActive('pause-menu', false, true);
+        setGameObjectActive('pause-overlay', false, true);
+        performQuitToHome();
+    };
+
+>>>>>>> Test
     function hideAllMenus() {
         setGameObjectActive('pause-menu', false);
         setGameObjectActive('settings-menu', false);
@@ -391,9 +709,22 @@ async function startGame() {
     // ... (existing imports)
 
     // --- QUÀ TẶNG PROGRESS ---
+<<<<<<< HEAD
     const GIFT_STEP = 100000;
     let currentGiftTarget = GIFT_STEP;
     let isGiftReady = false;
+=======
+const GIFT_STEP = 100000;
+let currentGiftTarget = GIFT_STEP;
+let isGiftReady = false;
+const GIFT_PARTICLE_POOL = [];
+const getGiftParticle = () => GIFT_PARTICLE_POOL.pop() || document.createElement('div');
+const recycleGiftParticle = (el) => {
+    if (!el) return;
+    el.remove();
+    GIFT_PARTICLE_POOL.push(el);
+};
+>>>>>>> Test
 
     function resetGiftLogic() {
         currentGiftTarget = GIFT_STEP;
@@ -509,16 +840,28 @@ async function startGame() {
             flyer.style.opacity = '0';
             SoundManager.playMatch(5); // Boom sound
 
+<<<<<<< HEAD
             // Spawn Particles (MASSIVE NEON EXPLOSION)
             const particleCount = 300; // Even more particles!
+=======
+            // Spawn Particles (pooled to avoid DOM churn)
+            const particleCount = 140;
+>>>>>>> Test
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             // Neon Colors
             const colors = ['#FF00FF', '#00FFFF', '#FFFF00', '#FF3333', '#33FF33', '#3399FF', '#FF9933', '#FFFFFF'];
 
             for (let i = 0; i < particleCount; i++) {
+<<<<<<< HEAD
                 const p = document.createElement('div');
                 p.className = 'gift-particle';
+=======
+                const p = getGiftParticle();
+                p.className = 'gift-particle';
+                p.style.opacity = '1';
+                p.style.transform = 'translate(0px, 0px) scale(1)';
+>>>>>>> Test
 
                 // Random Size (Sand-like)
                 const size = 3 + Math.random() * 7;
@@ -543,7 +886,11 @@ async function startGame() {
                 }, 10);
 
                 // Cleanup (longer for slower animation)
+<<<<<<< HEAD
                 setTimeout(() => p.remove(), 4000);
+=======
+                setTimeout(() => recycleGiftParticle(p), 4000);
+>>>>>>> Test
             }
 
             // Phase 4: Open Wheel & Cleanup
@@ -585,7 +932,11 @@ async function startGame() {
             console.log(`[Session] 🎯 New high score: ${score}`);
 
             // TỰ ĐỘNG LƯU NGAY khi vượt qua kỷ lục
+<<<<<<< HEAD
             await Leaderboard.setScore(score);
+=======
+            await Leaderboard.setScore(score, { incrementGame: false });
+>>>>>>> Test
             console.log(`[Session] 💾 Auto-saved high score: ${score}`);
         }
     });
@@ -622,7 +973,11 @@ window.onload = function () {
 
     if (isLocal) {
         console.log("Đang chạy trên Localhost - Bỏ qua Facebook SDK");
+<<<<<<< HEAD
         startGame(); // Chạy game luôn!
+=======
+        bootGame(); // Chạy game sau khi preload
+>>>>>>> Test
     } else {
         console.log("Đang chạy trên Facebook - Đợi SDK");
         // Nếu không phải localhost thì chạy quy trình của Facebook
@@ -630,13 +985,21 @@ window.onload = function () {
             .then(function () {
                 FBInstant.setLoadingProgress(100);
                 FBInstant.startGameAsync().then(function () {
+<<<<<<< HEAD
                     startGame(); // Chạy game sau khi FB đã sẵn sàng
+=======
+                    bootGame(); // Chạy game sau khi FB đã sẵn sàng + preload
+>>>>>>> Test
                 });
             })
             .catch(function (err) {
                 console.error("Lỗi SDK:", err);
                 // Phòng hờ lỗi SDK thì vẫn cố gắng chạy game
+<<<<<<< HEAD
                 startGame();
+=======
+                bootGame();
+>>>>>>> Test
             });
     }
 };
@@ -796,4 +1159,8 @@ function initVisualsSystem() {
             sandCanvas.style.opacity = isActive ? "1" : "0";
         }
     };
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Test

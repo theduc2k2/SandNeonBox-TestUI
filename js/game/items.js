@@ -8,6 +8,10 @@ import { STATE } from '../core/state.js';
 import { CONFIG } from '../core/config.js';
 import { SoundManager } from '../audio/soundManager.js';
 import { EventBus } from '../core/eventBus.js';
+<<<<<<< HEAD
+=======
+import { sandPool, effectPool } from './pools.js';
+>>>>>>> Test
 
 class ItemsSystem {
     constructor() {
@@ -65,6 +69,7 @@ class ItemsSystem {
 
         // Visual Effects
         if (STATE.settings.vfx) {
+<<<<<<< HEAD
             STATE.activeEffects.push({ 
                 x: bx, y: by, size: 10, maxSize: CONFIG.BLAST_RADIUS * 1.8, 
                 color: 'rgba(255,255,255,0.9)', type: 'shockwave', life: 1.0 
@@ -79,12 +84,31 @@ class ItemsSystem {
         let destroyedCount = 0;
 
         for (let i = 0; i < STATE.particles.length; i++) {
+=======
+            const shock = effectPool.get();
+            shock.x = bx; shock.y = by;
+            shock.size = 10; shock.maxSize = CONFIG.BLAST_RADIUS * 1.8;
+            shock.color = 'rgba(255,255,255,0.9)'; shock.type = 'shockwave'; shock.life = 1.0;
+            STATE.activeEffects.push(shock);
+
+            const flash = effectPool.get();
+            flash.x = bx; flash.y = by;
+            flash.size = CONFIG.BOMB_RADIUS;
+            flash.color = 'rgba(255, 255, 255, 1)'; flash.type = 'flash'; flash.life = 0.2;
+            STATE.activeEffects.push(flash);
+        }
+
+        let destroyedCount = 0;
+
+        for (let i = STATE.particles.length - 1; i >= 0; i--) {
+>>>>>>> Test
             let p = STATE.particles[i];
             let dx = p.x - bx;
             let dy = p.y - by;
             let dist = Math.sqrt(dx * dx + dy * dy);
 
             if (dist < CONFIG.BOMB_RADIUS) {
+<<<<<<< HEAD
                 p.dead = true;
                 destroyedCount++;
                 if (STATE.settings.vfx) {
@@ -99,6 +123,27 @@ class ItemsSystem {
                 }
             } else if (dist < CONFIG.BLAST_RADIUS) {
                 p.dead = true;
+=======
+                destroyedCount++;
+                if (STATE.settings.vfx) {
+                    const fx = effectPool.get();
+                    fx.x = p.x; fx.y = p.y;
+                    const safeDist = dist || 1;
+                    fx.vx = (dx / safeDist) * (Math.random() * 8 + 2);
+                    fx.vy = (dy / safeDist) * (Math.random() * 8 + 2);
+                    fx.color = p.color;
+                    fx.life = 1.0 + Math.random() * 0.5;
+                    fx.gravity = 0.4;
+                    fx.friction = 0.99;
+                    fx.type = '';
+                    STATE.activeEffects.push(fx);
+                }
+                sandPool.release(p);
+                const last = STATE.particles.length - 1;
+                STATE.particles[i] = STATE.particles[last];
+                STATE.particles.pop();
+            } else if (dist < CONFIG.BLAST_RADIUS) { 
+>>>>>>> Test
                 let angle = Math.atan2(dy, dx);
                 let force = (CONFIG.BLAST_RADIUS - dist) / CONFIG.BLAST_RADIUS * 15;
                 STATE.flyingParticles.push({
@@ -108,12 +153,21 @@ class ItemsSystem {
                     color: p.color,
                     baseColor: p.baseColor
                 });
+<<<<<<< HEAD
             } else {
                 newParticles.push(p);
             }
         }
 
         STATE.particles = newParticles;
+=======
+                sandPool.release(p);
+                const last = STATE.particles.length - 1;
+                STATE.particles[i] = STATE.particles[last];
+                STATE.particles.pop();
+            }
+        }
+>>>>>>> Test
         STATE.isStable = false; 
         STATE.stabilityCounter = 0;
 
@@ -199,18 +253,32 @@ class ItemsSystem {
         SoundManager.playVortex();
         
         if (STATE.settings.vfx) {
+<<<<<<< HEAD
             STATE.activeEffects.push({ 
                 x: x, y: y, size: 5, maxSize: 60, 
                 color: 'rgba(157, 0, 255, 0.8)', type: 'shockwave', life: 1.0 
             });
+=======
+            const shock = effectPool.get();
+            shock.x = x; shock.y = y; shock.size = 5; shock.maxSize = 60;
+            shock.color = 'rgba(157, 0, 255, 0.8)'; shock.type = 'shockwave'; shock.life = 1.0;
+            STATE.activeEffects.push(shock);
+>>>>>>> Test
         }
 
         // 1. Initial Kill (Xóa ngay lập tức tại tâm)
         let initialKillRadius = 45;
+<<<<<<< HEAD
         let survivedParticles = [];
         let killCount = 0;
 
         for (let p of STATE.particles) {
+=======
+        let killCount = 0;
+
+        for (let i = STATE.particles.length - 1; i >= 0; i--) {
+            const p = STATE.particles[i];
+>>>>>>> Test
             let dist = Math.sqrt((p.x - x)**2 + (p.y - y)**2);
             if (dist < initialKillRadius) {
                 killCount++;
@@ -218,12 +286,22 @@ class ItemsSystem {
                 let c = Math.floor(p.x / CONFIG.PARTICLE_SIZE);
                 let r = Math.floor(p.y / CONFIG.PARTICLE_SIZE);
                 if (STATE.grid[c] && STATE.grid[c][r]) STATE.grid[c][r] = null;
+<<<<<<< HEAD
                 // Không push vào survivedParticles -> bị xóa
             } else {
                 survivedParticles.push(p);
             }
         }
         STATE.particles = survivedParticles;
+=======
+
+                sandPool.release(p);
+                const last = STATE.particles.length - 1;
+                STATE.particles[i] = STATE.particles[last];
+                STATE.particles.pop();
+            }
+        }
+>>>>>>> Test
         
         if (killCount > 0) {
             this.awardPoints(killCount * 5, x, y, '#9d00ff');
@@ -334,10 +412,17 @@ class ItemsSystem {
                     if (this.accumulatedScore > 0) {
                         this.awardPoints(this.accumulatedScore, v.x, v.y, '#9d00ff');
                         if (STATE.settings.vfx) {
+<<<<<<< HEAD
                             STATE.activeEffects.push({ 
                                 x: v.x, y: v.y, size: 10, maxSize: 80, 
                                 color: 'rgba(255, 255, 255, 0.6)', type: 'shockwave', life: 0.8 
                             });
+=======
+                            const shock = effectPool.get();
+                            shock.x = v.x; shock.y = v.y; shock.size = 10; shock.maxSize = 80;
+                            shock.color = 'rgba(255, 255, 255, 0.6)'; shock.type = 'shockwave'; shock.life = 0.8;
+                            STATE.activeEffects.push(shock);
+>>>>>>> Test
                         }
                     }
                     STATE.physicsFrozenTimer = 60; // Dừng vật lý thêm 1 chút sau khi nổ xong
@@ -351,7 +436,18 @@ class ItemsSystem {
         
         // [QUAN TRỌNG] Lọc bỏ hạt chết NGAY LẬP TỨC để tránh Grid/Physics xử lý nhầm
         // Logic này trong test.html nằm ở cuối updatePhysics (phần vortex)
+<<<<<<< HEAD
         STATE.particles = STATE.particles.filter(p => !p.dead);
+=======
+        for (let i = STATE.particles.length - 1; i >= 0; i--) {
+            if (STATE.particles[i].dead) {
+                sandPool.release(STATE.particles[i]);
+                const last = STATE.particles.length - 1;
+                STATE.particles[i] = STATE.particles[last];
+                STATE.particles.pop();
+            }
+        }
+>>>>>>> Test
     }
 
     awardPoints(points, x, y, color) {
@@ -361,4 +457,8 @@ class ItemsSystem {
     }
 }
 
+<<<<<<< HEAD
 export const Items = new ItemsSystem();
+=======
+export const Items = new ItemsSystem();
+>>>>>>> Test

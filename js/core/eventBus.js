@@ -76,7 +76,14 @@ export const EVENTS = {
     // UI Triggers
     OPEN_SHOP: 'OPEN_SHOP',
     OPEN_SETTINGS: 'OPEN_SETTINGS',
+<<<<<<< HEAD
     
     // Audio Triggers
     PLAY_SFX: 'PLAY_SFX'
 };
+=======
+    NAVIGATE_TAB: 'NAVIGATE_TAB',
+    // Audio Triggers
+    PLAY_SFX: 'PLAY_SFX'
+};
+>>>>>>> Test

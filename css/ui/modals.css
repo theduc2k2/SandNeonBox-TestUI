@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * RESPONSIBILITY: Styles for overlays, popups, pause menu, settings, and modal-specific content.
+=======
+ * RESPONSIBILITY: Styles for overlays, popups, pause menu, and modal-specific content.
+>>>>>>> Test
  * THEME: SANDTRIX (Wood & Sand)
  */
 
@@ -10,7 +14,10 @@
     left: 0;
     width: 100%;
     height: 100%;
+<<<<<<< HEAD
     /* Nền tối mờ để nổi bật modal gỗ */
+=======
+>>>>>>> Test
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
@@ -20,12 +27,17 @@
     align-items: center;
     z-index: 100;
     opacity: 1;
+<<<<<<< HEAD
     transition: opacity 0.3s, transform 0.3s;
+=======
+    transition: opacity 0.4s ease, transform 0.4s ease;
+>>>>>>> Test
 }
 
 .screen-overlay.hidden {
     opacity: 0;
     pointer-events: none;
+<<<<<<< HEAD
     transform: scale(1.1);
 }
 
@@ -79,10 +91,27 @@
 .candy-modal {
     background: #C4A574; /* Màu gỗ trung bình */
     border: 6px solid #8B7355; /* Viền gỗ đậm */
+=======
+    transform: scale(0.94);
+}
+
+.pop-in {
+    animation: modal-pop 0.65s cubic-bezier(0.25, 0.9, 0.3, 1) both;
+}
+.pop-out {
+    animation: modal-pop-reverse 0.5s cubic-bezier(0.25, 0.9, 0.3, 1) both;
+}
+
+/* --- PAUSE MENU & GENERAL MODAL --- */
+.candy-modal {
+    background: #C4A574;
+    border: 6px solid #8B7355;
+>>>>>>> Test
     border-radius: 35px;
     padding: 25px;
     width: 85%;
     max-width: 320px;
+<<<<<<< HEAD
     /* Shadow đậm */
     box-shadow: 
         0 10px 0 #5E4B35,
@@ -93,6 +122,21 @@
 }
 
 /* Hiệu ứng đinh vít ở 4 góc bảng gỗ (Trang trí) */
+=======
+    box-shadow:
+        0 10px 0 #5E4B35,
+        0 20px 40px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    animation: modal-pop 0.65s cubic-bezier(0.25, 0.9, 0.3, 1) both;
+    position: relative;
+}
+
+.overlay-backdrop.hidden .candy-modal,
+.overlay-backdrop.hidden .pop-in {
+    animation: modal-pop-reverse 0.5s cubic-bezier(0.25, 0.9, 0.3, 1) both;
+}
+
+>>>>>>> Test
 .candy-modal::after {
     content: '';
     position: absolute;
@@ -105,7 +149,11 @@
 .candy-modal.small {
     width: 80%;
     padding: 15px;
+<<<<<<< HEAD
     background: #FFFBF0; /* Modal nhỏ dùng nền giấy */
+=======
+    background: #FFFBF0;
+>>>>>>> Test
     border-color: #DEB887;
     box-shadow: 0 8px 0 rgba(139, 115, 85, 0.4), 0 15px 30px rgba(0, 0, 0, 0.15);
 }
@@ -119,7 +167,10 @@
     transform: rotate(-2deg);
 }
 
+<<<<<<< HEAD
 /* Sub-overlay cho Shop Mini */
+=======
+>>>>>>> Test
 .sub-overlay {
     position: absolute;
     top: 0;
@@ -133,14 +184,21 @@
     border-radius: 30px;
 }
 
+<<<<<<< HEAD
 /* --- PAUSE MENU SHOP STYLES --- */
+=======
+>>>>>>> Test
 .pause-shop-section {
     margin: 15px 0;
     width: 100%;
     border-top: 2px dashed rgba(255,255,255,0.3);
     border-bottom: 2px dashed rgba(255,255,255,0.3);
     padding: 15px 0;
+<<<<<<< HEAD
     background: rgba(0,0,0,0.05); /* Tối nhẹ khu vực shop */
+=======
+    background: rgba(0,0,0,0.05);
+>>>>>>> Test
     border-radius: 10px;
 }
 
@@ -161,7 +219,11 @@
 }
 
 .mini-shop-item {
+<<<<<<< HEAD
     background: #FFF; /* Giấy trắng */
+=======
+    background: #FFF;
+>>>>>>> Test
     border: 2px solid #DEB887;
     border-radius: 15px;
     padding: 8px 5px;
@@ -180,6 +242,15 @@
     box-shadow: none;
 }
 
+<<<<<<< HEAD
+=======
+@keyframes popInModal {
+    0% { transform: scale(0.85); opacity: 0; }
+    60% { transform: scale(1.03); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+>>>>>>> Test
 .mini-item-icon {
     font-size: 24px;
     margin-bottom: 5px;
@@ -190,7 +261,11 @@
 .mini-item-price {
     font-size: 12px;
     font-weight: 700;
+<<<<<<< HEAD
     color: #5DADE2; /* Xanh biển */
+=======
+    color: #5DADE2;
+>>>>>>> Test
     display: flex;
     align-items: center;
     gap: 3px;
@@ -200,13 +275,24 @@
 .mini-item-name {
     font-size: 10px;
     font-weight: 700;
+<<<<<<< HEAD
     color: #8B7355; /* Tên item màu nâu */
+=======
+    color: #8B7355;
+>>>>>>> Test
     margin-bottom: 2px;
     text-transform: uppercase;
 }
 
+<<<<<<< HEAD
 /* Animation cho modal xuất hiện */
 @keyframes popIn {
     from { transform: scale(0.5); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+=======
+@keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+>>>>>>> Test

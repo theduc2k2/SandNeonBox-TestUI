@@ -7,6 +7,10 @@
 
 import { STATE } from '../core/state.js';
 import { CONFIG } from '../core/config.js';
+<<<<<<< HEAD
+=======
+import { sandPool, effectPool } from './pools.js';
+>>>>>>> Test
 
 export const Effects = {
     bgCanvas: null,
@@ -53,7 +57,13 @@ export const Effects = {
     },
 
     addEffect(effectData) {
+<<<<<<< HEAD
         STATE.activeEffects.push(effectData);
+=======
+        const e = effectPool.get();
+        Object.assign(e, effectData);
+        STATE.activeEffects.push(e);
+>>>>>>> Test
     },
 
     addFlyingParticle(particleData) {
@@ -82,7 +92,15 @@ export const Effects = {
                 }
             }
             if (e.life <= 0 || e.y > CONFIG.BOARD_HEIGHT + CONFIG.DOCK_HEIGHT + 50) {
+<<<<<<< HEAD
                 STATE.activeEffects.splice(i, 1);
+=======
+                effectPool.release(e);
+                const last = STATE.activeEffects.length - 1;
+                STATE.activeEffects[i] = STATE.activeEffects[last];
+                STATE.activeEffects.pop();
+                continue;
+>>>>>>> Test
             }
         }
 
@@ -135,6 +153,7 @@ export const Effects = {
     },
 
     reintegrateParticle(p) {
+<<<<<<< HEAD
         STATE.particles.push({ 
             x: p.x, 
             y: p.y, 
@@ -142,6 +161,15 @@ export const Effects = {
             baseColor: p.baseColor || p.color, 
             dead: false 
         });
+=======
+        const particle = sandPool.get();
+        particle.x = p.x;
+        particle.y = p.y;
+        particle.color = p.color;
+        particle.baseColor = p.baseColor || p.color;
+        particle.dead = false;
+        STATE.particles.push(particle);
+>>>>>>> Test
         // Reset stability để physics chạy lại
         STATE.isStable = false;
         STATE.stabilityCounter = 0;
@@ -176,4 +204,8 @@ export const Effects = {
         this.bgCtx.globalAlpha = 1.0;
         requestAnimationFrame(() => this.animateBg());
     }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> Test

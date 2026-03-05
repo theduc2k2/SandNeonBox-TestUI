@@ -8,6 +8,10 @@ import { STATE } from '../core/state.js';
 import { CONFIG } from '../core/config.js';
 import { SoundManager } from '../audio/soundManager.js';
 import { EventBus, EVENTS } from '../core/eventBus.js';
+<<<<<<< HEAD
+=======
+import { sandPool, effectPool } from './pools.js';
+>>>>>>> Test
 
 // [OPTIMIZATION] Random Lookup Table (Tránh gọi Math.random quá nhiều)
 const RANDOM_LUT = new Float32Array(4096);
@@ -38,7 +42,14 @@ export const Physics = {
         }
 
         // 3. Logic Cát Rơi (Chỉ chạy khi không bị đóng băng)
+<<<<<<< HEAD
         this.updateSandParticles();
+=======
+        const iterations = CONFIG.SAND_UPDATES_PER_FRAME || 1;
+        for (let i = 0; i < iterations; i++) {
+            this.updateSandParticles();
+        }
+>>>>>>> Test
     },
 
     updateSandParticles() {
@@ -59,7 +70,14 @@ export const Physics = {
         let activeCount = 0;
         for (let i = 0; i < STATE.particles.length; i++) {
             let p = STATE.particles[i];
+<<<<<<< HEAD
             if (p.dead) continue;
+=======
+            if (p.dead) {
+                sandPool.release(p);
+                continue;
+            }
+>>>>>>> Test
 
             let c = Math.floor(p.x / pSize);
             let r = Math.floor(p.y / pSize);
@@ -103,17 +121,29 @@ export const Physics = {
 
                     if (leftEmpty && rightEmpty) {
                         // Cả 2 bên đều trống: Random 50/50
+<<<<<<< HEAD
                         if (Math.random() < 0.5) {
+=======
+                        if (fastRand() < 0.5) {
+>>>>>>> Test
                             this.moveParticleInGrid(p, c, r, c - 1, r + 1);
                         } else {
                             this.moveParticleInGrid(p, c, r, c + 1, r + 1);
                         }
                         anyMoved = true;
+<<<<<<< HEAD
                     } else if (leftEmpty && Math.random() < 0.9) { 
                         // Chỉ bên trái trống + 90% cơ hội trượt (tạo độ ma sát)
                         this.moveParticleInGrid(p, c, r, c - 1, r + 1);
                         anyMoved = true;
                     } else if (rightEmpty && Math.random() < 0.9) {
+=======
+                    } else if (leftEmpty && fastRand() < 0.9) { 
+                        // Chỉ bên trái trống + 90% cơ hội trượt (tạo độ ma sát)
+                        this.moveParticleInGrid(p, c, r, c - 1, r + 1);
+                        anyMoved = true;
+                    } else if (rightEmpty && fastRand() < 0.9) {
+>>>>>>> Test
                         // Chỉ bên phải trống + 90% cơ hội trượt
                         this.moveParticleInGrid(p, c, r, c + 1, r + 1);
                         anyMoved = true;
@@ -206,6 +236,7 @@ export const Physics = {
     },
 
     reintegrateParticle(p) {
+<<<<<<< HEAD
         STATE.particles.push({
             x: p.x,
             y: p.y,
@@ -213,6 +244,15 @@ export const Physics = {
             baseColor: p.baseColor || p.color,
             dead: false
         });
+=======
+        const particle = sandPool.get();
+        particle.x = p.x;
+        particle.y = p.y;
+        particle.color = p.color;
+        particle.baseColor = p.baseColor || p.color;
+        particle.dead = false;
+        STATE.particles.push(particle);
+>>>>>>> Test
         STATE.isStable = false;
         STATE.stabilityCounter = 0;
     },
@@ -230,6 +270,7 @@ export const Physics = {
             if (group) {
                 for (let p of group) {
                     p.dead = true;
+<<<<<<< HEAD
                     STATE.activeEffects.push({
                         x: p.x, y: p.y,
                         vx: (fastRand() - 0.5) * 2,
@@ -239,6 +280,18 @@ export const Physics = {
                         friction: 0.96,
                         gravity: 0.05
                     });
+=======
+                    const fx = effectPool.get();
+                    fx.x = p.x; fx.y = p.y;
+                    fx.vx = (fastRand() - 0.5) * 2;
+                    fx.vy = -(fastRand() * 2 + 1);
+                    fx.color = p.color;
+                    fx.life = 1.0;
+                    fx.friction = 0.96;
+                    fx.gravity = 0.05;
+                    fx.type = '';
+                    STATE.activeEffects.push(fx);
+>>>>>>> Test
                 }
                 seq.groupIndex++;
             } else {
@@ -376,4 +429,8 @@ export const Physics = {
 
         STATE.stabilityCounter = 0;
     }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> Test

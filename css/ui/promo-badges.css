@@ -1,0 +1,204 @@
+.promo-badges {
+    position: absolute;
+    top: 260px;
+    left: 0;
+    width: 100%;
+    pointer-events: auto;
+    z-index: 500;
+}
+
+.promo-badge-col {
+    position: absolute;
+    pointer-events: none;
+    display: grid;
+    gap: 16px;
+}
+
+.promo-badge-col.left {
+    left: 12px;
+}
+
+.promo-badge-col.right {
+    right: 12px;
+}
+
+.promo-badge {
+    pointer-events: auto;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transition: transform 0.1s ease;
+    z-index: 501;
+}
+
+.promo-badge:active {
+    transform: translateY(2px) scale(0.97);
+}
+
+.badge-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-bottom: -25px;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate; /* allow pseudo layers to stack independently */
+    z-index: 1; /* circle layer */
+}
+
+.badge-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 70px;
+    height: 70px;
+    transform: translate(-50%, -60%);
+    object-fit: contain;
+    z-index: 2;
+    opacity: 1;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+}
+
+.badge-circle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('../../Asset/Shop/Background-Bundle/Background_Bundle.png') center/100% 100% no-repeat;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    z-index: 1; /* bundle art above the glow */
+}
+
+.badge-circle::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 97, 161, 0.16);
+    z-index: 0; /* sit beneath bundle background */
+}
+
+.badge-circle--calendar::before {
+    opacity: 0.9;
+}
+
+.badge-circle--calendar::after {
+    background: rgba(0, 97, 161, 0.06);
+}
+
+.badge-circle--calendar .badge-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.badge-circle--calendar {
+    overflow: visible; /* allow larger calendar icon */
+}
+
+.badge-circle--daily-quest .badge-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.badge-circle--daily-quest {
+    overflow: visible;
+}
+
+.badge-pill {
+    position: relative;
+    z-index: 5; /* top layer over circle/icon */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    width: 85px;
+    height:36px;
+    padding: 0 0px;
+    
+    background: url('../../Asset/Shop/Button-Bundle/Button-Bundle.png') center/100% 100% no-repeat;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    color: #fff;
+    font-weight: 900;
+    font-size: 10px;
+    line-height: 1;
+    text-align: center;
+    text-shadow: none;
+    box-shadow: none;
+    border: none;
+}
+
+.promo-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    backdrop-filter: blur(3px);
+}
+
+.promo-overlay.hidden {
+    display: none;
+}
+
+.promo-panel {
+    width: 85%;
+    max-width: 320px;
+    background: url('../../Asset/Shop/Background-Bundle/Background_Bundle.png') center/cover no-repeat;
+    border-radius: 18px;
+    padding: 18px;
+    position: relative;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+.promo-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    border: none;
+    background: rgba(0,0,0,0.35);
+    color: #fff;
+    font-size: 20px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.promo-content {
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.35);
+}
+
+.promo-content h3 {
+    margin: 22px 0 8px;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.promo-content p {
+    margin: 0 0 14px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.promo-buy-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #ffb347, #ff6b6b);
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}

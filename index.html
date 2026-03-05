@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
+=======
+﻿<!DOCTYPE html>
+>>>>>>> Test
 <html lang="vi">
 
 <head>
@@ -19,7 +23,17 @@
     <link rel="stylesheet" href="css/ui/buttons.css">
     <link rel="stylesheet" href="css/ui/bottom-nav.css">
     <link rel="stylesheet" href="css/ui/modals.css">
+<<<<<<< HEAD
     <link rel="stylesheet" href="css/ui/spin-wheel.css">
+=======
+    <link rel="stylesheet" href="css/ui/daily-bonus.css">
+    <link rel="stylesheet" href="css/ui/settings.css">
+    <link rel="stylesheet" href="css/ui/pause.css">
+    <link rel="stylesheet" href="css/ui/spin-wheel.css">
+    <link rel="stylesheet" href="css/ui/promo-badges.css">
+    <link rel="stylesheet" href="css/ui/loading.css">
+    <link rel="stylesheet" href="css/ui/shop.css">
+>>>>>>> Test
 
 
     <style>
@@ -35,7 +49,11 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+<<<<<<< HEAD
             background: var(--sand-bg-outer);
+=======
+            background: #2b1f17 url('Asset/BackGround/Background.png') center top / cover no-repeat;
+>>>>>>> Test
             font-family: 'Fredoka', sans-serif;
         }
 
@@ -50,7 +68,11 @@
             overflow: hidden;
             width: 100%;
             height: 100%;
+<<<<<<< HEAD
             background: var(--wood-medium);
+=======
+            background: #2b1f17 url('Asset/BackGround/Background.png') center top / cover no-repeat;
+>>>>>>> Test
         }
 
         @media (min-width: 500px) {
@@ -86,20 +108,81 @@
 
 <body>
 
+<<<<<<< HEAD
     <div id="app-container">
         <div class="app-bg">
             <canvas id="wood-canvas"></canvas>
             <canvas id="sand-blocks-canvas"></canvas>
         </div>
+=======
+        <div id="app-container">
+            <div class="app-bg">
+                <canvas id="wood-canvas"></canvas>
+                <canvas id="sand-blocks-canvas"></canvas>
+            </div>
+
+            <!-- DAILY BONUS MODAL -->
+            <div id="daily-bonus-overlay" class="overlay-backdrop hidden">
+                <div class="daily-bonus-modal">
+                    <button class="daily-close" aria-label="Close" onclick="document.getElementById('daily-bonus-overlay').classList.add('hidden')">×</button>
+                    <div class="daily-title">Daily Reward</div>
+                    <div class="daily-grid">
+                        <div class="daily-card daily-card--today">
+                            <div class="daily-icon"><img src="Asset/IconGame/Votex/Votex.png" alt="Vortex"></div>
+                            <div class="daily-ribbon">x1</div>
+                            <div class="daily-day">Day 1</div>
+                        </div>
+                        <div class="daily-card daily-card--gold daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Gold/Gold.png" alt="Gold"></div>
+                            <div class="daily-ribbon">500</div>
+                            <div class="daily-day">Day 2</div>
+                        </div>
+                        <div class="daily-card daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Eraser/Eraser.png" alt="Eraser"></div>
+                            <div class="daily-ribbon">x1</div>
+                            <div class="daily-day">Day 3</div>
+                        </div>
+                        <div class="daily-card daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Gold/Gold.png" alt="Gold"></div>
+                            <div class="daily-ribbon">200</div>
+                            <div class="daily-day">Day 4</div>
+                        </div>
+                        <div class="daily-card daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Heart/Heart.png" alt="Heart"></div>
+                            <div class="daily-ribbon">30m</div>
+                            <div class="daily-day">Day 5</div>
+                        </div>
+                        <div class="daily-card daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Bom/Bomp.png" alt="Bomb"></div>
+                            <div class="daily-ribbon">x1</div>
+                            <div class="daily-day">Day 6</div>
+                        </div>
+                        <div class="daily-card daily-card--grand daily-card--locked">
+                            <div class="daily-icon"><img src="Asset/IconGame/Gold/Gold.png" alt="Gold"></div>
+                            <div class="daily-ribbon">1000</div>
+                            <div class="daily-extra"><img src="Asset/IconGame/Votex/Votex.png" alt="Vortex"><span>x1</span></div>
+                            <div class="daily-extra"><img src="Asset/IconGame/Bom/Bomp.png" alt="Bomb"><span>x1</span></div>
+                            <div class="daily-day grand-day">Day 7</div>
+                        </div>
+                    </div>
+                    <div class="daily-footer">Tap to claim</div>
+                    <button class="daily-cta" onclick="document.getElementById('daily-bonus-overlay').classList.add('hidden')">Claim</button>
+                </div>
+            </div>
+>>>>>>> Test
 
         <div id="game-layer" class="hidden">
             <div id="inner-screen">
 
                 <div class="hud-top">
                     <div class="hud-diamond-pill">
+<<<<<<< HEAD
                         <svg class="diamond-icon" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="#5DADE2" stroke="#FFFFFF" stroke-width="1.5" d="M12 2L2 9l10 13 10-13-10-7z" />
                         </svg>
+=======
+                        <img class="diamond-icon coin-icon" src="Asset/IconGame/Gold/Gold.png" width="22" height="22" alt="coin">
+>>>>>>> Test
                         <span id="game-diamond-display">0</span>
                     </div>
 
@@ -113,7 +196,11 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
                 <!-- THANH QUÀ TẶNG (GIFT PROGRESS) -->
+=======
+                <!-- THANH QUÃ€ Táº¶NG (GIFT PROGRESS) -->
+>>>>>>> Test
                 <div id="gift-progress-container">
                     <div class="gift-bar-bg">
                         <div class="gift-bar-fill" id="gift-fill" style="width: 0%;"></div>
@@ -121,7 +208,11 @@
                         <div class="gift-text" id="gift-text">0 / 1000</div>
                     </div>
                     <div class="gift-icon-box" id="gift-icon">
+<<<<<<< HEAD
                         <div class="gift-emoji">🎁</div>
+=======
+                        <div class="gift-emoji">ðŸŽ</div>
+>>>>>>> Test
                     </div>
                 </div>
 
@@ -133,9 +224,24 @@
 
             </div>
         </div>
+<<<<<<< HEAD
         <div id="loading game" class="loading-game">
             <div class="loading">
 
+=======
+        <div id="loading-overlay">
+            <div class="loading-content">
+                <div class="loading-logo-box">
+                    <div class="loading-logo-title">PIXEL<br>SANDTRIX</div>
+                    <div class="loading-logo-subtitle">Sand Block Edition</div>
+                </div>
+            </div>
+            <div class="bottom-loading-area">
+                <div class="loading-bar-container">
+                    <div class="loading-bar-fill" id="loading-bar-fill"></div>
+                </div>
+                <div class="loading-text" id="loading-percent">0%</div>
+>>>>>>> Test
             </div>
         </div>
 
@@ -147,31 +253,57 @@
                     <h1 id="final-score">0</h1>
                 </div>
                 <div class="panel-buttons">
+<<<<<<< HEAD
                     <button class="btn-primary" onclick="window.enterGame()">🔄 PLAY AGAIN</button>
                     <button class="btn-secondary" onclick="window.quitGame()">🏠 MENU</button>
+=======
+                    <button class="btn-primary" onclick="window.enterGame()">ðŸ”„ PLAY AGAIN</button>
+                    <button class="btn-secondary" onclick="window.quitGame()">ðŸ  MENU</button>
+>>>>>>> Test
                 </div>
             </div>
         </div>
 
         <div id="menu-layer">
+<<<<<<< HEAD
+=======
+            <div id="promo-overlay" class="promo-overlay hidden">
+                <div class="promo-panel">
+                    <button class="promo-close" aria-label="Close" onclick="window.closePromoOverlay()">×</button>
+                    <div class="promo-content">
+                        <h3 id="promo-title">Bundle</h3>
+                        <p id="promo-subtitle">Purchase this pack?</p>
+                        <button class="promo-buy-btn" onclick="window.buyPromoBundle()">MUA NGAY</button>
+                    </div>
+                </div>
+            </div>
+>>>>>>> Test
 
             <div class="top-resource-bar">
                 <div class="res-pill">
                     <div class="res-icon-circle">
+<<<<<<< HEAD
                         <svg style="width:20px; height:20px; fill:#FFFFFF" viewBox="0 0 24 24">
                             <path
                                 d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                         </svg>
+=======
+                        <img class="res-heart-icon" src="Asset/IconGame/Heart/Heart.png" width="22" height="22" alt="heart">
+>>>>>>> Test
                     </div>
                     <span class="res-val">FULL</span>
                 </div>
 
                 <div class="res-pill" style="margin-left:auto; margin-right:10px;">
+<<<<<<< HEAD
                     <div class="res-icon-circle diamond">
                         <svg style="width:20px; height:20px; fill:#FFFFFF" viewBox="0 0 24 24">
                             <path d="M12,2L2,12l10,10l10-10L12,2z M12,18l-6-6l6-6l6,6L12,18z" />
                         </svg>
                     </div>
+=======
+                    <div class="res-icon-circle diamond"><img class="coin-icon" src="Asset/IconGame/Gold/Gold.png" width="22" height="22" alt="coin"></div>
+>>>>>>> Test
                     <span class="res-val" id="menu-diamond-display">2,450</span>
                 </div>
 
@@ -183,6 +315,7 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
             <div class="tab-content-container">
                 <div id="tab-shop" class="tab-pane">
                     <div style="height:20px;"></div>
@@ -220,6 +353,143 @@
                             <div style="font-size:60px;">💎</div>
                             <button class="btn-buy" style="background: linear-gradient(to bottom, #5DADE2, #3498DB);"
                                 onclick="buyRealMoneyItem('gems_1000')">$0.99</button>
+=======
+            <div class="promo-badges">
+                <div class="promo-badge-col left" id="promo-left"></div>
+                <div class="promo-badge-col right" id="promo-right"></div>
+            </div>
+
+            <div class="tab-content-container">
+                <div id="tab-shop" class="tab-pane">
+                    <div class="shop-screen">
+                        <div class="shop-banner">
+                            <span class="shop-title">Shop</span>
+                        </div>
+
+                        <div class="shop-list shop-list--packs">
+                            <div class="shop-pack shop-pack--small">
+                                <div class="pack-top">
+                                    <div class="pack-coin">
+                                        <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                        <span>100</span>
+                                    </div>
+                                    <div class="pack-items">
+                                        <div class="pack-item"><img src="Asset/IconGame/Bom/Bomp.png" alt="bomb"><span>x10</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Eraser/Eraser.png" alt="eraser"><span>x10</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Votex/Votex.png" alt="vortex"><span>x10</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Heart/Heart.png" alt="heart"><span>20m</span></div>
+                                    </div>
+                                </div>
+                                <div class="pack-bottom">
+                                    <div class="pack-name">Small Pack</div>
+                                    <button class="pack-price" onclick="buyRealMoneyItem('pack_small')">100.000</button>
+                                </div>
+                            </div>
+
+                            <div class="shop-pack shop-pack--medium">
+                                <div class="pack-top">
+                                    <div class="pack-coin">
+                                        <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                        <span>350</span>
+                                    </div>
+                                    <div class="pack-items">
+                                        <div class="pack-item"><img src="Asset/IconGame/Bom/Bomp.png" alt="bomb"><span>x20</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Eraser/Eraser.png" alt="eraser"><span>x20</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Votex/Votex.png" alt="vortex"><span>x15</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Heart/Heart.png" alt="heart"><span>45m</span></div>
+                                    </div>
+                                </div>
+                                <div class="pack-bottom">
+                                    <div class="pack-name">Medium Pack</div>
+                                    <button class="pack-price pack-price--green" onclick="buyRealMoneyItem('pack_medium')">250.000</button>
+                                </div>
+                            </div>
+
+                            <div class="shop-pack shop-pack--large">
+                                <div class="pack-top">
+                                    <div class="pack-coin">
+                                        <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                        <span>800</span>
+                                    </div>
+                                    <div class="pack-items">
+                                        <div class="pack-item"><img src="Asset/IconGame/Bom/Bomp.png" alt="bomb"><span>x40</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Eraser/Eraser.png" alt="eraser"><span>x40</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Votex/Votex.png" alt="vortex"><span>x30</span></div>
+                                        <div class="pack-item"><img src="Asset/IconGame/Heart/Heart.png" alt="heart"><span>90m</span></div>
+                                    </div>
+                                </div>
+                                <div class="pack-bottom">
+                                    <div class="pack-name">Mega Pack</div>
+                                    <button class="pack-price pack-price--blue" onclick="buyRealMoneyItem('pack_large')">490.000</button>
+                                </div>
+                            </div>
+
+                            <!-- No Ads Bundle row -->
+                            <div class="shop-pack shop-pack--banner">
+                                <div class="bundle-top">
+                                    <div class="pack-coin">
+                                        <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                        <span>2000</span>
+                                    </div>
+                                    <div class="bundle-items">
+                                        <div class="bundle-item">
+                                            <img src="Asset/IconGame/Bom/Bomp.png" alt="bomb">
+                                            <span>x10</span>
+                                        </div>
+                                        <div class="bundle-item">
+                                            <img src="Asset/IconGame/Eraser/Eraser.png" alt="eraser">
+                                            <span>x10</span>
+                                        </div>
+                                        <div class="bundle-item">
+                                            <img src="Asset/IconGame/Votex/Votex.png" alt="vortex">
+                                            <span>x10</span>
+                                        </div>
+                                        <div class="bundle-item">
+                                            <img src="Asset/IconGame/Heart/Heart.png" alt="heart">
+                                            <span>NO ADS</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bundle-bottom">
+                                    <div class="bundle-label">NO ADS BUNDLES</div>
+                                    <button class="bundle-price" onclick="buyRealMoneyItem('bundle_noads')">100.000</button>
+                                </div>
+                            </div>
+
+                            <!-- Gold grid below -->
+                            <div class="gold-grid">
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_1000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">1000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_5000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">5000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_10000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">10000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_25000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">25000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_50000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">50000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
+                                <div class="gold-card" onclick="buyRealMoneyItem('gold_100000')">
+                                    <img src="Asset/IconGame/Gold/Gold.png" alt="gold">
+                                    <div class="gold-amount">100000</div>
+                                    <button class="gold-price">100.000</button>
+                                </div>
+                            </div>
+>>>>>>> Test
                         </div>
                     </div>
                 </div>
@@ -242,11 +512,19 @@
 
                 <div id="tab-rank" class="tab-pane">
                     <div style="height:20px;"></div>
+<<<<<<< HEAD
                     <div class="rank-header">BẢNG XẾP HẠNG</div>
 
                     <div id="rank-list-container" style="overflow-y: auto; max-height: 75%; padding: 0 10px;">
                         <!-- Điểm số tự động cập nhật ở đây -->
                         <div style="text-align:center; color:#FFF; margin-top:20px;">Đang tải...</div>
+=======
+                    <div class="rank-header">Báº¢NG Xáº¾P Háº NG</div>
+
+                    <div id="rank-list-container" style="overflow-y: auto; max-height: 75%; padding: 0 10px;">
+                        <!-- Äiá»ƒm sá»‘ tá»± Ä‘á»™ng cáº­p nháº­t á»Ÿ Ä‘Ã¢y -->
+                        <div style="text-align:center; color:#FFF; margin-top:20px;">Äang táº£i...</div>
+>>>>>>> Test
                     </div>
                 </div>
             </div>
@@ -283,6 +561,7 @@
 
 
         <div id="settings-menu" class="overlay-backdrop hidden">
+<<<<<<< HEAD
             <div class="settings-box"
                 style="width: 300px; background: linear-gradient(to bottom, #FFFFFF, #FFF5F8); border: 4px solid #FFFFFF; border-radius: 25px; padding: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 <h2
@@ -300,10 +579,55 @@
                 </div>
                 <button class="btn-buy" onclick="closeSettings()"
                     style="background: linear-gradient(to bottom, #FF5757, #E74C3C); width: 100%;">ĐÓNG</button>
+=======
+            <div class="settings-panel">
+                <div class="settings-title">SETTINGS</div>
+
+                <div class="settings-row" onclick="toggleSetting('sound')">
+                    <div class="settings-label">
+                        <span class="settings-icon sound"></span>
+                        <span>SOUND</span>
+                    </div>
+                    <div id="btn-sound" class="settings-toggle active">
+                        <span class="toggle-text">ON</span>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-label">
+                        <span class="settings-icon music"></span>
+                        <span>MUSIC</span>
+                    </div>
+                    <div class="settings-toggle active">
+                        <span class="toggle-text">ON</span>
+                    </div>
+                </div>
+
+                <div class="settings-row" onclick="toggleSetting('vfx')">
+                    <div class="settings-label">
+                        <span class="settings-icon vib"></span>
+                        <span>VIBRATION</span>
+                    </div>
+                    <div class="settings-toggle active">
+                        <span class="toggle-text">ON</span>
+                    </div>
+                </div>
+
+                <div class="settings-row language">
+                    <button class="lang-arrow">◀</button>
+                    <div class="lang-display">English</div>
+                    <button class="lang-arrow">▶</button>
+                </div>
+
+                <button class="settings-btn green">Restore Purchase</button>
+                <button class="settings-btn blue">Terms & Privacy</button>
+                <button class="settings-btn close" onclick="closeSettings()">Close</button>
+>>>>>>> Test
             </div>
         </div>
 
         <div id="pause-menu" class="hidden overlay-backdrop">
+<<<<<<< HEAD
             <div class="pause-box"
                 style="width: 280px; background: #C4A574; border: 6px solid #8B7355; border-radius: 30px; padding: 25px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);">
                 <div
@@ -318,6 +642,52 @@
                     ĐẶT</button>
                 <button class="go-btn" onclick="quitGame()"
                     style="background: linear-gradient(to bottom, #FF5757, #C0392B); box-shadow: 0 6px 0 #922B21;">THOÁT</button>
+=======
+            <div class="game-settings-panel">
+                <div class="game-settings-head">
+                    <div class="game-settings-title">PAUSE</div>
+                    <button class="game-settings-close" aria-label="Close" onclick="togglePause()">×</button>
+                </div>
+
+                <div class="game-settings-icons">
+                    <button id="game-btn-sound" class="game-icon-btn active" onclick="toggleSetting('sound')" aria-label="Sound">
+                        <span class="icon-sound"></span>
+                    </button>
+                    <button id="game-btn-music" class="game-icon-btn active" aria-label="Music">
+                        <span class="icon-music"></span>
+                    </button>
+                    <button id="game-btn-vfx" class="game-icon-btn active" onclick="toggleSetting('vfx')" aria-label="Vibration">
+                        <span class="icon-vib"></span>
+                    </button>
+                </div>
+
+                <div class="game-settings-language">
+                    <button class="lang-arrow">◀</button>
+                    <div class="lang-display">English</div>
+                    <button class="lang-arrow">▶</button>
+                </div>
+
+                <button class="game-settings-pill green">Restore Purchase</button>
+                <button class="game-settings-pill blue">Terms & Privacy</button>
+                <button class="game-settings-pill red" onclick="quitGame()">
+                    Quit <span class="badge-heart">-1</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quit Confirmation -->
+        <div id="quit-confirm" class="overlay-backdrop hidden">
+            <div class="quit-card">
+                <div class="quit-head">
+                    <div class="quit-title">ARE YOU SURE?</div>
+                    <button class="quit-close" aria-label="Close" onclick="cancelQuit()">×</button>
+                </div>
+                <div class="quit-body">
+                    <img src="Asset/IconGame/Heart/Heart.png" alt="Lose 1 life" class="quit-heart">
+                    <div class="quit-sub">You will LOSE 1 life!</div>
+                </div>
+                <button class="quit-cta" onclick="confirmQuit()">Go Home</button>
+>>>>>>> Test
             </div>
         </div>
 
@@ -339,13 +709,18 @@
                 </div>
 
                 <div style="text-align:center; color:#FFF; margin-top:20px; font-weight:bold;">
+<<<<<<< HEAD
                     Quay để nhận quà khủng!
+=======
+                    Quay Ä‘á»ƒ nháº­n quÃ  khá»§ng!
+>>>>>>> Test
                 </div>
             </div>
 
             <!-- Result Popup (Nested) -->
             <div id="wheel-result" class="hidden"
                 style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:260px; background:#FFF; border-radius:20px; padding:20px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.5);">
+<<<<<<< HEAD
                 <div style="font-size:18px; color:#5D4037; font-weight:bold; margin-bottom:10px;">BẠN NHẬN ĐƯỢC</div>
                 <div id="wheel-prize-icon" style="font-size:60px; margin-bottom:10px;">💎</div>
                 <div id="wheel-prize-text"
@@ -353,12 +728,32 @@
                     100 GEMS</div>
                 <button class="btn-buy" onclick="window.claimPrize()" style="background:#4CAF50; width:100%;">NHẬN
                     QUÀ</button>
+=======
+                <div style="font-size:18px; color:#5D4037; font-weight:bold; margin-bottom:10px;">Báº N NHáº¬N ÄÆ¯á»¢C</div>
+                <div id="wheel-prize-icon" style="font-size:60px; margin-bottom:10px;">ðŸ’Ž</div>
+                <div id="wheel-prize-text"
+                    style="font-size:24px; color:#E74C3C; font-weight:bold; font-family:'Chewy'; margin-bottom:15px;">
+                    100 GEMS</div>
+                <button class="btn-buy" onclick="window.claimPrize()" style="background:#4CAF50; width:100%;">NHáº¬N
+                    QUÃ€</button>
+>>>>>>> Test
             </div>
         </div>
     </div>
 
+<<<<<<< HEAD
+=======
+    <script type="module">
+        import { initPromoBadges } from './js/ui/promoBadges.js';
+        initPromoBadges();
+    </script>
+>>>>>>> Test
     <script type="module" src="./js/main.js"></script>
 
 </body>
 
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> Test

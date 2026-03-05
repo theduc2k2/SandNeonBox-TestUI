@@ -33,19 +33,37 @@ export const Leaderboard = {
      * @param {number} score - Điểm số hiện tại
      * @param {string} playerName - Tên người chơi (chỉ dùng cho localhost)
      */
+<<<<<<< HEAD
     async setScore(score, playerName = "You") {
+=======
+    async setScore(score, playerNameOrOptions = "You", maybeOptions = {}) {
+>>>>>>> Test
         if (!score || score <= 0) {
             console.warn("[Leaderboard] ⚠️ Invalid score:", score);
             return false;
         }
 
+<<<<<<< HEAD
         console.log(`[Leaderboard] 💾 Saving score: ${score}`);
+=======
+        // Support both legacy (score, name) and new (score, { incrementGame }) signatures
+        const isOptionsObject = typeof playerNameOrOptions === 'object' && playerNameOrOptions !== null;
+        const playerName = isOptionsObject ? "You" : playerNameOrOptions;
+        const options = isOptionsObject ? playerNameOrOptions : (maybeOptions || {});
+        const incrementGame = options.incrementGame !== false;
+
+        console.log(`[Leaderboard] 💾 Saving score: ${score} (incrementGame=${incrementGame})`);
+>>>>>>> Test
 
         try {
             // 1. Load điểm cũ để so sánh
             const personalData = await StorageSystem.loadData(PERSONAL_DATA_KEYS);
             const oldHighScore = personalData.highScore || 0;
+<<<<<<< HEAD
             const totalGames = (personalData.totalGames || 0) + 1;
+=======
+            const totalGames = (personalData.totalGames || 0) + (incrementGame ? 1 : 0);
+>>>>>>> Test
 
             // 2. Cập nhật điểm cao nhất
             const newHighScore = Math.max(score, oldHighScore);

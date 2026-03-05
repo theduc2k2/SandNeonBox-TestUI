@@ -17,6 +17,10 @@ export const CONFIG = {
     GRAVITY: 0.25,
     FRICTION: 0.99,
     MAX_VELOCITY: 8.0,
+<<<<<<< HEAD
+=======
+    SAND_UPDATES_PER_FRAME: 2, // Number of sand simulation passes each frame (speed up fall)
+>>>>>>> Test
     
     // --- GAMEPLAY MECHANICS ---
     DANGER_Y: 100,
@@ -68,4 +72,8 @@ export const CONFIG = {
         // Random ra một màu trong dải biến thể (Sáng/Tối/Trắng)
         return variants[Math.floor(Math.random() * variants.length)];
     }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> Test

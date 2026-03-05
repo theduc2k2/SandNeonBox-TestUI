@@ -1,15 +1,24 @@
+<<<<<<< HEAD
 /*
+=======
+﻿/*
+>>>>>>> Test
  * RESPONSIBILITY: Global Resets, Fonts, Variables (:root), and Body styling.
  * THEME: SANDTRIX (Wood & Sand)
  */
 
 /* Import Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Chewy&display=swap');
+<<<<<<< HEAD
 /* Giữ font game logic cũ để không lỗi hiển thị số/combo */
+=======
+/* Giá»¯ font game logic cÅ© Ä‘á»ƒ khÃ´ng lá»—i hiá»ƒn thá»‹ sá»‘/combo */
+>>>>>>> Test
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Orbitron:wght@700;900&display=swap');
 
 /* --- VARIABLES (:root) --- */
 :root {
+<<<<<<< HEAD
     /* SANDTRIX PALETTE (Màu chủ đạo Gỗ & Cát) */
     --wood-light: #DEB887;
     --wood-medium: #C4A574;
@@ -17,6 +26,15 @@
     --sand-bg-outer: #5e4b35; /* Màu nền tối bên ngoài */
 
     /* LEGACY CANDY COLORS (Giữ lại để các nút logic cũ vẫn có màu) */
+=======
+    /* SANDTRIX PALETTE (MÃ u chá»§ Ä‘áº¡o Gá»— & CÃ¡t) */
+    --wood-light: #DEB887;
+    --wood-medium: #C4A574;
+    --wood-dark: #8B7355;
+    --sand-bg-outer: #5e4b35; /* MÃ u ná»n tá»‘i bÃªn ngoÃ i */
+
+    /* LEGACY CANDY COLORS (Giá»¯ láº¡i Ä‘á»ƒ cÃ¡c nÃºt logic cÅ© váº«n cÃ³ mÃ u) */
+>>>>>>> Test
     --candy-pink: #FF69B4;
     --candy-purple: #9D5CFF;
     --candy-blue: #5DADE2;
@@ -46,7 +64,11 @@
     padding: 0;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+<<<<<<< HEAD
     user-select: none; /* Chặn bôi đen văn bản */
+=======
+    user-select: none; /* Cháº·n bÃ´i Ä‘en vÄƒn báº£n */
+>>>>>>> Test
     outline: none;
 }
 
@@ -57,8 +79,17 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+<<<<<<< HEAD
     /* Nền tối bao quanh (Mặt bàn) */
     background: var(--sand-bg-outer); 
+=======
+    /* Ná»n tá»‘i bao quanh (Máº·t bÃ n) */
+    background-color: #2b1f17;
+    background-image: url('../Asset/BackGround/Background.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat; 
+>>>>>>> Test
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,6 +100,7 @@ html, body {
 /* --- APP CONTAINER (PHONE FRAME) --- */
 #app-container {
     position: relative;
+<<<<<<< HEAD
     /* Nền gỗ bên trong điện thoại */
     background: var(--wood-medium); 
     overflow: hidden;
@@ -76,12 +108,26 @@ html, body {
     /* Kích thước mặc định cho Mobile */
     width: 100%;
     /* Dùng 100dvh để fix lỗi thanh địa chỉ trên trình duyệt mobile */
+=======
+    /* Ná»n gá»— bÃªn trong Ä‘iá»‡n thoáº¡i */
+    background-color: #2b1f17;
+    background-image: url('../Asset/BackGround/Background.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat; 
+    overflow: hidden;
+    
+    /* KÃ­ch thÆ°á»›c máº·c Ä‘á»‹nh cho Mobile */
+    width: 100%;
+    /* DÃ¹ng 100dvh Ä‘á»ƒ fix lá»—i thanh Ä‘á»‹a chá»‰ trÃªn trÃ¬nh duyá»‡t mobile */
+>>>>>>> Test
     height: 100dvh; 
     
     display: flex;
     flex-direction: column;
 }
 
+<<<<<<< HEAD
 /* GIAO DIỆN DESKTOP: Giả lập khung điện thoại gỗ */
 @media (min-width: 500px) {
     #app-container {
@@ -96,17 +142,41 @@ html, body {
         border-radius: 45px; 
         
         /* Đổ bóng sâu tạo cảm giác 3D */
+=======
+/* GIAO DIá»†N DESKTOP: Giáº£ láº­p khung Ä‘iá»‡n thoáº¡i gá»— */
+@media (min-width: 500px) {
+    #app-container {
+        width: 412px;  /* Chiá»u rá»™ng chuáº©n */
+        height: 915px; /* Chiá»u cao chuáº©n */
+        
+        /* Giá»›i háº¡n chiá»u cao khÃ´ng vÆ°á»£t quÃ¡ mÃ n hÃ¬nh PC */
+        max-height: 95vh;
+        
+        /* Viá»n gá»— Ä‘áº­m */
+        border: 6px solid var(--wood-dark);
+        border-radius: 45px; 
+        
+        /* Äá»• bÃ³ng sÃ¢u táº¡o cáº£m giÃ¡c 3D */
+>>>>>>> Test
         box-shadow: 
             0 20px 60px rgba(0, 0, 0, 0.6),
             0 0 0 2px rgba(255, 255, 255, 0.1);
             
+<<<<<<< HEAD
         /* Đảm bảo căn giữa container trong màn hình lớn */
+=======
+        /* Äáº£m báº£o cÄƒn giá»¯a container trong mÃ n hÃ¬nh lá»›n */
+>>>>>>> Test
         margin: auto;
     }
 }
 
 /* --- CANVAS & GAME SCREEN FIXES --- */
+<<<<<<< HEAD
 /* Đảm bảo canvas game luôn full màn hình trong khung */
+=======
+/* Äáº£m báº£o canvas game luÃ´n full mÃ n hÃ¬nh trong khung */
+>>>>>>> Test
 #inner-screen {
     width: 100% !important;
     height: 100% !important;
@@ -126,7 +196,11 @@ html, body {
 .overlay-backdrop {
     position: fixed;
     inset: 0;
+<<<<<<< HEAD
     background: rgba(0, 0, 0, 0.6); /* Nền tối mờ */
+=======
+    background: rgba(0, 0, 0, 0.6); /* Ná»n tá»‘i má» */
+>>>>>>> Test
     backdrop-filter: blur(2px);
     z-index: 9999;
     display: flex;

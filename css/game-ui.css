@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* =========================
+=======
+﻿/* =========================
+>>>>>>> Test
    HUD TOP (TOP BAR)
    ========================= */
 .hud-top {
@@ -27,6 +31,7 @@
 }
 
 /* --- 1. DIAMOND PILL (LEFT) --- */
+<<<<<<< HEAD
 .hud-diamond-pill {
     background: #3E2723;
     border: 2px solid #8D6E63;
@@ -54,6 +59,26 @@
 .diamond-icon {
     filter: drop-shadow(0 0 5px rgba(93, 173, 226, 0.6));
 }
+=======
+
+    /* background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.18);
+    transition: transform 0.2s;
+} */
+
+.hud-diamond-pill span {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #e2d55d;
+    text-shadow: 2px 2px 0 #000;
+    margin-top: 1px;
+}
+
+/* .diamond-icon {
+    filter: drop-shadow(0 0 5px rgba(93, 173, 226, 0.6));
+} */
+>>>>>>> Test
 
 /* --- 2. SETTINGS BTN (RIGHT) --- */
 .menu-btn {
@@ -363,14 +388,24 @@
     transform: translateX(-50%);
 
     width: 340px;
+<<<<<<< HEAD
     /* [UPDATED] Tăng độ dài (was 220px) */
     height: 25px;
     /* [UPDATED] Dày hơn xíu */
+=======
+    /* [UPDATED] TÄƒng Ä‘á»™ dÃ i (was 220px) */
+    height: 25px;
+    /* [UPDATED] DÃ y hÆ¡n xÃ­u */
+>>>>>>> Test
 
     display: flex;
     align-items: center;
     z-index: 60;
+<<<<<<< HEAD
     /* Thấp hơn HUD một xíu nhưng cao hơn game */
+=======
+    /* Tháº¥p hÆ¡n HUD má»™t xÃ­u nhÆ°ng cao hÆ¡n game */
+>>>>>>> Test
     pointer-events: none;
 }
 
@@ -378,6 +413,7 @@
     flex: 1;
     height: 100%;
     background: #5D4037;
+<<<<<<< HEAD
     /* Màu gỗ tối */
     border: 2px solid #8D6E63;
     border-radius: 4px;
@@ -386,6 +422,16 @@
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     /* Để cắt phần fill */
+=======
+    /* MÃ u gá»— tá»‘i */
+    border: 2px solid #8D6E63;
+    border-radius: 4px;
+    /* HÃ¬nh chá»¯ nháº­t, bo nháº¹ */
+    position: relative;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    /* Äá»ƒ cáº¯t pháº§n fill */
+>>>>>>> Test
 }
 
 .gift-bar-fill {
@@ -417,7 +463,11 @@
     }
 }
 
+<<<<<<< HEAD
 /* Hiệu ứng bóng kính */
+=======
+/* Hiá»‡u á»©ng bÃ³ng kÃ­nh */
+>>>>>>> Test
 .gift-bar-glare {
     position: absolute;
     top: 0;
@@ -450,7 +500,11 @@
     width: 32px;
     height: 32px;
     margin-left: -10px;
+<<<<<<< HEAD
     /* Đè lên cuối thanh một chút */
+=======
+    /* ÄÃ¨ lÃªn cuá»‘i thanh má»™t chÃºt */
+>>>>>>> Test
     position: relative;
     z-index: 2;
 
@@ -458,7 +512,11 @@
     justify-content: center;
     align-items: center;
 
+<<<<<<< HEAD
     /* Animation rung nhẹ mời gọi */
+=======
+    /* Animation rung nháº¹ má»i gá»i */
+>>>>>>> Test
     animation: gift-wobble 2s infinite ease-in-out;
 }
 
@@ -495,12 +553,20 @@
     }
 }
 
+<<<<<<< HEAD
 /* Khi đầy thanh, hộp quà rung mạnh hơn */
+=======
+/* Khi Ä‘áº§y thanh, há»™p quÃ  rung máº¡nh hÆ¡n */
+>>>>>>> Test
 .gift-icon-box.ready {
     animation: gift-ready 0.6s infinite;
     cursor: pointer;
     pointer-events: auto;
+<<<<<<< HEAD
     /* Cho phép bấm */
+=======
+    /* Cho phÃ©p báº¥m */
+>>>>>>> Test
 }
 
 @keyframes gift-ready {
@@ -518,7 +584,11 @@
     }
 }
 
+<<<<<<< HEAD
 /* Hiệu ứng Pulse khi thanh quà tăng lên */
+=======
+/* Hiá»‡u á»©ng Pulse khi thanh quÃ  tÄƒng lÃªn */
+>>>>>>> Test
 .gift-bar-bg.pulse {
     animation: bar-pulse 0.3s ease-out;
 }
@@ -539,4 +609,16 @@
         transform: scale(1);
         box-shadow: 0 0 0 rgba(255, 217, 61, 0);
     }
+<<<<<<< HEAD
 }
+=======
+}
+
+.diamond-icon,
+.coin-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+>>>>>>> Test

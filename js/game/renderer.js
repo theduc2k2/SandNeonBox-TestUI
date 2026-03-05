@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /**
+=======
+﻿/**
+>>>>>>> Test
  * /scripts/game/renderer.js
  * RESPONSIBILITY: Render gameplay elements ONLY.
  * THEME: SANDCRUSH (Fixed Height, Single Danger Line, Transparent BG)
@@ -14,16 +18,27 @@ export const Renderer = {
     width: 0,
     height: 0,
     dpr: 1,
+<<<<<<< HEAD
 
+=======
+>>>>>>> Test
     // [OPTIMIZATION] Offscreen Canvas & Pixel Data
     offscreenCanvas: null,
     offscreenCtx: null,
     imageData: null,
+<<<<<<< HEAD
     colorCache: {}, // Cache chuyển đổi Hex -> [r,g,b]
     dangerLineCanvas: null, // [OPTIMIZATION] Pre-rendered Danger Line
     borderGlowCanvas: null, // [OPTIMIZATION] Pre-rendered Border Glow
     
     // Trạng thái màn hình chớp trắng (Flash)
+=======
+    colorCache: {}, // Cache chuyá»ƒn Ä‘á»•i Hex -> [r,g,b]
+    dangerLineCanvas: null, // [OPTIMIZATION] Pre-rendered Danger Line
+    borderGlowCanvas: null, // [OPTIMIZATION] Pre-rendered Border Glow
+    
+    // Tráº¡ng thÃ¡i mÃ n hÃ¬nh chá»›p tráº¯ng (Flash)
+>>>>>>> Test
     flashState: {
         active: false,
         color: '#fff',
@@ -32,16 +47,29 @@ export const Renderer = {
         duration: 1500
     },
 
+<<<<<<< HEAD
     // [MỚI] Trạng thái viền phát sáng (Glow)
+=======
+    // [Má»šI] Tráº¡ng thÃ¡i viá»n phÃ¡t sÃ¡ng (Glow)
+>>>>>>> Test
     borderGlow: {
         active: false,
         color: '#FFF',
         alpha: 0
     },
 
+<<<<<<< HEAD
     init(canvas) {
         this.canvas = canvas;
         // alpha: true để nhìn xuyên thấu xuống nền gỗ của Menu
+=======
+    // Preloaded item icon images (bomb/eraser/vortex)
+    itemIcons: {},
+
+    init(canvas) {
+        this.canvas = canvas;
+        // alpha: true Ä‘á»ƒ nhÃ¬n xuyÃªn tháº¥u xuá»‘ng ná»n gá»— cá»§a Menu
+>>>>>>> Test
         this.ctx = canvas.getContext('2d', { alpha: true }); 
         this.dpr = Math.max(window.devicePixelRatio || 2, 2);
         
@@ -55,6 +83,12 @@ export const Renderer = {
         // [OPTIMIZATION] Pre-render Static Effects
         this.preRenderStaticEffects();
 
+<<<<<<< HEAD
+=======
+        // Preload UI item icons from /Asset
+        this.loadItemIcons();
+
+>>>>>>> Test
         this.resize();
         window.addEventListener('resize', () => this.resize());
         setTimeout(() => this.resize(), 50);
@@ -62,7 +96,11 @@ export const Renderer = {
     },
 
     preRenderStaticEffects() {
+<<<<<<< HEAD
         // 1. Danger Line (Vạch đỏ + Glow)
+=======
+        // 1. Danger Line (Váº¡ch Ä‘á» + Glow)
+>>>>>>> Test
         this.dangerLineCanvas = document.createElement('canvas');
         this.dangerLineCanvas.width = CONFIG.BOARD_WIDTH;
         this.dangerLineCanvas.height = 20; 
@@ -76,9 +114,15 @@ export const Renderer = {
         dCtx.shadowBlur = 10;
         dCtx.stroke();
 
+<<<<<<< HEAD
         // 2. Border Glow (Viền phát sáng - Vẽ màu trắng để dễ tái sử dụng hoặc mặc định vàng)
         this.borderGlowCanvas = document.createElement('canvas');
         const pad = 40; // Padding cho bóng đổ
+=======
+        // 2. Border Glow (Viá»n phÃ¡t sÃ¡ng - Váº½ mÃ u tráº¯ng Ä‘á»ƒ dá»… tÃ¡i sá»­ dá»¥ng hoáº·c máº·c Ä‘á»‹nh vÃ ng)
+        this.borderGlowCanvas = document.createElement('canvas');
+        const pad = 40; // Padding cho bÃ³ng Ä‘á»•
+>>>>>>> Test
         this.borderGlowCanvas.width = CONFIG.BOARD_WIDTH + pad;
         this.borderGlowCanvas.height = CONFIG.BOARD_HEIGHT + pad;
         const bCtx = this.borderGlowCanvas.getContext('2d');
@@ -90,8 +134,28 @@ export const Renderer = {
         bCtx.strokeRect(-3, -3, CONFIG.BOARD_WIDTH + 6, CONFIG.BOARD_HEIGHT + 6);
     },
 
+<<<<<<< HEAD
     bindEvents() {
         // Sự kiện chớp màn hình (Flash)
+=======
+    loadItemIcons() {
+        const makeImg = (src) => {
+            const img = new Image();
+            img.src = src;
+            return img;
+        };
+
+        this.itemIcons = {
+            bomb: makeImg('Asset/IconGame/Bom/Bomp.png'),
+            vortex: makeImg('Asset/IconGame/Votex/Votex.png'),
+            // If eraser image is absent, we will fall back to emoji rendering
+            eraser: makeImg('Asset/IconGame/Eraser/Eraser.png')
+        };
+    },
+
+    bindEvents() {
+        // Sá»± kiá»‡n chá»›p mÃ n hÃ¬nh (Flash)
+>>>>>>> Test
         EventBus.on('ui:flash', (data) => {
             if (STATE.settings && !STATE.settings.vfx) return;
             this.flashState.active = true;
@@ -100,13 +164,22 @@ export const Renderer = {
             this.flashState.startTime = Date.now();
         });
 
+<<<<<<< HEAD
         // [MỚI] Sự kiện phát sáng viền khi ăn điểm
+=======
+        // [Má»šI] Sá»± kiá»‡n phÃ¡t sÃ¡ng viá»n khi Äƒn Ä‘iá»ƒm
+>>>>>>> Test
         EventBus.on('visuals:border_glow', (data) => {
             if (STATE.settings && !STATE.settings.vfx) return;
             
             this.borderGlow.active = true;
+<<<<<<< HEAD
             this.borderGlow.color = data.color || '#FFD93D'; // Mặc định màu vàng nếu không có
             this.borderGlow.alpha = 1.5; // Bắt đầu sáng mạnh (>1 để giữ độ sáng lâu hơn một chút)
+=======
+            this.borderGlow.color = data.color || '#FFD93D'; // Máº·c Ä‘á»‹nh mÃ u vÃ ng náº¿u khÃ´ng cÃ³
+            this.borderGlow.alpha = 1.5; // Báº¯t Ä‘áº§u sÃ¡ng máº¡nh (>1 Ä‘á»ƒ giá»¯ Ä‘á»™ sÃ¡ng lÃ¢u hÆ¡n má»™t chÃºt)
+>>>>>>> Test
         });
     },
 
@@ -126,7 +199,11 @@ export const Renderer = {
         this.canvas.style.width = '100%';
         this.canvas.style.height = '100%';
 
+<<<<<<< HEAD
         // --- TÍNH TOÁN SCALE & VỊ TRÍ ---
+=======
+        // --- TÃNH TOÃN SCALE & Vá»Š TRÃ ---
+>>>>>>> Test
         const paddingPercent = 0.90; 
         const scaleX = (w * this.dpr) / totalW;
         const scaleY = (h * this.dpr) / totalH;
@@ -135,14 +212,22 @@ export const Renderer = {
         const offsetX = ((w * this.dpr) - (totalW * finalScale)) / 2;
         const offsetY = ((h * this.dpr) - (totalH * finalScale)) / 2;
 
+<<<<<<< HEAD
         // Lưu thông số để InputHandler dùng
+=======
+        // LÆ°u thÃ´ng sá»‘ Ä‘á»ƒ InputHandler dÃ¹ng
+>>>>>>> Test
         this.gameArea = {
             x: offsetX,
             y: offsetY,
             scale: finalScale
         };
 
+<<<<<<< HEAD
         // Áp dụng biến hình
+=======
+        // Ãp dá»¥ng biáº¿n hÃ¬nh
+>>>>>>> Test
         this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
         this.ctx.translate(offsetX, offsetY); 
         this.ctx.scale(finalScale, finalScale);
@@ -152,21 +237,36 @@ export const Renderer = {
         if (!this.ctx) return;
         const ctx = this.ctx;
 
+<<<<<<< HEAD
         // 1. Xóa Canvas để lộ nền gỗ
+=======
+        // 1. XÃ³a Canvas Ä‘á»ƒ lá»™ ná»n gá»—
+>>>>>>> Test
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         ctx.restore();
 
+<<<<<<< HEAD
         // 2. Vẽ Hốc tối (Bàn chơi)
         this.drawRecessedBoard(ctx);
         
         // 3. Vẽ vạch đỏ (Danger Line)
+=======
+        // 2. Váº½ Há»‘c tá»‘i (BÃ n chÆ¡i)
+        this.drawRecessedBoard(ctx);
+        
+        // 3. Váº½ váº¡ch Ä‘á» (Danger Line)
+>>>>>>> Test
         this.drawDangerLine(ctx);
 
         this.drawFlashLayer(ctx);
 
+<<<<<<< HEAD
         // Highlight cục tẩy
+=======
+        // Highlight cá»¥c táº©y
+>>>>>>> Test
         let highlightColor = null;
         if (STATE.draggingItem === 'ERASER') {
             const mx = STATE.dragOffset?.currentX || 0;
@@ -183,12 +283,17 @@ export const Renderer = {
             }
         }
 
+<<<<<<< HEAD
         // 4. Nội dung game
+=======
+        // 4. Ná»™i dung game
+>>>>>>> Test
         this.drawParticles(ctx, highlightColor);
         this.drawVortexes(ctx);
         this.drawFlyingParticles(ctx);
         this.drawEffects(ctx);
 
+<<<<<<< HEAD
         // 5. Dock & Items (Không nền)
         this.drawDockContent(ctx);
 
@@ -196,6 +301,15 @@ export const Renderer = {
         this.drawDragOverlay(ctx);
         
         // 7. Viền trang trí (Có hiệu ứng Glow mới)
+=======
+        // 5. Dock & Items (KhÃ´ng ná»n)
+        this.drawDockContent(ctx);
+
+        // 6. Overlay kÃ©o tháº£
+        this.drawDragOverlay(ctx);
+        
+        // 7. Viá»n trang trÃ­ (CÃ³ hiá»‡u á»©ng Glow má»›i)
+>>>>>>> Test
         this.drawBoardBorder(ctx);
     },
 
@@ -203,11 +317,19 @@ export const Renderer = {
         const w = CONFIG.BOARD_WIDTH;
         const h = CONFIG.BOARD_HEIGHT;
 
+<<<<<<< HEAD
         // Nền tối (Dark Coffee)
         ctx.fillStyle = '#261C19'; 
         ctx.fillRect(0, 0, w, h);
 
         // Bóng đổ trong
+=======
+        // Ná»n tá»‘i (Dark Coffee)
+        ctx.fillStyle = '#261C19'; 
+        ctx.fillRect(0, 0, w, h);
+
+        // BÃ³ng Ä‘á»• trong
+>>>>>>> Test
         const gradTop = ctx.createLinearGradient(0, 0, 0, 25);
         gradTop.addColorStop(0, 'rgba(0,0,0,0.6)');
         gradTop.addColorStop(1, 'rgba(0,0,0,0)');
@@ -220,25 +342,42 @@ export const Renderer = {
     },
 
     drawDangerLine(ctx) {
+<<<<<<< HEAD
         // [OPTIMIZATION] Vẽ ảnh tĩnh thay vì tính toán ShadowBlur
+=======
+        // [OPTIMIZATION] Váº½ áº£nh tÄ©nh thay vÃ¬ tÃ­nh toÃ¡n ShadowBlur
+>>>>>>> Test
         if (this.dangerLineCanvas) {
             ctx.drawImage(this.dangerLineCanvas, 0, (CONFIG.DANGER_Y || 100) - 10);
         }
     },
 
+<<<<<<< HEAD
     // [MODIFIED] Hàm vẽ viền có thêm logic Glow
+=======
+    // [MODIFIED] HÃ m váº½ viá»n cÃ³ thÃªm logic Glow
+>>>>>>> Test
     drawBoardBorder(ctx) {
         const w = CONFIG.BOARD_WIDTH;
         const h = CONFIG.BOARD_HEIGHT;
 
         ctx.save(); 
 
+<<<<<<< HEAD
         // --- HIỆU ỨNG GLOW MỚI ---
         if (this.borderGlow.active && this.borderGlow.alpha > 0.01) {
             // Giảm dần độ sáng (Fade out)
             this.borderGlow.alpha -= 0.03;
 
             // [OPTIMIZATION] Vẽ Canvas đệm với Global Alpha
+=======
+        // --- HIá»†U á»¨NG GLOW Má»šI ---
+        if (this.borderGlow.active && this.borderGlow.alpha > 0.01) {
+            // Giáº£m dáº§n Ä‘á»™ sÃ¡ng (Fade out)
+            this.borderGlow.alpha -= 0.03;
+
+            // [OPTIMIZATION] Váº½ Canvas Ä‘á»‡m vá»›i Global Alpha
+>>>>>>> Test
             const intensity = Math.min(1, this.borderGlow.alpha);
             ctx.globalAlpha = intensity;
             if (this.borderGlowCanvas) ctx.drawImage(this.borderGlowCanvas, -20, -20);
@@ -247,6 +386,7 @@ export const Renderer = {
             this.borderGlow.active = false;
         }
 
+<<<<<<< HEAD
         // Reset lại các thông số để vẽ viền gốc
         ctx.shadowBlur = 0; 
         ctx.globalAlpha = 1.0; 
@@ -261,6 +401,22 @@ export const Renderer = {
         ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)'; ctx.lineWidth = 3; ctx.stroke();
         
         // Viền bao quanh (Gỗ đậm)
+=======
+        // Reset láº¡i cÃ¡c thÃ´ng sá»‘ Ä‘á»ƒ váº½ viá»n gá»‘c
+        ctx.shadowBlur = 0; 
+        ctx.globalAlpha = 1.0; 
+
+        // --- Váº¼ VIá»€N Gá»– Gá»C (GIá»® NGUYÃŠN) ---
+        // Viá»n dÆ°á»›i sÃ¡ng
+        ctx.beginPath(); ctx.moveTo(0, h); ctx.lineTo(w, h);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)'; ctx.lineWidth = 2; ctx.stroke();
+
+        // Viá»n trÃªn tá»‘i
+        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(w, 0);
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)'; ctx.lineWidth = 3; ctx.stroke();
+        
+        // Viá»n bao quanh (Gá»— Ä‘áº­m)
+>>>>>>> Test
         ctx.strokeStyle = '#5C4033'; 
         ctx.lineWidth = 4;
         ctx.strokeRect(-2, -2, w + 4, h + 4);
@@ -284,7 +440,11 @@ export const Renderer = {
         ctx.restore();
     },
 
+<<<<<<< HEAD
     // [OPTIMIZATION] Helper: Chuyển Hex sang RGB và Cache lại
+=======
+    // [OPTIMIZATION] Helper: Chuyá»ƒn Hex sang RGB vÃ  Cache láº¡i
+>>>>>>> Test
     hexToRgb(hex) {
         if (this.colorCache[hex]) return this.colorCache[hex];
         
@@ -299,12 +459,21 @@ export const Renderer = {
     },
 
     drawParticles(ctx, highlightColor) {
+<<<<<<< HEAD
         // [OPTIMIZATION] Sử dụng ImageData thay vì fillRect
         const imgData = this.imageData;
         const data = imgData.data;
         
         // 1. Xóa buffer cũ (Set toàn bộ pixel về 0 - trong suốt)
         // Sử dụng Uint32Array để xóa nhanh gấp 4 lần
+=======
+        // [OPTIMIZATION] Sá»­ dá»¥ng ImageData thay vÃ¬ fillRect
+        const imgData = this.imageData;
+        const data = imgData.data;
+        
+        // 1. XÃ³a buffer cÅ© (Set toÃ n bá»™ pixel vá» 0 - trong suá»‘t)
+        // Sá»­ dá»¥ng Uint32Array Ä‘á»ƒ xÃ³a nhanh gáº¥p 4 láº§n
+>>>>>>> Test
         new Uint32Array(data.buffer).fill(0);
 
         const w = CONFIG.BOARD_WIDTH;
@@ -312,9 +481,15 @@ export const Renderer = {
         const pSize = CONFIG.PARTICLE_SIZE;
         const bomb = STATE.bombPriming;
 
+<<<<<<< HEAD
         // Cache highlight color nếu có
         let highlightRGB = null;
         if (highlightColor) highlightRGB = [255, 255, 255]; // Màu trắng mờ
+=======
+        // Cache highlight color náº¿u cÃ³
+        let highlightRGB = null;
+        if (highlightColor) highlightRGB = [255, 255, 255]; // MÃ u tráº¯ng má»
+>>>>>>> Test
 
         for (let i = 0; i < STATE.particles.length; i++) {
             const p = STATE.particles[i];
@@ -323,7 +498,11 @@ export const Renderer = {
             let x = Math.floor(p.x);
             let y = Math.floor(p.y);
             
+<<<<<<< HEAD
             // Logic rung lắc khi bom sắp nổ (Giữ nguyên logic cũ nhưng áp dụng cho toạ độ)
+=======
+            // Logic rung láº¯c khi bom sáº¯p ná»• (Giá»¯ nguyÃªn logic cÅ© nhÆ°ng Ã¡p dá»¥ng cho toáº¡ Ä‘á»™)
+>>>>>>> Test
             if (bomb) {
                 const dx = p.x - bomb.x;
                 const dy = p.y - bomb.y;
@@ -335,17 +514,27 @@ export const Renderer = {
                 }
             }
 
+<<<<<<< HEAD
             // Lấy màu RGB từ Cache
             let [r, g, b] = this.hexToRgb(p.color);
 
             // Xử lý Highlight (Eraser)
             if (highlightColor && p.baseColor === highlightColor) {
                 // Blend màu trắng (đơn giản hóa bằng cách tăng sáng)
+=======
+            // Láº¥y mÃ u RGB tá»« Cache
+            let [r, g, b] = this.hexToRgb(p.color);
+
+            // Xá»­ lÃ½ Highlight (Eraser)
+            if (highlightColor && p.baseColor === highlightColor) {
+                // Blend mÃ u tráº¯ng (Ä‘Æ¡n giáº£n hÃ³a báº±ng cÃ¡ch tÄƒng sÃ¡ng)
+>>>>>>> Test
                 r = Math.min(255, r + 100);
                 g = Math.min(255, g + 100);
                 b = Math.min(255, b + 100);
             }
 
+<<<<<<< HEAD
             // Vẽ từng pixel của hạt cát vào buffer
             // Loop này xử lý kích thước hạt (ví dụ 4x4 hoặc 5x5)
             for (let py = 0; py < pSize; py++) {
@@ -354,6 +543,16 @@ export const Renderer = {
                     if (x + px >= w) break; // Check biên phải
                     
                     // Tính index trong mảng 1 chiều: (y * width + x) * 4 kênh màu
+=======
+            // Váº½ tá»«ng pixel cá»§a háº¡t cÃ¡t vÃ o buffer
+            // Loop nÃ y xá»­ lÃ½ kÃ­ch thÆ°á»›c háº¡t (vÃ­ dá»¥ 4x4 hoáº·c 5x5)
+            for (let py = 0; py < pSize; py++) {
+                if (y + py >= h) break; // Check biÃªn dÆ°á»›i
+                for (let px = 0; px < pSize; px++) {
+                    if (x + px >= w) break; // Check biÃªn pháº£i
+                    
+                    // TÃ­nh index trong máº£ng 1 chiá»u: (y * width + x) * 4 kÃªnh mÃ u
+>>>>>>> Test
                     const idx = ((y + py) * w + (x + px)) * 4;
                     
                     data[idx] = r;     // Red
@@ -364,11 +563,19 @@ export const Renderer = {
             }
         }
 
+<<<<<<< HEAD
         // 2. Đẩy dữ liệu pixel lên Offscreen Canvas
         this.offscreenCtx.putImageData(imgData, 0, 0);
 
         // 3. Vẽ Offscreen Canvas lên Main Canvas
         // Vì Main Canvas đã được scale/translate ở hàm draw(), ta vẽ tại (0,0)
+=======
+        // 2. Äáº©y dá»¯ liá»‡u pixel lÃªn Offscreen Canvas
+        this.offscreenCtx.putImageData(imgData, 0, 0);
+
+        // 3. Váº½ Offscreen Canvas lÃªn Main Canvas
+        // VÃ¬ Main Canvas Ä‘Ã£ Ä‘Æ°á»£c scale/translate á»Ÿ hÃ m draw(), ta váº½ táº¡i (0,0)
+>>>>>>> Test
         ctx.drawImage(this.offscreenCanvas, 0, 0);
     },
 
@@ -429,7 +636,11 @@ export const Renderer = {
         const boardH = CONFIG.BOARD_HEIGHT || 480;
         const boardW = CONFIG.BOARD_WIDTH || 288;
 
+<<<<<<< HEAD
         // Bóng đổ của Board xuống nền gỗ
+=======
+        // BÃ³ng Ä‘á»• cá»§a Board xuá»‘ng ná»n gá»—
+>>>>>>> Test
         ctx.save();
         ctx.shadowColor = 'rgba(0,0,0,0.5)';
         ctx.shadowBlur = 15;
@@ -477,7 +688,11 @@ export const Renderer = {
 
     drawItems(ctx, y, boardW) {
         const slotW = boardW / 3;
+<<<<<<< HEAD
         const icons = ['💣', '💧', '🌀'];
+=======
+        const iconKeys = ['bomb', 'eraser', 'vortex'];
+>>>>>>> Test
         const counts = [
             STATE.inventory?.bombs || 0,
             STATE.inventory?.erasers || 0,
@@ -503,7 +718,21 @@ export const Renderer = {
             ctx.moveTo(cx - 30, y + 30); ctx.lineTo(cx - 30, y - 30); ctx.lineTo(cx + 30, y - 30);
             ctx.strokeStyle = 'rgba(0,0,0,0.4)'; ctx.stroke();
 
+<<<<<<< HEAD
             ctx.font = '28px Arial'; ctx.fillStyle = colors[i]; ctx.fillText(icons[i], cx, y - 8);
+=======
+            const key = iconKeys[i];
+            const img = this.itemIcons ? this.itemIcons[key] : null;
+            const hasImg = img && img.complete && img.naturalWidth > 0;
+
+            if (hasImg) {
+                const iconSize = 36;
+                ctx.drawImage(img, cx - iconSize / 2, y - iconSize / 2 - 6, iconSize, iconSize);
+            } else {
+                const fallbackIcons = ['💣', '💧', '🌌'];
+                ctx.font = '28px Arial'; ctx.fillStyle = colors[i]; ctx.fillText(fallbackIcons[i], cx, y - 8);
+            }
+>>>>>>> Test
             ctx.font = 'bold 12px Fredoka, sans-serif'; ctx.fillStyle = '#FFF'; ctx.fillText(counts[i] > 99 ? '99+' : counts[i], cx, y + 18);
             
             const btnX = cx + 22; const btnY = y - 22;
@@ -511,7 +740,10 @@ export const Renderer = {
             ctx.fillStyle = '#FFF'; ctx.font = 'bold 12px Arial'; ctx.fillText('+', btnX, btnY + 1);
         }
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> Test
     drawDragOverlay(ctx) {
         if (STATE.draggingPiece) {
             const piece = STATE.draggingPiece;
@@ -532,11 +764,28 @@ export const Renderer = {
              else if (type === 'ERASER') {
                  ctx.fillStyle = 'rgba(0, 243, 255, 0.3)'; ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI*2); ctx.fill();
              }
+<<<<<<< HEAD
              ctx.font = '30px Arial'; ctx.fillStyle = '#FFF'; ctx.textAlign='center'; ctx.textBaseline='middle';
              ctx.fillText(type === 'BOMB' ? '💣' : (type === 'ERASER' ? '💧' : '🌀'), x, y);
         }
     },
 
+=======
+
+             const iconKey = type.toLowerCase();
+             const img = this.itemIcons ? this.itemIcons[iconKey] : null;
+             const hasImg = img && img.complete && img.naturalWidth > 0;
+
+             if (hasImg) {
+                 const iconSize = 32;
+                 ctx.drawImage(img, x - iconSize / 2, y - iconSize / 2, iconSize, iconSize);
+             } else {
+                 ctx.font = '30px Arial'; ctx.fillStyle = '#FFF'; ctx.textAlign='center'; ctx.textBaseline='middle';
+                 ctx.fillText(type === 'BOMB' ? '💣' : (type === 'ERASER' ? '💧' : '🌌'), x, y);
+             }
+        }
+    },
+>>>>>>> Test
     drawPieceShape(ctx, piece, ox, oy, scale = 1) {
         const pSize = CONFIG.PARTICLE_SIZE;
         const size = pSize * scale;
@@ -562,4 +811,8 @@ export const Renderer = {
         ctx.quadraticCurveTo(x, y, x + radius, y); 
         ctx.closePath();
     }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> Test

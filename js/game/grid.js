@@ -51,15 +51,25 @@ export const Grid = {
 
     worldToGrid(x, y) {
         return {
+<<<<<<< HEAD
             col: Math.floor(x / CONFIG.pSize),
             row: Math.floor(y / CONFIG.pSize)
+=======
+            col: Math.floor(x / CONFIG.PARTICLE_SIZE),
+            row: Math.floor(y / CONFIG.PARTICLE_SIZE)
+>>>>>>> Test
         };
     },
 
     gridToWorld(col, row) {
         return {
+<<<<<<< HEAD
             x: col * CONFIG.pSize,
             y: row * CONFIG.pSize
+=======
+            x: col * CONFIG.PARTICLE_SIZE,
+            y: row * CONFIG.PARTICLE_SIZE
+>>>>>>> Test
         };
     }
 };

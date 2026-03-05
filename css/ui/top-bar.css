@@ -1,26 +1,46 @@
+<<<<<<< HEAD
 /*
  * RESPONSIBILITY: Styling for the top resource display (Diamonds, Energy/Lives).
+=======
+﻿/* * RESPONSIBILITY: Styling for the top resource display (Diamonds, Energy/Lives).
+>>>>>>> Test
  * THEME: SANDTRIX (Wood & Sand)
  */
 
 .top-resource-bar {
     position: absolute; 
+<<<<<<< HEAD
     top: 0; left: 0; 
+=======
+    top: 30px; 
+    left: 0; 
+>>>>>>> Test
     width: 100%; 
     height: calc(var(--top-height) + var(--safe-top));
     padding-top: var(--safe-top);
     display: flex; 
+<<<<<<< HEAD
     align-items: flex-end;
     padding-bottom: 15px; 
     padding-left: 20px; padding-right: 20px;
     z-index: 50; 
     pointer-events: none;
+=======
+    align-items: flex-start; /* Căn các icon tài nguyên lên đỉnh */
+    padding-left: 100px; 
+    padding-right: 100px;
+    z-index: 50; 
+    pointer-events: none;
+    /* Lưu ý: Không dùng justify-content: space-between ở đây 
+       để dễ điều chỉnh thủ công nút settings */
+>>>>>>> Test
 }
 
 .top-resource-bar > * {
     pointer-events: auto;
 }
 
+<<<<<<< HEAD
 /* VIÊN THUỐC HIỂN THỊ TÀI NGUYÊN */
 .res-pill {
     /* Nền màu kem/trắng ngà thay vì trắng tím */
@@ -34,10 +54,40 @@
     gap: 10px;
     
     /* Shadow màu nâu gỗ */
+=======
+/* --- PHẦN ĐIỀU CHỈNH RIÊNG NÚT SETTINGS --- */
+.top-resource-bar .menu-btn {
+    position: absolute; /* Tách biệt hoàn toàn khỏi dòng chảy của Kim cương/Máu */
+    
+    /* Điều chỉnh 2 dòng này để thay đổi vị trí tùy ý */
+    right: 20px;  /* Khoảng cách từ lề phải màn hình */
+    top: -5px;     /* Khoảng cách từ đỉnh thanh bar (top: 30px ở trên) */
+    
+    /* Nếu muốn căn giữa theo chiều dọc của thanh bar, dùng cụm này:
+    top: 50%;
+    transform: translateY(-50%); 
+    */
+    
+    margin: 0; 
+    z-index: 51;
+}
+
+/* --- CẤU TRÚC VIÊN THUỐC TÀI NGUYÊN --- */
+.res-pill {
+    background: linear-gradient(to bottom, #ffffff7e, #ffffff59);
+    border: 3px solid #ffffff0e;
+    border-radius: 25px;
+    height: 28px;
+    padding: 0 0px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+>>>>>>> Test
     box-shadow: 
         0 4px 0 rgba(139, 115, 85, 0.5),
         0 8px 20px rgba(0, 0, 0, 0.2);
     position: relative;
+<<<<<<< HEAD
 }
 
 /* Hiệu ứng bóng kính (Giữ nguyên để tạo độ nổi) */
@@ -51,16 +101,25 @@
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
     border-radius: 20px;
     pointer-events: none;
+=======
+    margin-right: 10px; /* Khoảng cách giữa Tim và Kim cương */
+>>>>>>> Test
 }
 
 /* ICON TRÒN (MÁU/ENERGY) */
 .res-icon-circle {
+<<<<<<< HEAD
     width: 38px;
     height: 38px;
+=======
+    width: 28px;
+    height: 28px;
+>>>>>>> Test
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+<<<<<<< HEAD
     
     /* Giữ màu hồng cho Máu/Tim */
     background: linear-gradient(135deg, #FF69B4, #FF1493);
@@ -70,16 +129,27 @@
     box-shadow: 
         0 3px 0 rgba(255, 20, 147, 0.5),
         inset 0 2px 0 rgba(255, 255, 255, 0.5);
+=======
+    background: radial-gradient(circle at 30% 30%, #ff8a80 0%, #ff5252 55%, #e53935 100%);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.35), 0 2px 6px rgba(0, 0, 0, 0.22);
+>>>>>>> Test
     position: relative;
 }
 
 /* ICON TRÒN (KIM CƯƠNG) */
 .res-icon-circle.diamond {
+<<<<<<< HEAD
     /* Giữ màu xanh cho Kim Cương */
     background: linear-gradient(135deg, #5DADE2, #3498DB);
     box-shadow: 
         0 3px 0 rgba(52, 152, 219, 0.5),
         inset 0 2px 0 rgba(255, 255, 255, 0.5);
+=======
+    background: radial-gradient(circle at 30% 30%, #ffe082 0%, #ffc107 55%, #ffb300 100%);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2);
+>>>>>>> Test
 }
 
 /* SỐ LƯỢNG TÀI NGUYÊN */
@@ -87,10 +157,24 @@
     font-family: 'Chewy', cursive;
     font-size: 18px;
     font-weight: bold;
+<<<<<<< HEAD
     
     /* Màu tím đậm để tương phản tốt trên nền kem */
+=======
+>>>>>>> Test
     color: #7B3FF2;
     text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5);
     min-width: 40px;
     text-align: center;
+<<<<<<< HEAD
 }
+=======
+}
+
+.res-icon-circle img, .res-heart-icon, .coin-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.18));
+}
+>>>>>>> Test

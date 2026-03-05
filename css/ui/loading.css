@@ -1,19 +1,34 @@
 /* Loading Screen Styles */
 #loading-overlay {
+<<<<<<< HEAD
     position: absolute;
+=======
+    position: fixed;
+>>>>>>> Test
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+<<<<<<< HEAD
     /* Transparent to show Game Background (Wood/Sand) */
     background: transparent;
+=======
+    /* Sea background for loading + slight dark veil */
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.35)),
+        url('../../Asset/BackGround/Background.png') center top / cover no-repeat;
+>>>>>>> Test
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     /* Space between Logo (top/center) and Bar (bottom) */
     align-items: center;
     z-index: 10000;
+<<<<<<< HEAD
     pointer-events: none;
+=======
+    pointer-events: auto;
+>>>>>>> Test
     /* Let clicks pass through if needed, though usually blocking is fine */
     transition: opacity 0.5s ease-out;
     padding-bottom: 50px;
@@ -21,6 +36,10 @@
     padding-top: 100px;
     /* Space from top */
     box-sizing: border-box;
+<<<<<<< HEAD
+=======
+    position: relative;
+>>>>>>> Test
 }
 
 #loading-overlay.fade-out {
@@ -28,6 +47,10 @@
     pointer-events: none;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Test
 .loading-content {
     /* Contains Logo */
     display: flex;
@@ -133,6 +156,18 @@
     text-shadow: 1px 1px 2px black;
 }
 
+<<<<<<< HEAD
+=======
+/* Hide app UI when loading overlay is active */
+body.loading-active #app-container > *:not(#loading-overlay) {
+    visibility: hidden;
+}
+
+body.loading-active #loading-overlay {
+    visibility: visible;
+}
+
+>>>>>>> Test
 /* --- DREAMFORGE STUDIO --- */
 .dreamforge-logo {
     display: flex;
@@ -177,4 +212,8 @@
     50% {
         transform: translateY(-10px);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Test
